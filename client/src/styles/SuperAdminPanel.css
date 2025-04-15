@@ -1,0 +1,84 @@
+/* Contenedor general */
+.sap-container {
+    display: flex;
+    height: 100vh;
+    font-family: Arial, sans-serif;
+  }
+  
+  /* Sidebar */
+  .sap-sidebar {
+    width: 200px;
+    background-color: #f0f0f0;
+    padding: 20px 0;
+  }
+  .sap-sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .sap-sidebar li {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    cursor: pointer;
+  }
+  .sap-sidebar li img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+  }
+  .sap-sidebar li span {
+    font-size: 14px;
+  }
+  
+  /* Main area */
+  .sap-main {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  /* Header con búsqueda */
+  .sap-header {
+    margin-bottom: 20px;
+  }
+  .sap-search {
+    position: relative;
+    width: 100%;
+  }
+  .sap-search input {
+    width: 100%;
+    padding: 8px 32px 8px 8px;
+    font-size: 14px;
+  }
+  .sap-search .sap-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+  }
+  .sap-search .sap-icon:nth-child(2) {
+    right: 32px; /* Lupa */
+  }
+  .sap-search .sap-icon:nth-child(3) {
+    right: 8px;  /* Filtro */
+  }
+  
+  /* Sección de tabla */
+  .sap-table-section h2 {
+    margin-bottom: 10px;
+  }
+  .sap-table-placeholder {
+    border: 2px dashed #ccc;
+    padding: 20px;
+    text-align: center;
+    color: #666;
+  }
+  .sap-search input {
+    width: 100%;        /* Se extiende al 100% del contenedor .sap-search */
+    padding: 8px 40px 8px 12px; /* Ajusta los paddings para iconos */
+    font-size: 14px;
+    box-sizing: border-box;
+  }
+  

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import api from '../services/api';
+import superadminApi from '../services/superadminApi';
+import '../styles/SuperAdminLogin.css';
 
 export default function SuperAdminLogin() {
   const [email, setEmail] = useState('');
@@ -12,7 +13,7 @@ export default function SuperAdminLogin() {
     e.preventDefault();
     setError('');
     try {
-      const { data } = await api.post('/login', { email, password });
+      const { data } = await superadminApi.post('/login', { email, password });
       //Guardar token de jwt
       localStorage.setItem('token', data.token);
       localStorage.setItem('token_exp', Date.now() + data.expiresIn * 1000);
@@ -20,12 +21,13 @@ export default function SuperAdminLogin() {
       navigate('/superadmin');
     } catch (err) {
       setError(err.response?.data?.msg || 'Error en el servidor');
+      console.log(e)
     }
   };
 
   return (
     <div style={{ padding: 20 }}>
-      <h1>Login SuperAdmin</h1>
+      <h1>Bienvenido nuevamente Administrador</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit}>
         <div>
@@ -33,6 +35,7 @@ export default function SuperAdminLogin() {
           <input
             type="email"
             value={email}
+            placeholder='email'
             onChange={e => setEmail(e.target.value)}
             required
           />
@@ -42,11 +45,13 @@ export default function SuperAdminLogin() {
           <input
             type="password"
             value={password}
+            placeholder='contraseña'
             onChange={e => setPassword(e.target.value)}
             required
           />
         </div>
-        <button type="submit">Iniciar Sesión</button>
+        <br />
+        <button type="submit" className='button'>Iniciar Sesión</button>
       </form>
     </div>
   );

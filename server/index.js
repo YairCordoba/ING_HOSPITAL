@@ -37,16 +37,16 @@ async function startServer() {
   //Rutas 
   app.use('/api', apiRoutes);
 
-  /*
+  
   //Consultas de ejemplo: [NO BORRAR SE USA PARA REALIZAR PRUEBAS]
   
   try {
-    const [results] = await db.query('SELECT * FROM admins');
+    const [results] = await db.query('SELECT * FROM users');
     console.log('Ejemplo de consulta: ', results);
   } catch (err) {
     console.error('❌ Error en la consulta:', err.message);
   }
-*/
+
 
   //Prender el servidor :)
   const PORT = process.env.PORT || 5000;

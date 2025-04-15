@@ -1,11 +1,10 @@
 import { Router } from 'express';
-// import { ... } from '../controllers/usersController.js';
-// import auth from '../middlewares/auth.js';
+import { getAllUsers } from '../controllers/usersController.js';
+import auth from '../middlewares/auth.js';
 
 const router = Router();
 
-// Ejemplo de rutas vacías para usuarios normales
-// router.post('/login', userLogin);
-// router.get('/profile', auth, getProfile);
+// Protegido por auth: solo admins pueden ver usuarios
+router.get('/', auth, getAllUsers);
 
 export default router;

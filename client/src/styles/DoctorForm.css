@@ -1,0 +1,29 @@
+.df-form {
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+  .df-row {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  .df-row label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .df-row input {
+    padding: 8px;
+    font-size: 14px;
+  }
+  .df-row small {
+    color: red;
+    margin-top: 4px;
+  }
+  .df-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  

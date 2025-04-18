@@ -41,7 +41,7 @@ async function startServer() {
   //Consultas de ejemplo: [NO BORRAR SE USA PARA REALIZAR PRUEBAS]
   
   try {
-    const [results] = await db.query('SELECT * FROM users');
+    const [results] = await db.query('SELECT * FROM doctors');
     console.log('Ejemplo de consulta: ', results);
   } catch (err) {
     console.error('❌ Error en la consulta:', err.message);

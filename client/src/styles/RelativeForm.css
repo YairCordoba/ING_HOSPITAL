@@ -1,0 +1,30 @@
+.rf-form {
+    background: #fff;
+    padding: 20px;
+    max-width: 500px;
+    margin: 0 auto;
+    border-radius: 4px;
+  }
+  .rf-row {
+    margin-bottom: 12px;
+    display: flex;
+    flex-direction: column;
+  }
+  .rf-row label {
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
+  .rf-row input,
+  .rf-row select {
+    padding: 8px;
+    font-size: 14px;
+  }
+  .rf-row small {
+    color: red;
+    margin-top: 4px;
+  }
+  .rf-form button {
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  

@@ -49,7 +49,7 @@ async function startServer() {
 
 
   //Prender el servidor :)
-  const PORT = process.env.PORT || 5000;
+  const PORT = 8888;
   app.listen(PORT, () => {
     console.log(`🚀 Backend en puerto ${PORT}`);
   });
@@ -59,3 +59,6 @@ startServer();
 
 //Exportamos la variable db para usarla en otros archivos
 export { db };
+
+
+

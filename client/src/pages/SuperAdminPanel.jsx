@@ -79,7 +79,7 @@ export default function SuperAdminPanel() {
         <ul>
           <li onClick={handleVer}>
             <img src="/VER.png" alt="Ver" />
-            <span>Ver</span>
+            <span>Inicio</span>
           </li>
           <li onClick={() => navigate("/superadmin/createnew")}>
             <img src="/crear.png" alt="Crear" />

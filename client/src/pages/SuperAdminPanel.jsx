@@ -4,15 +4,46 @@ import { useNavigate } from "react-router-dom";
 import usersApi from "../services/usersApi";
 import "../styles/SuperAdminPanel.css";
 import "../styles/ViewUsers.css";
+import superadminApi from "../services/superadminApi";
 
 
 export default function SuperAdminPanel() {
+  // **Hooks de React**
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  // **Estados para la busqueda y filtrado**
   const [searchTerm, setSearchTerm] = useState("");
   const [showFilter, setShowFilter] = useState(false);
   const [filterRole, setFilterRole] = useState("");
+  // **Estados para copia de seguridad**
+  const [loadingBackup, setLoadingBackup] = useState(false);
+  const [backupError, setBackupError] = useState("");
+
+  const handleBackup = async () => {
+    setBackupError('');
+    setLoadingBackup(true);
+    try {
+      const response = await superadminApi.get('/backup', {
+        responseType: 'blob'
+      });
+
+      //Crear un blob y forzar descarga ()
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'backup.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      setBackupError('Hubo un problema generando la copia de seguridad.');
+    } finally {
+      setLoadingBackup(false);
+    }
+  };
 
   const roleMap = {
     Patient: "Paciente",
@@ -85,18 +116,16 @@ export default function SuperAdminPanel() {
             <img src="/crear.png" alt="Crear" />
             <span>Crear</span>
           </li>
-          <li>
-            <img src="/boton-editar.png" alt="Editar" />
-            <span>Editar</span>
-          </li>
+          
           <li>
             <img src="/eliminar.png" alt="Eliminar" />
             <span>Eliminar</span>
           </li>
           <li>
-            <img src="/copias-de-seguridad.png" alt="Copia de seguridad" />
+            <img src="/copias-de-seguridad.png" alt="Copia de seguridad" onClick={handleBackup} style={{ opacity: loadingBackup ? 0.5 : 1 }} />
             <span>Copia de seguridad</span>
           </li>
+
           <li onClick={handleLogout}>
             <img src="/cerrar-sesion.png" alt="Cerrar sesión" />
             <span>Cerrar sesión</span>
@@ -198,6 +227,19 @@ export default function SuperAdminPanel() {
           )}
         </section>
       </main>
+        {/*  Overlay de carga para la copia de seguridad */}
+        {loadingBackup && (
+        <div className="sap-loading-overlay">
+          <img src="/loading.gif" alt="Generando copia..." />
+        </div>
+      )}
+
+      {/* Mensaje de error */}
+      {backupError && (
+        <div className="sap-error">
+          {backupError}
+        </div>
+      )}
     </div>
   );
 }

@@ -7,6 +7,8 @@ import validator from 'validator';
 
 export async function Login(req, res) {
   try {
+    
+    
     const { email, password } = req.body;
 
     //Validar email

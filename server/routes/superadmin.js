@@ -1,12 +1,15 @@
 import { Router } from 'express';
 import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative } from '../controllers/superadminController.js';
 import auth from '../middlewares/auth.js';
+import { backupDatabase } from '../controllers/backupController.js';
 
 const router = Router();
 
 //Gets
 router.get('/doctors', auth, listDoctors);
 router.get('/patients/without-relative', auth, listPatientsWithoutRelative);
+router.get('/backup', auth, backupDatabase);
+
 
 //Post
 router.post('/patients', auth, createPatient);

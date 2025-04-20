@@ -219,3 +219,135 @@ export async function listPatientsWithoutRelative(req, res) {
     res.status(500).json({ msg: 'Error interno al obtener pacientes' });
   }
 }
+
+export async function getDoctorDetails(req, res) {
+  const id = req.params.id;
+  try {
+    //Datos del doctor
+    const [doctors] = await db.query(
+      `SELECT id_doctor AS id, id_card, name, email, specialization, phone
+       FROM doctors WHERE id_doctor = ?`,
+      [id]
+    );
+    if (!doctors.length) return res.status(404).json({ msg: 'Doctor no encontrado' });
+    const doctor = doctors[0];
+
+    //Pacientes a cargo
+    const [patients] = await db.query(
+      `SELECT p.id_patient AS id, p.name, p.id_card
+       FROM patients p
+       WHERE p.id_doctor = ?`,
+      [id]
+    );
+
+    res.json({ doctor, patients });
+  } catch (err) {
+    console.error('Error en getDoctorDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles' });
+  }
+}
+
+export async function getPatientDetails(req, res) {
+  const id = req.params.id;  
+  try {
+    //Datos principales del paciente
+    const [[patient]] = await db.query(
+      `SELECT p.id_patient AS id, p.id_card, p.name, p.email,
+              p.blood_type, p.birth_date, p.occupation,
+              p.marital_status, p.address, p.phone, p.id_doctor
+       FROM patients p
+       WHERE p.id_patient = ?`,
+      [id]
+    );
+    if (!patient) return res.status(404).json({ msg: 'Paciente no encontrado' });
+
+    //Familiares (puede ser 0 o varios)
+    const [relatives] = await db.query(
+      `SELECT id_relative AS id, name, id_card
+       FROM relatives
+       WHERE id_patient = ?`,
+      [id]
+    );
+
+    //Doctor a cargo
+    const [[doctor]] = await db.query(
+      `SELECT id_doctor AS id, name, specialization, phone, id_card
+       FROM doctors
+       WHERE id_doctor = ?`,
+      [patient.id_doctor]
+    );
+
+    //ultimos signos vitales (puedes ajustar ORDER BY/limit si quieres sólo el último)
+    const [vitals] = await db.query(
+      `SELECT id_vital AS id,
+              measurement_date, measurement_time,
+              heart_rate, temperature, blood_pressure,
+              respiratory_rate, weight, observations
+       FROM vital_signs
+       WHERE id_patient = ?
+       ORDER BY measurement_date DESC, measurement_time DESC`,
+      [id]
+    );
+
+    //Citas del paciente
+    const [appointments] = await db.query(
+      `SELECT id_appointment AS id,
+              appointment_date, appointment_time, status
+       FROM appointments
+       WHERE id_patient = ?`,
+      [id]
+    );
+
+    res.json({ patient, relatives, doctor, vitals, appointments });
+  } catch (err) {
+    console.error('Error en getPatientDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles' });
+  }
+}
+
+export async function getRelativeDetails(req, res) {
+  const id = req.params.id;
+  try {
+    const [relatives] = await db.query(
+      `SELECT id_relative AS id, id_card, name, email, phone, address, id_patient
+       FROM relatives WHERE id_relative = ?`,
+      [id]
+    );
+
+    if (!relatives.length) return res.status(404).json({ msg: 'Familiar no encontrado' });
+
+    const relative = relatives[0];
+
+    //Obtener el paciente asignado
+    let patient = null;
+    if (relative.id_patient) {
+      const [patients] = await db.query(
+        `SELECT id_patient AS id, name, id_card FROM patients WHERE id_patient = ?`,
+        [relative.id_patient]
+      );
+      patient = patients[0] || null;
+    }
+
+    res.json({ relative, patient });
+  } catch (err) {
+    console.error('Error en getRelativeDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles' });
+  }
+}
+
+export async function getAdminDetails(req, res) {
+  const id = req.params.id;
+  try {
+    const [admins] = await db.query(
+      `SELECT id_admin AS id, name, email, id_card FROM admins WHERE id_admin = ?`,
+      [id]
+    );
+
+    if (!admins.length) return res.status(404).json({ msg: 'Administrador no encontrado' });
+
+    res.json({ admin: admins[0] });
+  } catch (err) {
+    console.error('Error en getAdminDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles del administrador' });
+  }
+}

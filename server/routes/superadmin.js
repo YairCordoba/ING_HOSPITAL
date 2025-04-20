@@ -1,5 +1,6 @@
+//server/routes/superadmin.js
 import { Router } from 'express';
-import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative } from '../controllers/superadminController.js';
+import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative, getDoctorDetails, getPatientDetails, getRelativeDetails, getAdminDetails } from '../controllers/superadminController.js';
 import auth from '../middlewares/auth.js';
 import { backupDatabase } from '../controllers/backupController.js';
 
@@ -9,6 +10,10 @@ const router = Router();
 router.get('/doctors', auth, listDoctors);
 router.get('/patients/without-relative', auth, listPatientsWithoutRelative);
 router.get('/backup', auth, backupDatabase);
+router.get('/doctors/:id', auth, getDoctorDetails);
+router.get('/patients/:id', auth, getPatientDetails);
+router.get('/relatives/:id', auth, getRelativeDetails);
+router.get('/admins/:id', auth, getAdminDetails); 
 
 
 //Post

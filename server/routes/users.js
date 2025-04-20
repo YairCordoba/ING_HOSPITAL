@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getAllUsers, checkCedulaExists, checkEmailExists } from '../controllers/usersController.js';
+import { getAllUsers, checkCedulaExists, checkEmailExists } from '../controllers/UsersController.js';
 import auth from '../middlewares/auth.js';
 
 const router = Router();

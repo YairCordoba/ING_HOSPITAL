@@ -2,6 +2,7 @@ import axios from 'axios';
 
 const superadminApi = axios.create({
   baseURL: 'http://localhost:8888/api/superadmin',
+  headers: { 'Content-Type': 'application/json' }
 });
 
 superadminApi.interceptors.request.use(config => {

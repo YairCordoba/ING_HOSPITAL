@@ -1,7 +1,8 @@
+// client/src/components/DoctorForm.jsx
 import React, { useState } from 'react';
 import validator from 'validator';
-import usersApi from '../services/usersApi';      //Para chequear email/cédula y crear usuario
-import superadminApi from '../services/superadminApi'; //crear doctor
+import usersApi from '../services/usersApi';
+import superadminApi from '../services/superadminApi';
 import bcrypt from 'bcryptjs';
 import '../styles/DoctorForm.css';
 
@@ -17,10 +18,44 @@ export default function DoctorForm() {
   });
   const [errors, setErrors] = useState({});
 
+  //Lista de especialidades
+  const specialties = [
+    'Anestesiología',
+    'Cardiología',
+    'Dermatología',
+    'Endocrinología',
+    'Ginecología',
+    'Geriatría',
+    'Infectología',
+    'Medicina Familiar',
+    'Medicina General',
+    'Medicina Interna',
+    'Neumología',
+    'Neurología',
+    'Odontología',
+    'Oftalmología',
+    'Oncología',
+    'Otorrinolaringología',
+    'Psiquiatría',
+    'Traumatología',
+    'Urología'
+  ];
+
   const handleChange = e => {
     const { name, value } = e.target;
-    //Solo números para cedula y celuco
-    if ((name === 'id_card' || name === 'phone') && /\D/.test(value)) return;
+
+    // Sólo dígitos para cédula y teléfono
+    if ((name === 'id_card' || name === 'phone') && /\D/.test(value)) {
+      return;
+    }
+    // Máximo de caracteres
+    if (name === 'id_card' && value.length > 20) return;
+    if (name === 'phone'   && value.length > 15) return;
+    if (name === 'email' && value.length > 60) return;
+    if (name === 'name' && value.length > 70) return;
+    if (name === 'password' && value.length > 20) return;
+    if (name === 'confirm' && value.length > 20) return;
+
     setForm(f => ({ ...f, [name]: value }));
   };
 
@@ -29,14 +64,16 @@ export default function DoctorForm() {
     const { id_card, name, email, password, confirm, specialization, phone } = form;
 
     if (!id_card || id_card.length < 7) errs.id_card = 'Cédula mínimo 7 dígitos';
-    if (!name) errs.name = 'Nombre requerido';
+    if (id_card.length > 20)   errs.id_card = 'Cédula máximo 20 dígitos';
+    if (!name)                  errs.name    = 'Nombre requerido';
     if (!email || !validator.isEmail(email)) errs.email = 'Email inválido';
-    if (!password || password.length < 5) errs.password = 'Mínimo 5 caracteres';
-    if (confirm !== password) errs.confirm = 'No coincide con la contraseña';
-    if (!specialization) errs.specialization = 'Especialidad requerida';
-    if (!phone || phone.length < 7) errs.phone = 'Teléfono mínimo 7 dígitos';
+    if (!password || password.length < 5)    errs.password = 'Mínimo 5 caracteres';
+    if (confirm !== password)               errs.confirm  = 'No coincide con la contraseña';
+    if (!specialization)                    errs.specialization = 'Especialidad requerida';
+    if (!phone || phone.length < 7)         errs.phone    = 'Teléfono mínimo 7 dígitos';
+    if (phone.length > 15)                  errs.phone    = 'Teléfono máximo 15 dígitos';
 
-    //Validar email unico
+    // Validar unicidad
     if (email && validator.isEmail(email)) {
       const { data } = await usersApi.get(`/check-email?email=${email}`);
       if (data.exists) errs.email = 'Email ya registrado';
@@ -54,22 +91,18 @@ export default function DoctorForm() {
     e.preventDefault();
     if (!(await validate())) return;
 
-    //Hashshear la contraseña
     const hashed = await bcrypt.hash(form.password, 10);
 
-    //Enviar añ backend
     try {
       await superadminApi.post('/doctors', {
-        id_card: form.id_card,
-        name: form.name,
-        email: form.email,
-        password: hashed,
+        id_card:      form.id_card,
+        name:         form.name,
+        email:        form.email,
+        password:     hashed,
         specialization: form.specialization,
-        phone: form.phone
+        phone:        form.phone
       });
-      //
       alert('Doctor creado correctamente ✅');
-      //Limpiar el formulario:
       setForm({
         id_card: '',
         name: '',
@@ -79,6 +112,7 @@ export default function DoctorForm() {
         specialization: '',
         phone: ''
       });
+      setErrors({});
     } catch (err) {
       console.error('Error creando doctor:', err);
       alert(err.response?.data?.msg || 'Error al crear doctor');
@@ -89,37 +123,74 @@ export default function DoctorForm() {
     <form className="df-form" onSubmit={handleSubmit}>
       <div className="df-row">
         <label>Cédula:</label>
-        <input name="id_card" value={form.id_card} onChange={handleChange} />
+        <input
+          name="id_card"
+          value={form.id_card}
+          onChange={handleChange}
+          maxLength={20}
+        />
         {errors.id_card && <small>{errors.id_card}</small>}
       </div>
       <div className="df-row">
         <label>Nombre:</label>
-        <input name="name" value={form.name} onChange={handleChange} />
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+        />
         {errors.name && <small>{errors.name}</small>}
       </div>
       <div className="df-row">
         <label>Email:</label>
-        <input name="email" value={form.email} onChange={handleChange} />
+        <input
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+        />
         {errors.email && <small>{errors.email}</small>}
       </div>
       <div className="df-row">
         <label>Contraseña:</label>
-        <input type="password" name="password" value={form.password} onChange={handleChange} />
+        <input
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+        />
         {errors.password && <small>{errors.password}</small>}
       </div>
       <div className="df-row">
         <label>Repetir Contraseña:</label>
-        <input type="password" name="confirm" value={form.confirm} onChange={handleChange} />
+        <input
+          type="password"
+          name="confirm"
+          value={form.confirm}
+          onChange={handleChange}
+        />
         {errors.confirm && <small>{errors.confirm}</small>}
       </div>
       <div className="df-row">
         <label>Especialidad:</label>
-        <input name="specialization" value={form.specialization} onChange={handleChange} />
+        <select
+          name="specialization"
+          value={form.specialization}
+          onChange={handleChange}
+        >
+          <option value="">-- Selecciona --</option>
+          {specialties.map(spec => (
+            <option key={spec} value={spec}>{spec}</option>
+          ))}
+        </select>
         {errors.specialization && <small>{errors.specialization}</small>}
       </div>
       <div className="df-row">
         <label>Teléfono:</label>
-        <input name="phone" value={form.phone} onChange={handleChange} />
+        <input
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          maxLength={15}
+        />
         {errors.phone && <small>{errors.phone}</small>}
       </div>
       <button type="submit">Crear Doctor</button>

@@ -49,6 +49,16 @@ export default function RelativeForm() {
     const { name, value } = e.target;
     //Solo números en id_card y phone
     if ((name === 'id_card' || name === 'phone') && /\D/.test(value)) return;
+    //Validar longitud de caracteres
+    if (name === 'id_card' && value.length > 20) return;
+    if (name === 'phone' && value.length > 15) return;
+    if (name === 'email' && value.length > 60) return;
+    if (name === 'name' && value.length > 70) return;
+    if (name === 'password' && value.length > 20) return;
+    if (name === 'confirm' && value.length > 20) return;
+    if (name === 'address' && value.length > 100) return;
+    if (name === 'occupation' && value.length > 50) return;
+    if (name === 'phone' && value.length > 15) return;
     setForm(f => ({ ...f, [name]: value }));
   };
 

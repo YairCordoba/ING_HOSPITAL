@@ -59,6 +59,3 @@ startServer();
 
 //Exportamos la variable db para usarla en otros archivos
 export { db };
-
-
-

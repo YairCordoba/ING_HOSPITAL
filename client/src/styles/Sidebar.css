@@ -1,0 +1,63 @@
+/* Sidenav container */
+.sidenav {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  left: 0;
+  background-color: #f0f0f0;
+  overflow-x: hidden;
+  padding-top: 60px;
+  transition: width 0.3s ease;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+}
+
+/* Cuando esté abierto */
+.sidenav-open {
+  width: 200px; /* el ancho que quieras */
+}
+
+/* Los enlaces dentro */
+.sidenav a {
+  padding: 10px 20px;
+  text-decoration: none;
+  font-size: 16px;
+  color: #333;
+  display: flex;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.sidenav a img {
+  width: 24px;
+  height: 24px;
+  margin-right: 10px;
+}
+
+.sidenav a:hover {
+  background-color: #ddd;
+}
+
+/* Botón de cerrar */
+.sidenav .closebtn {
+  position: absolute;
+  top: 8px;
+  right: 12px;
+  font-size: 24px;
+  text-decoration: none;
+  color: #333;
+}
+
+/* Botón “hamburger” para abrir */
+.open-nav-btn {
+  font-size: 24px;
+  cursor: pointer;
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 1100;
+  background: rgba(255,255,255,0.8);
+  padding: 4px 8px;
+  border-radius: 4px;
+}

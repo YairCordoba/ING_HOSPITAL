@@ -1,68 +1,86 @@
 // client/src/pages/SuperAdminPanel.jsx
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import usersApi from "../services/usersApi";
-import "../styles/SuperAdminPanel.css";
-import "../styles/ViewUsers.css";
-
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import usersApi from '../services/usersApi';
+import superadminApi from '../services/superadminApi';
+import Sidebar from '../components/Sidebar';
+import '../styles/SuperAdminPanel.css';
+import '../styles/ViewUsers.css';
 
 export default function SuperAdminPanel() {
   const navigate = useNavigate();
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [searchTerm, setSearchTerm] = useState('');
   const [showFilter, setShowFilter] = useState(false);
-  const [filterRole, setFilterRole] = useState("");
+  const [filterRole, setFilterRole] = useState('');
+  const [loadingBackup, setLoadingBackup] = useState(false);
+  const [backupError, setBackupError] = useState('');
 
   const roleMap = {
-    Patient: "Paciente",
-    Doctor: "Doctor",
-    Admin: "Administrador",
-    Relative: "Familiar",
+    Patient: 'Paciente',
+    Doctor: 'Doctor',
+    Admin: 'Administrador',
+    Relative: 'Familiar'
   };
 
   const fetchUsers = async () => {
     setLoading(true);
     try {
-      const { data } = await usersApi.get("/");
+      const { data } = await usersApi.get('/');
       setUsers(data);
     } catch (err) {
-      console.error("Error al traer usuarios:", err);
+      console.error('Error al traer usuarios:', err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    const exp = parseInt(localStorage.getItem("token_exp"), 10);
+    const token = localStorage.getItem('token');
+    const exp   = parseInt(localStorage.getItem('token_exp'), 10);
     if (!token || Date.now() > exp) {
       localStorage.clear();
-      navigate("/superadmin/login");
+      navigate('/superadmin/login');
       return;
     }
     fetchUsers();
   }, [navigate]);
 
+  const handleVer    = () => fetchUsers();
+  const handleCrear  = () => navigate('/superadmin/createnew');
   const handleLogout = () => {
     localStorage.clear();
-    navigate("/superadmin/login");
+    navigate('/superadmin/login');
   };
 
-  const handleVer = () => {
-    fetchUsers();
+  // **Mueve la lógica de backup aquí, para usar el estado local**
+  const handleBackup = async () => {
+    setBackupError('');
+    setLoadingBackup(true);
+    try {
+      const response = await superadminApi.get('/backup', { responseType: 'blob' });
+      const url      = window.URL.createObjectURL(new Blob([response.data]));
+      const link     = document.createElement('a');
+      link.href      = url;
+      link.setAttribute('download', 'backup.xlsx');
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
+    } catch (err) {
+      console.error(err);
+      setBackupError('Hubo un problema generando la copia de seguridad.');
+    } finally {
+      setLoadingBackup(false);
+    }
   };
 
   const toggleFilter = () => setShowFilter(!showFilter);
 
-  //Busqueda y filtrado:
   const displayedUsers = users
-    .filter((u) => {
-      
-      if (filterRole && u.role !== filterRole) return false;
-      return true;
-    })
-    .filter((u) => {
+    .filter(u => filterRole ? u.role === filterRole : true)
+    .filter(u => {
       if (!searchTerm) return true;
       const term = searchTerm.toLowerCase();
       return (
@@ -75,35 +93,13 @@ export default function SuperAdminPanel() {
 
   return (
     <div className="sap-container">
-      <aside className="sap-sidebar">
-        <ul>
-          <li onClick={handleVer}>
-            <img src="/VER.png" alt="Ver" />
-            <span>Inicio</span>
-          </li>
-          <li onClick={() => navigate("/superadmin/createnew")}>
-            <img src="/crear.png" alt="Crear" />
-            <span>Crear</span>
-          </li>
-          <li>
-            <img src="/boton-editar.png" alt="Editar" />
-            <span>Editar</span>
-          </li>
-          <li>
-            <img src="/eliminar.png" alt="Eliminar" />
-            <span>Eliminar</span>
-          </li>
-          <li>
-            <img src="/copias-de-seguridad.png" alt="Copia de seguridad" />
-            <span>Copia de seguridad</span>
-          </li>
-          <li onClick={handleLogout}>
-            <img src="/cerrar-sesion.png" alt="Cerrar sesión" />
-            <span>Cerrar sesión</span>
-          </li>
-        </ul>
-      </aside>
-
+      {/** Aquí pasamos todas las acciones al Sidebar */}
+      <Sidebar
+        onVer={handleVer}
+        onCrear={handleCrear}
+        onBackup={handleBackup}
+        onLogout={handleLogout}
+      />
       <main className="sap-main">
         <header className="sap-header">
           <div className="sap-search">
@@ -111,93 +107,87 @@ export default function SuperAdminPanel() {
               type="text"
               placeholder="Buscar por nombre, ID, cédula o email..."
               value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              onChange={e => setSearchTerm(e.target.value)}
             />
-            <img src="/lupa.png" alt="Buscar" className="sap-icon" />
+            <img src="/lupa.png" alt="Buscar" className="sap-icon lupa" />
             <img
               src="/filtrar.png"
               alt="Filtros"
-              className="sap-icon"
+              className="sap-icon filtro"
               onClick={toggleFilter}
             />
           </div>
           {showFilter && (
             <div className="sap-filter-dropdown">
               <p>Filtrar por rol:</p>
-              <div>
+              <label>
                 <input
                   type="radio"
-                  id="none"
                   name="filterRole"
-                  value=""
-                  checked={filterRole === ""}
-                  onChange={() => setFilterRole("")}
-                />
-                <label htmlFor="none">Ninguno</label>
-              </div>
+                  checked={!filterRole}
+                  onChange={() => setFilterRole('')}
+                /> Ninguno
+              </label>
               {Object.entries(roleMap).map(([key, label]) => (
-                <div key={key}>
+                <label key={key}>
                   <input
                     type="radio"
-                    id={key}
                     name="filterRole"
                     value={key}
                     checked={filterRole === key}
-                    onChange={(e) => setFilterRole(e.target.value)}
-                  />
-                  <label htmlFor={key}>{label}</label>
-                </div>
+                    onChange={() => setFilterRole(key)}
+                  /> {label}
+                </label>
               ))}
               <button onClick={() => setShowFilter(false)}>Aplicar</button>
             </div>
           )}
         </header>
-
         <section className="sap-table-section">
-          {loading ? (
-            <p>Cargando usuarios...</p>
-          ) : displayedUsers.length === 0 ? (
-            <p>Aún no hay registros en la Base de Datos</p>
-          ) : (
-            <div className="vu-container">
-              {displayedUsers.map((u) => (
-                <div className="flip-box" key={u.id_user}>
-                  <div className="flip-box-inner">
-                    <div className="flip-box-front">
-                      <img
-                        src="/cuenta.png"
-                        alt="Cuenta"
-                        className="vu-avatar"
-                      />
-                      <h3>{u.name}</h3>
-                      <p>Rol: {roleMap[u.role]}</p>
-                      <p>ID: {u.id_user}</p>
-                    </div>
-                    <div className="flip-box-back">
-                      <div className="vu-back-buttons">
-                        <img
-                          src="/boton-editar.png"
-                          alt="Editar"
-                          title="Editar"
-                        />
-                        <img
-                          src="/VER.png"
-                          alt="Más detalles"
-                          title="Más detalles"
-                        />
+          {loading
+            ? <p>Cargando usuarios...</p>
+            : displayedUsers.length === 0
+              ? <p>Aún no hay registros en la Base de Datos</p>
+              : (
+                <div className="vu-container">
+                  {displayedUsers.map(u => (
+                    <div className="flip-box" key={u.id_user}>
+                      <div className="flip-box-inner">
+                        <div className="flip-box-front">
+                          <img src="/cuenta.png" alt="Cuenta" className="vu-avatar" />
+                          <h3 className="vu-name" title={u.name}>{u.name}</h3>
+                          <p className="vu-role">Rol: {roleMap[u.role]}</p>
+                          <p className="vu-id">ID: {u.id_user}</p>
+                        </div>
+                        <div className="flip-box-back">
+                          <div className="vu-back-buttons">
+                            <img src="/eliminar.png" alt="Eliminar" title="Eliminar" />
+                            <img src="/boton-editar.png" alt="Editar" title="Editar" />
+                            <img src="/VER.png" alt="Más detalles" title="Más detalles" />
+                          </div>
+                          <h3 className="vu-name-back" title={u.name}>{u.name}</h3>
+                          <p className="vu-card">Identificación: {u.id_card}</p>
+                          <p className="vu-email">Email: {u.email}</p>
+                          <p className="vu-pass">Contraseña: {'*'.repeat(8)}</p>
+                        </div>
                       </div>
-                      <h3>{u.name}</h3>
-                      <p>Identificación: {u.id_card}</p>
-                      <p>Email: {u.email}</p>
-                      <p>Contraseña: {"*".repeat(8)}</p>
                     </div>
-                  </div>
+                  ))}
                 </div>
-              ))}
-            </div>
-          )}
+              )
+          }
         </section>
       </main>
+      {/** Overlay de carga */}
+      {loadingBackup && (
+        <div className="sap-loading-overlay">
+          <img src="/loading.gif" alt="Generando copia..." />
+        </div>
+      )}
+      {/** Mensaje de error */}
+      {backupError && (
+        <div className="sap-error">{backupError}</div>
+      )}
     </div>
   );
 }

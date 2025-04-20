@@ -1,13 +1,44 @@
 // client/src/components/DoctorForm.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import validator from 'validator';
 import usersApi from '../services/usersApi';
 import superadminApi from '../services/superadminApi';
 import bcrypt from 'bcryptjs';
 import '../styles/DoctorForm.css';
 
-export default function DoctorForm() {
+export default function DoctorForm({ idDoctor }) {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function fetchDoctor() {
+      if (idDoctor) {
+        try {
+          const { data } = await superadminApi.post('/doctor', {idDoctor: idDoctor});
+          if (data) {
+            setForm({
+              id_doctor:data.id_doctor,
+              id_card: data.id_card,
+              name: data.name,
+              email: data.email,
+              password: data.password,
+              confirm: data.password,
+              specialization: data.specialization,
+              phone: data.phone
+            });
+            setIsNew(false)
+            setOriginalEmail(data.email)
+          }
+        } catch (err) {
+          console.error('Error al traer doctores:', err);
+        }
+      }
+    }
+      fetchDoctor()
+  }, [idDoctor])
+
   const [form, setForm] = useState({
+    id_doctor: '',
     id_card: '',
     name: '',
     email: '',
@@ -17,6 +48,8 @@ export default function DoctorForm() {
     phone: ''
   });
   const [errors, setErrors] = useState({});
+  const [isNew, setIsNew] = React.useState(true); 
+  const [originalEmail, setOriginalEmail] = useState({});
 
   //Lista de especialidades
   const specialties = [
@@ -67,7 +100,7 @@ export default function DoctorForm() {
     if (id_card.length > 20)   errs.id_card = 'Cédula máximo 20 dígitos';
     if (!name)                  errs.name    = 'Nombre requerido';
     if (!email || !validator.isEmail(email)) errs.email = 'Email inválido';
-    if (!password || password.length < 5)    errs.password = 'Mínimo 5 caracteres';
+    if ((isNew && !password) || (password && password.length < 5))  errs.password = 'Mínimo 5 caracteres';
     if (confirm !== password)               errs.confirm  = 'No coincide con la contraseña';
     if (!specialization)                    errs.specialization = 'Especialidad requerida';
     if (!phone || phone.length < 7)         errs.phone    = 'Teléfono mínimo 7 dígitos';
@@ -75,10 +108,12 @@ export default function DoctorForm() {
 
     // Validar unicidad
     if (email && validator.isEmail(email)) {
-      const { data } = await usersApi.get(`/check-email?email=${email}`);
-      if (data.exists) errs.email = 'Email ya registrado';
+      if (isNew || originalEmail !== email) {
+        const { data } = await usersApi.get(`/check-email?email=${email}`);
+        if (data.exists) errs.email = 'Email ya registrado';
+      }
     }
-    if (id_card && id_card.length >= 6) {
+    if (isNew && id_card && id_card.length >= 6) {
       const { data } = await usersApi.get(`/check-cedula?id_card=${id_card}`);
       if (data.exists) errs.id_card = 'Cédula ya registrada';
     }
@@ -119,8 +154,39 @@ export default function DoctorForm() {
     }
   };
 
+  const handleEdit = async e => {
+    e.preventDefault();
+    if (!(await validate())) return;
+    
+    let hashed = form.password
+    //Si el usuario cambio la contraseña hay que Hashshearla
+    if (hashed) { 
+      hashed = await bcrypt.hash(form.password, 10);
+    }
+    
+    try {
+        await superadminApi.put('/doctor', {
+          id_doctor: form.id_doctor,
+          id_card: form.id_card,
+          name: form.name,
+          email: form.email,
+          password: hashed,
+          specialization: form.specialization,
+          phone: form.phone
+        });
+        //
+        alert('Doctor actualizado correctamente ✅');
+      
+        navigate('/superadmin')
+      } catch (err) {
+        console.error('Error actualizando doctor:', err);
+        alert(err.response?.data?.msg || 'Error al actualizar doctor');
+      }
+  };
+
+
   return (
-    <form className="df-form" onSubmit={handleSubmit}>
+    <form className="df-form" onSubmit={isNew ? handleSubmit : handleEdit}>
       <div className="df-row">
         <label>Cédula:</label>
         <input
@@ -128,6 +194,7 @@ export default function DoctorForm() {
           value={form.id_card}
           onChange={handleChange}
           maxLength={20}
+          readOnly={!isNew} 
         />
         {errors.id_card && <small>{errors.id_card}</small>}
       </div>
@@ -193,7 +260,8 @@ export default function DoctorForm() {
         />
         {errors.phone && <small>{errors.phone}</small>}
       </div>
-      <button type="submit">Crear Doctor</button>
+      <button type="submit">{isNew ? "Crear Doctor" : "Editar Doctor"}</button>
+      <button type="button"  onClick={() => navigate("/superadmin")}>Cancelar</button>
     </form>
   );
 }

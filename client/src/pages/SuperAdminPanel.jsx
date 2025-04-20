@@ -6,6 +6,7 @@ import superadminApi from '../services/superadminApi';
 import Sidebar from '../components/Sidebar';
 import '../styles/SuperAdminPanel.css';
 import '../styles/ViewUsers.css';
+import DeleteUserModal from './DeleteUserModal';
 
 export default function SuperAdminPanel() {
   const navigate = useNavigate();
@@ -16,6 +17,9 @@ export default function SuperAdminPanel() {
   const [filterRole, setFilterRole] = useState('');
   const [loadingBackup, setLoadingBackup] = useState(false);
   const [backupError, setBackupError] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [userSelected, setUserSelected] = useState("");
+  const [rolSelected, setRolSelected] = useState("");
 
   const roleMap = {
     Patient: 'Paciente',
@@ -76,6 +80,40 @@ export default function SuperAdminPanel() {
     }
   };
 
+  const handleEditUser = (id, roleId) => {
+    navigate(`/superadmin/editUser/${id}/${roleId}`);
+  };
+
+  const handleDeleteUser = () => {
+    if (rolSelected === "Doctor") {
+      deleteDoctor(userSelected)
+    }
+
+    setModalOpen(false);
+  };
+
+  const openDeleteModal = (id, roleId) => {
+    setUserSelected(id)
+    setRolSelected(roleId)
+    setModalOpen(true)
+  }
+  const deleteDoctor = async (idCard) => {
+    //Validar si el doctor tiene pacientes
+    const patients = await superadminApi.get(`/patients/doctor/`+idCard);
+    if (patients && patients.data && patients.data.length > 0) {
+      alert("❌ El doctor no se puede borrar porque tiene pacientes asignados")
+      return
+    }
+
+      try {
+        await superadminApi.delete(`/doctor/`+idCard);
+        alert('Doctor borrado correctamente ✅');
+        fetchUsers();
+      } catch(err) {
+        console.error('Error al borrar doctor:', err);
+      }
+  }
+  
   const toggleFilter = () => setShowFilter(!showFilter);
 
   const displayedUsers = users
@@ -161,8 +199,8 @@ export default function SuperAdminPanel() {
                         </div>
                         <div className="flip-box-back">
                           <div className="vu-back-buttons">
-                            <img src="/eliminar.png" alt="Eliminar" title="Eliminar" />
-                            <img src="/boton-editar.png" alt="Editar" title="Editar" />
+                            <img src="/eliminar.png" alt="Eliminar" title="Eliminar" onClick={() => openDeleteModal(u.id_card, roleMap[u.role])}/>
+                            <img src="/boton-editar.png" alt="Editar" title="Editar" onClick={() => handleEditUser(u.id_card, roleMap[u.role])} />
                             <img src="/VER.png" alt="Más detalles" title="Más detalles" />
                           </div>
                           <h3 className="vu-name-back" title={u.name}>{u.name}</h3>
@@ -177,6 +215,14 @@ export default function SuperAdminPanel() {
               )
           }
         </section>
+        <DeleteUserModal
+                    isOpen={modalOpen}
+                    title="Eliminacion de usuario"
+                    message="Esta seguro de eliminar el usuario?"
+                    onConfirm={() => handleDeleteUser()}
+                    onCancel={() => setModalOpen(false)}
+                    onClose={() => setModalOpen(false)}
+                  />
       </main>
       {/** Overlay de carga */}
       {loadingBackup && (

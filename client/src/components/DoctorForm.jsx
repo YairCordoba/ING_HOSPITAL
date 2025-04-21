@@ -22,8 +22,8 @@ export default function DoctorForm({ idDoctor }) {
               id_card: data.doctor.id_card,
               name: data.doctor.name,
               email: data.doctor.email,
-              password: data.doctor.password,
-              confirm: data.doctor.password,
+              password:'',
+              confirm:'',
               specialization: data.doctor.specialization,
               phone: data.doctor.phone
             });

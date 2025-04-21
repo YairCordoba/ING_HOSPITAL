@@ -42,8 +42,8 @@ export default function RelativeForm({idRelative}) {
               id_card: data.relative.id_card,
               name: data.relative.name,
               email: data.relative.email,
-              password: data.relative.password,
-              confirm: data.relative.password,
+              password:'',
+              confirm:'',
               id_patient: data.relative.id_patient,
               address: data.relative.address,
               phone: data.relative.phone

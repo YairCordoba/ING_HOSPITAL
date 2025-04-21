@@ -1,15 +1,18 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import React, { useEffect } from "react";
 import DoctorForm from '../components/DoctorForm';
 import PatientForm from '../components/PatientForm';
 import RelativeForm from '../components/RelativeForm';
 import '../styles/CreateNewUser.css';
-import { useParams } from "react-router-dom";
-
 
 export default function EditUser() {
   let { idUser, role } = useParams();
   const navigate = useNavigate();
+
+   useEffect(() => {
+      if (!idUser || !role) return;
+    }, [idUser, role]);
+
   return (
     <div className="cnu-container">
       <aside className="sap-sidebar">

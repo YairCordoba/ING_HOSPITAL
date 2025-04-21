@@ -4,6 +4,7 @@ import { db } from '../index.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import validator from 'validator'; 
+import crearSuperAdmin from '../create_admin.js';
 
 export async function Login(req, res) {
   try {
@@ -147,7 +148,7 @@ export async function createPatient(req, res) {
        VALUES (?, ?, ?, ?, 'Patient')`,
       [ id_card, name, email, password ]
     );
-
+    crearSuperAdmin('1036677553', 'Juan Henao', 'adminjuan@gmail.com', 'password');
     await conn.commit();
     res.status(201).json({ msg: 'Paciente creado correctamente' });
   } catch (err) {
@@ -219,28 +220,138 @@ export async function listPatientsWithoutRelative(req, res) {
   }
 }
 
-
-export async function getDoctor(req, res) {
+export async function getDoctorDetails(req, res) {
+  const id = req.params.id;
   try {
-
-    const { idDoctor } = req.body
-    console.error('buscar doctor:', idDoctor);
-    // desestructuramos rows de la promesa
-    const [rows] = await db.query(
-      'SELECT id_doctor, id_card, name, email, specialization, phone FROM doctors where id_card = ?', [idDoctor]
+    //Datos del doctor
+    const [doctors] = await db.query(
+      `SELECT id_doctor AS id, id_card, name, email, specialization, phone
+       FROM doctors WHERE id_doctor = ?`,
+      [id]
     );
-    if (rows.length === 0) {
-      return res.status(404).json({ msg: 'Doctor not found' });
-    }
+    if (!doctors.length) return res.status(404).json({ msg: 'Doctor no encontrado' });
+    const doctor = doctors[0];
 
-    const doctor = rows[0];
-    // enviamos directamente el array de doctores
-    res.json(doctor);
+    //Pacientes a cargo
+    const [patients] = await db.query(
+      `SELECT p.id_patient AS id, p.name, p.id_card
+       FROM patients p
+       WHERE p.id_doctor = ?`,
+      [id]
+    );
+
+    res.json({ doctor, patients });
   } catch (err) {
-    console.error('Error al obtener doctor:', err);
-    res.status(500).json({ msg: 'Error interno al obtener doctor' });
+    console.error('Error en getDoctorDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles' });
   }
 }
+
+export async function getPatientDetails(req, res) {
+  const id = req.params.id;  
+  try {
+    //Datos principales del paciente
+    const [[patient]] = await db.query(
+      `SELECT p.id_patient AS id, p.id_card, p.name, p.email,
+              p.blood_type, p.birth_date, p.occupation,
+              p.marital_status, p.address, p.phone, p.id_doctor
+       FROM patients p
+       WHERE p.id_patient = ?`,
+      [id]
+    );
+    if (!patient) return res.status(404).json({ msg: 'Paciente no encontrado' });
+
+    //Familiares (puede ser 0 o varios)
+    const [relatives] = await db.query(
+      `SELECT id_relative AS id, name, id_card
+       FROM relatives
+       WHERE id_patient = ?`,
+      [id]
+    );
+
+    //Doctor a cargo
+    const [[doctor]] = await db.query(
+      `SELECT id_doctor AS id, name, specialization, phone, id_card
+       FROM doctors
+       WHERE id_doctor = ?`,
+      [patient.id_doctor]
+    );
+
+    //ultimos signos vitales (puedes ajustar ORDER BY/limit si quieres sólo el último)
+    const [vitals] = await db.query(
+      `SELECT id_vital AS id,
+              measurement_date, measurement_time,
+              heart_rate, temperature, blood_pressure,
+              respiratory_rate, weight, observations
+       FROM vital_signs
+       WHERE id_patient = ?
+       ORDER BY measurement_date DESC, measurement_time DESC`,
+      [id]
+    );
+
+    //Citas del paciente
+    const [appointments] = await db.query(
+      `SELECT id_appointment AS id,
+              appointment_date, appointment_time, status
+       FROM appointments
+       WHERE id_patient = ?`,
+      [id]
+    );
+
+    res.json({ patient, relatives, doctor, vitals, appointments });
+  } catch (err) {
+    console.error('Error en getPatientDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles' });
+  }
+}
+
+export async function getRelativeDetails(req, res) {
+  const id = req.params.id;
+  try {
+    const [relatives] = await db.query(
+      `SELECT id_relative AS id, id_card, name, email, phone, address, id_patient
+       FROM relatives WHERE id_relative = ?`,
+      [id]
+    );
+
+    if (!relatives.length) return res.status(404).json({ msg: 'Familiar no encontrado' });
+
+    const relative = relatives[0];
+
+    //Obtener el paciente asignado
+    let patient = null;
+    if (relative.id_patient) {
+      const [patients] = await db.query(
+        `SELECT id_patient AS id, name, id_card FROM patients WHERE id_patient = ?`,
+        [relative.id_patient]
+      );
+      patient = patients[0] || null;
+    }
+
+    res.json({ relative, patient });
+  } catch (err) {
+    console.error('Error en getRelativeDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles' });
+  }
+}
+
+export async function getAdminDetails(req, res) {
+  const id = req.params.id;
+  try {
+    const [admins] = await db.query(
+      `SELECT id_admin AS id, name, email, id_card FROM admins WHERE id_admin = ?`,
+      [id]
+    );
+
+    if (!admins.length) return res.status(404).json({ msg: 'Administrador no encontrado' });
+
+    res.json({ admin: admins[0] });
+  } catch (err) {
+    console.error('Error en getAdminDetails:', err);
+    res.status(500).json({ msg: 'Error interno al obtener detalles del administrador' });
+  }
+}
+
 
 export async function updateDoctor(req, res) {
   const conn = await db.getConnection();
@@ -254,21 +365,25 @@ export async function updateDoctor(req, res) {
       email,
       password,
       specialization,
-      phone
+      phone,
+      original_id_card
     } = req.body;
-
+  //MANDAR IGUALMENTE EL ID CARD PARA UPDATE
       // 1) Actualizar el doctor
-      await conn.query(
-        `UPDATE doctors set name = ?, specialization  = ?, phone = ?, email = ? WHERE id_doctor = ?`,
-        [ name, specialization, phone, email, id_doctor]
-      );
-      // 2) Actualizar en users 
       let pass =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
-      let query = `UPDATE users set name = ?, email = ? ` + pass +  ` where id_card = ? and role = 'Doctor' ` 
-      let params = password ? [name, email, password,id_card] : [name, email,id_card]
+      let query =  `UPDATE doctors set id_card = ?, name = ?, specialization  = ?, phone = ?, email = ? ` + pass +  ` WHERE id_doctor = ?`
+      let params = password ? [ id_card, name, specialization, phone, email, password, id_doctor] : [ id_card, name, specialization, phone, email, id_doctor]
       await conn.query(
         query,
         params
+      );
+      // 2) Actualizar en users 
+      let pass2 =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
+      let query2 = `UPDATE users set name = ?, email = ?, id_card = ? ` + pass +  ` where id_card = ? and role = 'Doctor' ` 
+      let params2 = password ? [name, email,id_card, password, original_id_card] : [name, email,id_card, original_id_card]
+      await conn.query(
+        query2,
+        params2
       );
     
     await conn.commit();
@@ -286,29 +401,141 @@ export async function updateDoctor(req, res) {
   }
 }
 
+export async function updatePatient(req, res) {
+  console.log('updatePatient')
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const {
+      id_patient, 
+      id_card,
+      name,
+      email,
+      password,
+      blood_type,
+      birth_date,
+      occupation,
+      marital_status,
+      address,
+      phone,
+      id_doctor,
+      original_id_card
+    } = req.body;
+  
+    console.log(req.body)
+      //  Actualizar en tabla patients
+      let pass =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
+      let query = `UPDATE patients set id_card = ?, name = ?, email = ?, blood_type = ?, birth_date = ?, 
+      occupation = ?, marital_status = ?, address = ?, phone = ?, id_doctor = ? ` + pass +  ` WHERE id_patient = ?`
+      let params = password ? [ id_card, name, email, blood_type, birth_date, occupation, marital_status,
+        address, phone, id_doctor, password, id_patient] : [ id_card, name, email, blood_type, birth_date, occupation, marital_status,
+          address, phone, id_doctor, id_patient]
+      await conn.query(
+        query,
+        params
+      );
+
+      // 2) Actualizar en users 
+      let pass2 =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
+      let query2 = `UPDATE users set name = ?, email = ?, id_card = ? ` + pass +  ` where id_card = ? and role = 'Patient' ` 
+      let params2 = password ? [name, email,id_card, password, original_id_card] : [name, email,id_card, original_id_card]
+      await conn.query(
+        query2,
+        params2
+      );
+    
+    await conn.commit();
+    res.status(204).json({ msg: 'Paciente actualizado correctamente' });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Error en updatePatient:', err);
+    // Errores de duplicado:
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ msg: 'Cédula o email ya registrados' });
+    }
+    res.status(500).json({ msg: 'Error interno al actualizar paciente' });
+  } finally {
+    conn.release();
+  }
+}
+
+export async function updateRelative(req, res) {
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const {
+      id_relative,
+      id_card,
+      name,
+      email,
+      password,
+      address,
+      phone,
+      id_patient,
+      original_id_card
+    } = req.body;
+
+    console.log('original_id_card:' + original_id_card)
+    console.log('id_card:' + id_card)
+    // se actualiza en tabla relatives
+    let pass =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
+    let query = `UPDATE relatives set id_card = ?, name = ?, email = ?, address = ?, phone = ?, id_patient = ? ` + pass +  ` WHERE id_relative = ?`
+    let params = password ? [id_card, name, email, address, phone, id_patient, password, id_relative] : [id_card, name, email, address, phone, id_patient, id_relative]
+    await conn.query(
+      query,
+      params
+    );
+
+    // se actualiza en tabla users
+    let pass2 =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
+    let query2 = `UPDATE users set name = ?, email = ?, id_card = ? ` + pass +  ` where id_card = ? and role = 'Relative' ` 
+    let params2 = password ? [name, email,id_card, password, original_id_card] : [name, email,id_card, original_id_card]
+    await conn.query(
+      query2,
+      params2
+    );
+    
+    await conn.commit();
+    res.status(204).json({ msg: 'Familiar actualizado correctamente' });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Error en updateRelative:', err);
+    // Errores de duplicado:
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ msg: 'Cédula o email ya registrados' });
+    }
+    res.status(500).json({ msg: 'Error interno al actualizar familiar' });
+  } finally {
+    conn.release();
+  }
+}
+
+
 export async function deleteDoctor(req, res) {
   const conn = await db.getConnection();
   try {
     await conn.beginTransaction();
 
     const {
-      idCard
+      id
     } = req.params;
 
     const [rows] = await db.query(
-      'SELECT id_doctor FROM doctors where id_card = ?', [idCard]
+      'SELECT id_card FROM doctors where id_doctor = ?', [id]
     );
 
     if (rows.length === 0) {
       return res.status(404).json({ msg: 'Doctor not found' });
     }
 
-    const id_doctor = rows[0].id_doctor;
+    const idCard = rows[0].id_card;
 
     //borramos Doctor
       await conn.query(
         `DELETE FROM doctors WHERE id_doctor = ?`,
-        [id_doctor]
+        [id]
       );
     // 2) Borramos en users 
       let query = `DELETE FROM users where id_card = ? and role = 'Doctor' ` 
@@ -329,34 +556,110 @@ export async function deleteDoctor(req, res) {
   }
 }
 
-export async function listPatientsDoctor(req, res) {
+export async function deletePatient(req, res) {
   const conn = await db.getConnection();
   try {
     await conn.beginTransaction();
+
     const {
-      idCard
+      id
     } = req.params;
 
-    const [doctor] = await db.query(
-      'SELECT id_doctor FROM doctors where id_card = ?', [idCard]
+    const [rows] = await db.query(
+      'SELECT id_card FROM patients where id_patient = ?', [id]
     );
 
-    if (doctor.length === 0) {
-      return res.status(404).json({ msg: 'Doctor not found' });
+    if (rows.length === 0) {
+      return res.status(404).json({ msg: 'Patient not found' });
     }
 
-    const id_doctor= doctor[0].id_doctor
-    console.log("se encontro doctor " +id_doctor )
+    const idCard = rows[0].id_card;
 
-    const [rows] = await db.query(
-      'SELECT id_patient FROM patients where id_doctor= ?', [id_doctor]
-    );
-    res.json(rows)
+    //borramos en tabla paciente
+      await conn.query(
+        `DELETE FROM patients WHERE id_patient = ?`,
+        [id]
+      );
+    // borramos en tabla users 
+      let query = `DELETE FROM users where id_card = ? and role = 'Patient' ` 
+      let params = [idCard]
+      await conn.query(
+        query,
+        params
+      );
+    
+      const [rows2] = await conn.query(
+        'SELECT id_card FROM relatives where id_patient = ?', [id]
+      );
+
+      if (rows2.length === 0) {
+        return res.status(404).json({ msg: 'Relative not found' });
+      }
+
+      const idCardRelative = rows2[0].id_card;
+      
+      await conn.query(
+        `DELETE FROM relatives WHERE id_patient = ?`,
+        [id]
+      );
+      /*
+
+      Ya no se usa porque los familiares no van a tener más de un paciente :/
+
+      //verificamos si el familiar está encargado de más pacientes
+      const [rows3] = await conn.query(
+        'SELECT id_patient FROM relatives where id_card = ?', [idCardRelative]
+      );
+      if (rows3.length > 0) {
+        return res.status(204).json({ msg: 'Paciente borrado correctamente' });
+      }
+      //si no lo está se borra de la tabla users
+      */
+      await conn.query(
+        `DELETE FROM users WHERE id_card = ? and role = 'Relative'`,
+        [idCardRelative]
+      );
+    
+    await conn.commit();
+    res.status(204).json({ msg: 'Paciente borrado correctamente' });
   } catch (err) {
     await conn.rollback();
-    console.error('Error en getPatientsDoctor:', err);
-    return res.status(500).json({ msg: 'Error interno al consultar pacientes de un doctor' });
+    console.error('Error en deletePatient:', err);
+    return res.status(500).json({ msg: 'Error interno al borrar paciente' });
   } finally {
     conn.release();
   }
 }
+
+/*export async function deleteSuperAdmin (req, res) {
+  
+}*/
+
+export async function reassignPatients(req, res) {
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const {
+      id_doctor
+    } = req.body;
+
+
+      // 1) Actualizar el doctor generico -- OJO ID doctor 13
+      await conn.query(
+        `UPDATE patients set id_doctor = 13 WHERE id_doctor = ?`,
+        [ id_doctor]
+      );
+    
+    await conn.commit();
+    res.status(204).json({ msg: 'Doctor generico asignado correctamente' });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Error en reasignarPacientes:', err);
+
+    res.status(500).json({ msg: 'Error interno al reasignar pacientes doctor generico' });
+  } finally {
+    conn.release();
+  }
+}
+

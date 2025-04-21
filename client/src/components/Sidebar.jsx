@@ -34,7 +34,6 @@ export default function Sidebar({ onVer }) {
       window.URL.revokeObjectURL(url);
     } catch (err) {
       console.error('Error generando backup:', err);
-      // aquí podrías disparar un toast o mensaje de error
     }
   };
 

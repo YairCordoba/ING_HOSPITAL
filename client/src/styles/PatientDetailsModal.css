@@ -1,0 +1,140 @@
+/* src/styles/PatientDetailsModal.css */
+
+/* OVERLAY & CONTENEDOR */
+.modal-overlay {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.5);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+}
+.modal-content.patient-modal {
+  background: #e0e0e0;
+  width: 85%; max-width: 1000px; max-height: 90vh;
+  border-radius: 8px; position: relative;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+}
+
+/* CLOSE BUTTON */
+.modal-close {
+  position: absolute; top: 12px; right: 16px;
+  font-size: 24px; cursor: pointer;
+}
+
+/* HEADER */
+.pd-header {
+  display: flex; justify-content: space-between;
+  background: #b0b0b0; padding: 10px 20px;
+  font-weight: bold; font-size: 1rem; color: #111;
+}
+.pd-header-left { text-transform: uppercase; }
+.pd-header-right { text-transform: uppercase; text-align: right; }
+
+/* CUERPO (scroll interno) */
+.modal-body {
+  overflow-y: auto; padding: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+  gap: 20px;
+}
+
+/* CENTRAR MENSAJES DE CARGA/ERROR */
+.center {
+  display: flex; align-items: center; justify-content: center;
+  height: 200px;
+}
+
+/* SECCIONES */
+.pd-section {
+  background: #f7f7f7; border: 1px solid #ccc;
+  border-radius: 6px; padding: 12px;
+}
+.patient-section   { grid-column: 1; }
+.relatives-section { grid-column: 2; }
+.doctor-section,
+.vitals-section,
+.appointments-section {
+  grid-column: 1 / -1;
+}
+
+/* GRID PACIENTE: ICONO + CAMPOS */
+.ps-content {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ICONOS GRANDES */
+.pd-icon-large {
+  width: 80px; height: 80px;
+  object-fit: contain;
+  display: block; margin: 0 auto;
+}
+
+/* LISTA FAMILIARES */
+.pd-list {
+  list-style: none; padding: 0; margin: 0;
+  max-height: 150px; overflow-y: auto;
+}
+.rel-item {
+  display: flex; align-items: center; gap: 12px;
+}
+
+/* CAMPOS (2 columnas) */
+.pd-fields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 20px;
+}
+.pd-fields label {
+  font-weight: bold; font-size: 0.9rem;
+}
+.pd-fields input,
+.pd-fields textarea {
+  width: 100%; padding: 6px;
+  border: 1px solid #999; border-radius: 4px;
+  background: #fff;
+}
+
+/* DOCTOR IMG */
+.doctor-img {
+  width: 120px; height: auto;
+  display: block; margin: 0 auto 8px;
+}
+
+/* TABLAS */
+.pd-table {
+  width: 100%; border-collapse: collapse; margin-top: 8px;
+}
+.pd-table th,
+.pd-table td {
+  border: 1px solid #aaa;
+  padding: 6px; text-align: center; font-size: 0.9rem;
+}
+.pd-table th {
+  background: #d4d4d4;
+}
+
+/* BOTÓN OK */
+.pd-ok {
+  grid-column: 1 / -1;
+  background: #28a745; color: #fff;
+  border: none; padding: 10px 20px;
+  font-size: 1rem; border-radius: 4px;
+  cursor: pointer; justify-self: center;
+}
+
+/* SCROLLBAR PERSONALIZADO */
+.modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+.modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0,0,0,0.3); border-radius: 4px;
+}
+.modal-body::-webkit-scrollbar-track {
+  background: rgba(0,0,0,0.1);
+}

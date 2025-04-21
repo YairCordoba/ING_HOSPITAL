@@ -10,7 +10,6 @@ import { useParams } from "react-router-dom";
 export default function EditUser() {
   let { idUser, role } = useParams();
   const navigate = useNavigate();
-
   return (
     <div className="cnu-container">
       <aside className="sap-sidebar">
@@ -26,8 +25,8 @@ export default function EditUser() {
         <section className="cnu-form-section">
         
           {role === 'Doctor' && <DoctorForm idDoctor={idUser}/>}
-          {role === 'Patient' && <PatientForm idPaciente={idUser}/>}
-          {role === 'Relative' && <RelativeForm idFamiliar={idUser}/>}
+          {role === 'Patient' && <PatientForm idPatient={idUser}/>}
+          {role === 'Relative' && <RelativeForm idRelative={idUser}/>}
           
         </section>
       </main>

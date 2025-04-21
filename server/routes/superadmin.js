@@ -1,6 +1,6 @@
+//server/routes/superadmin.js
 import { Router } from 'express';
-import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative, getDoctor, updateDoctor, deleteDoctor, listPatientsDoctor  } from '../controllers/superadminController.js';
-import { getPatientbyID } from '../controllers/PatientsController.js';
+import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative, getDoctorDetails, getPatientDetails, getRelativeDetails, getAdminDetails, updateDoctor, deleteDoctor, reassignPatients, deletePatient, updatePatient, updateRelative } from '../controllers/superadminController.js';
 import auth from '../middlewares/auth.js';
 import { backupDatabase } from '../controllers/backupController.js';
 
@@ -10,20 +10,27 @@ const router = Router();
 //Gets
 router.get('/doctors', auth, listDoctors);
 router.get('/patients/without-relative', auth, listPatientsWithoutRelative);
-router.get('/see/patient/:id', auth, getPatientbyID);
 router.get('/backup', auth, backupDatabase);
-router.get('/patients/doctor/:idCard', auth, listPatientsDoctor);
+router.get('/doctors/:id', auth, getDoctorDetails);
+router.get('/patients/:id', auth, getPatientDetails);
+router.get('/relatives/:id', auth, getRelativeDetails);
+router.get('/admins/:id', auth, getAdminDetails); 
+
+
 //Post
 router.post('/patients', auth, createPatient);
 router.post('/relatives', auth, createRelative);
 router.post('/login', Login);
 router.post('/doctors', auth, createDoctor);
-router.post('/doctor', auth, getDoctor);
 
 //Puts
 router.put('/doctor', auth, updateDoctor);
-
+router.put('/patients/reassign', auth, reassignPatients);
+router.put('/patient', auth, updatePatient);
+router.put('/relative', auth, updateRelative);
 
 //Deletes
-router.delete('/doctor/:idCard', auth, deleteDoctor);
+router.delete('/doctor/:id', auth, deleteDoctor);
+router.delete('/patients/:id', auth, deletePatient);
+
 export default router;

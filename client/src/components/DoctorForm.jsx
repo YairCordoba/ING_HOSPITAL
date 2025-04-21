@@ -12,22 +12,24 @@ export default function DoctorForm({ idDoctor }) {
 
   useEffect(() => {
     async function fetchDoctor() {
+
       if (idDoctor) {
         try {
-          const { data } = await superadminApi.post('/doctor', {idDoctor: idDoctor});
-          if (data) {
+          const { data } = await superadminApi.get('/doctors/'+idDoctor); 
+          if (data && data.doctor) {
             setForm({
-              id_doctor:data.id_doctor,
-              id_card: data.id_card,
-              name: data.name,
-              email: data.email,
-              password: data.password,
-              confirm: data.password,
-              specialization: data.specialization,
-              phone: data.phone
+              id_doctor:data.doctor.id,
+              id_card: data.doctor.id_card,
+              name: data.doctor.name,
+              email: data.doctor.email,
+              password: data.doctor.password,
+              confirm: data.doctor.password,
+              specialization: data.doctor.specialization,
+              phone: data.doctor.phone
             });
             setIsNew(false)
-            setOriginalEmail(data.email)
+            setOriginalEmail(data.doctor.email)
+            setOriginalIdCard(data.doctor.id_card)
           }
         } catch (err) {
           console.error('Error al traer doctores:', err);
@@ -50,6 +52,7 @@ export default function DoctorForm({ idDoctor }) {
   const [errors, setErrors] = useState({});
   const [isNew, setIsNew] = React.useState(true); 
   const [originalEmail, setOriginalEmail] = useState({});
+  const [originalIdCard, setOriginalIdCard] = useState({});
 
   //Lista de especialidades
   const specialties = [
@@ -113,7 +116,7 @@ export default function DoctorForm({ idDoctor }) {
         if (data.exists) errs.email = 'Email ya registrado';
       }
     }
-    if (isNew && id_card && id_card.length >= 6) {
+    if (isNew || originalIdCard !== id_card) {
       const { data } = await usersApi.get(`/check-cedula?id_card=${id_card}`);
       if (data.exists) errs.id_card = 'Cédula ya registrada';
     }
@@ -163,7 +166,6 @@ export default function DoctorForm({ idDoctor }) {
     if (hashed) { 
       hashed = await bcrypt.hash(form.password, 10);
     }
-    
     try {
         await superadminApi.put('/doctor', {
           id_doctor: form.id_doctor,
@@ -172,7 +174,8 @@ export default function DoctorForm({ idDoctor }) {
           email: form.email,
           password: hashed,
           specialization: form.specialization,
-          phone: form.phone
+          phone: form.phone,
+          original_id_card: originalIdCard
         });
         //
         alert('Doctor actualizado correctamente ✅');
@@ -194,7 +197,6 @@ export default function DoctorForm({ idDoctor }) {
           value={form.id_card}
           onChange={handleChange}
           maxLength={20}
-          readOnly={!isNew} 
         />
         {errors.id_card && <small>{errors.id_card}</small>}
       </div>

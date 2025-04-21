@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import validator from 'validator';
+import { useNavigate } from 'react-router-dom';
 import usersApi from '../services/usersApi';
 import superadminApi from '../services/superadminApi';
 import bcrypt from 'bcryptjs';
 import '../styles/PatientForm.css';
 
-export default function PatientForm() {
+export default function PatientForm({idPatient}) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
+    id_patient: '',
     id_card: '',
     name: '',
     email: '',
@@ -29,16 +32,47 @@ export default function PatientForm() {
 
   //Traer lista de doctores
   useEffect(() => {
-    async function fetchDoctors() {
+    async function fetchData() {
       try {
         const { data } = await superadminApi.get('/doctors');
         setDoctors(data);
       } catch (err) {
         console.error('Error al traer doctores:', err);
       }
+      if (idPatient) {
+        try {
+          const { data } = await superadminApi.get('/patients/'+idPatient);
+          if (data && data.patient) {
+            setForm({
+              id_patient:data.patient.id,
+              id_card:data.patient.id_card,
+              name:data.patient.name,
+              email:data.patient.email,
+              password:data.patient.password,
+              confirm:data.patient.password,
+              blood_type:data.patient.blood_type || '',
+              birth_date:new Date(data.patient.birth_date).toISOString().split('T')[0] || '',
+              occupation:data.patient.occupation || '',
+              marital_status:data.patient.marital_status || '',
+              address:data.patient.address || '',
+              phone:data.patient.phone || '',
+              id_doctor:data.patient.id_doctor
+            });
+          }
+          setIsNew(false)
+          setOriginalEmail(data.patient.email)
+          setOriginalIdCard(data.patient.id_card)
+        } catch (err) {
+          console.error('Error al traer pacientes:', err);
+        }
+      }
     }
-    fetchDoctors();
-  }, []);
+    fetchData();
+  }, [idPatient]);
+
+  const [originalEmail, setOriginalEmail] = useState({});
+  const [originalIdCard, setOriginalIdCard] = useState({});
+  const [isNew, setIsNew] = useState(true);
 
   const handleChange = e => {
     const { name, value } = e.target;
@@ -63,10 +97,11 @@ export default function PatientForm() {
       blood_type,birth_date,occupation,marital_status,address,phone
     } = form;
 
-    if (!id_card || id_card.length < 6) errs.id_card = 'Cédula mínimo 6 dígitos';
+    if (!id_card || id_card.length < 7) errs.id_card = 'Cédula mínimo 7 dígitos';
+    if (id_card.length > 20)   errs.id_card = 'Cédula máximo 20 dígitos';
     if (!name) errs.name = 'Nombre requerido';
     if (!email || !validator.isEmail(email)) errs.email = 'Email inválido';
-    if (!password || password.length < 5) errs.password = 'Mínimo 5 caracteres';
+    if ((isNew && !password) || (password && password.length < 5))  errs.password = 'Mínimo 5 caracteres';
     if (confirm !== password) errs.confirm = 'Las contraseñas no coinciden';
     if (!blood_type) errs.blood_type = 'Tipo de sangre requerido';
     if (!birth_date) errs.birth_date = 'Fecha de nacimiento requerida';
@@ -77,10 +112,13 @@ export default function PatientForm() {
 
     // unicidad email y cédula en tabla users
     if (email && validator.isEmail(email)) {
-      const { data } = await usersApi.get(`/check-email?email=${email}`);
-      if (data.exists) errs.email = 'Email ya registrado';
+      if (isNew || originalEmail !== email) {
+        const { data } = await usersApi.get(`/check-email?email=${email}`);
+        if (data.exists) errs.email = 'Email ya registrado';
+      }
     }
-    if (id_card && id_card.length>=6) {
+
+    if (isNew || originalIdCard !== id_card) {
       const { data } = await usersApi.get(`/check-cedula?id_card=${id_card}`);
       if (data.exists) errs.id_card = 'Cédula ya registrada';
     }
@@ -123,8 +161,42 @@ export default function PatientForm() {
     }
   };
 
+  const handleEdit = async e => {
+    e.preventDefault();
+    if (!(await validate())) return;
+
+    let hashed = form.password
+    //Si el usuario cambio la contraseña hay que Hashshearla
+    if (hashed) { 
+      hashed = await bcrypt.hash(form.password, 10);
+    }
+    alert('originalIdCard: ' + originalIdCard)
+    try {
+      await superadminApi.put('/patient', {
+        id_patient: form.id_patient,
+        id_card: form.id_card,
+        name: form.name,
+        email: form.email,
+        password: hashed,
+        blood_type: form.blood_type,
+        birth_date: form.birth_date,
+        occupation: form.occupation,
+        marital_status: form.marital_status,
+        address: form.address,
+        phone: form.phone,
+        id_doctor: form.id_doctor,
+        original_id_card: originalIdCard
+      });
+      alert('Paciente Editado correctamente');
+      navigate('/superadmin')
+    } catch (err) {
+      console.error('Error editando paciente:', err);
+      alert(err.response?.data?.msg || 'Error al editar paciente');
+    }
+  };
+
   return (
-    <form className="pf-form" onSubmit={handleSubmit}>
+    <form className="pf-form" onSubmit={isNew ? handleSubmit: handleEdit}>
       <div className="pf-row">
         <label>Cédula:</label>
         <input name="id_card" value={form.id_card} onChange={handleChange} />
@@ -200,7 +272,9 @@ export default function PatientForm() {
           }
         </select>
       </div>
-      <button type="submit">Crear Paciente</button>
+      <button type="submit">{isNew ? "Crear Paciente" : "Editar Paciente"}</button>
+
+      <button type="button"  onClick={() => navigate("/superadmin")}>Cancelar</button>
     </form>
   );
 }

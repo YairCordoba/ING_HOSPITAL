@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import '../styles/PatientForm.css';
 
 export default function PatientForm({idPatient}) {
+  const[modified, setModified] = useState(false);
   const navigate = useNavigate();
   const [form, setForm] = useState({
     id_patient: '',
@@ -75,6 +76,7 @@ export default function PatientForm({idPatient}) {
   const [isNew, setIsNew] = useState(true);
 
   const handleChange = e => {
+    setModified(true);
     const { name, value } = e.target;
     if ((name==='id_card'||name==='phone') && /\D/.test(value)) return;
     //Validar longitud de caracteres
@@ -163,6 +165,10 @@ export default function PatientForm({idPatient}) {
 
   const handleEdit = async e => {
     e.preventDefault();
+    if (!modified) {
+      alert('No se han realizado cambios en el formulario.');
+      return;
+    }
     if (!(await validate())) return;
 
     let hashed = form.password
@@ -170,7 +176,7 @@ export default function PatientForm({idPatient}) {
     if (hashed) { 
       hashed = await bcrypt.hash(form.password, 10);
     }
-    alert('originalIdCard: ' + originalIdCard)
+    
     try {
       await superadminApi.put('/patient', {
         id_patient: form.id_patient,

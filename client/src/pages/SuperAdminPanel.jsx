@@ -1,5 +1,5 @@
 // client/src/pages/SuperAdminPanel.jsx
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import usersApi from "../services/usersApi";
 import superadminApi from "../services/superadminApi";
@@ -10,7 +10,7 @@ import DoctorDetailsModal from "../components/DoctorDetailsModal";
 import PatientDetailsModal from "../components/PatientDetailsModal";
 import RelativeDetailsModal from "../components/RelativeDetailsModal";
 import AdminDetailsModal from "../components/AdminDetailsModal";
-
+import DeleteUserModal from '../components/DeleteUserModal';
 
 export default function SuperAdminPanel() {
   const navigate = useNavigate();
@@ -28,8 +28,11 @@ export default function SuperAdminPanel() {
   const [modalRelativeId, setModalRelativeId] = useState(null);
   const [showRelativeModal, setShowRelativeModal] = useState(false);
   const [modalAdminId, setModalAdminId] = useState(null);
-const [showAdminModal, setShowAdminModal] = useState(false);
+  const [showAdminModal, setShowAdminModal] = useState(false);
 
+  const [modalDeleteUserId, setModalDeleteUserId] = useState(null);
+  const [modalDeleteRolId, setModalDeleteRolId] = useState(null);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const roleMap = {
     Patient: "Paciente",
@@ -90,6 +93,15 @@ const [showAdminModal, setShowAdminModal] = useState(false);
       setLoadingBackup(false);
     }
   };
+
+  const handleEditUser = (id, roleId) => {
+    if (roleId === "Doctor" && id === 13) {
+      alert("❌ No se puede editar el doctor por defecto - SIN ASIGNAR");
+      return;
+    }
+    navigate(`/superadmin/editUser/${id}/${roleId}`);
+  };
+
 
   const toggleFilter = () => setShowFilter(!showFilter);
 
@@ -184,15 +196,19 @@ const [showAdminModal, setShowAdminModal] = useState(false);
                     </div>
                     <div className="flip-box-back">
                       <div className="vu-back-buttons">
-                        <img
+                         <img
                           src="/eliminar.png"
                           alt="Eliminar"
                           title="Eliminar"
+                          onClick={() => { setModalDeleteUserId(u.role_specific_id);
+                            setModalDeleteRolId(u.role);
+                            setShowDeleteModal(true);}}
                         />
                         <img
                           src="/boton-editar.png"
                           alt="Editar"
                           title="Editar"
+                          onClick={() => handleEditUser(u.role_specific_id, u.role)}
                         />
                         <img
                           src="/VER.png"
@@ -231,6 +247,7 @@ const [showAdminModal, setShowAdminModal] = useState(false);
             </div>
           )}
         </section>
+        
       </main>
       {/** Overlay de carga */}
       {loadingBackup && (
@@ -263,6 +280,14 @@ const [showAdminModal, setShowAdminModal] = useState(false);
         <AdminDetailsModal
           adminId={modalAdminId}
           onClose={() => setShowAdminModal(false)}
+        />
+      )}
+       {showDeleteModal && (
+        <DeleteUserModal
+          userId={modalDeleteUserId}
+          rolUser={modalDeleteRolId}
+          onClose={() => setShowDeleteModal(false)}
+          fetchUsers={fetchUsers}
         />
       )}
     </div>

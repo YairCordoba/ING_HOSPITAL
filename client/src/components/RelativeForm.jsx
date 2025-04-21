@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import validator from 'validator';
 import usersApi from '../services/usersApi';
+import { useNavigate } from 'react-router-dom';
 import superadminApi from '../services/superadminApi';
 import bcrypt from 'bcryptjs';
 import '../styles/RelativeForm.css';
 
-export default function RelativeForm() {
+export default function RelativeForm({idRelative}) {
+  const navigate = useNavigate();
   const [form, setForm] = useState({
+    id_relative: '',
     id_card: '',
     name: '',
     email: '',
@@ -22,16 +25,44 @@ export default function RelativeForm() {
 
   //Traer pacientes sin familiar :(
   useEffect(() => {
-    async function fetchPatients() {
+    async function fetchData() {
       try {
         const { data } = await superadminApi.get('/patients/without-relative');
         setPatients(data);
       } catch (err) {
         console.error('Error trayendo pacientes:', err);
       }
+
+      if(idRelative) {
+        try {
+          const { data } = await superadminApi.get('/relatives/'+idRelative); 
+          if (data && data.relative) {
+            setForm({
+              id_relative:data.relative.id,
+              id_card: data.relative.id_card,
+              name: data.relative.name,
+              email: data.relative.email,
+              password: data.relative.password,
+              confirm: data.relative.password,
+              id_patient: data.relative.id_patient,
+              address: data.relative.address,
+              phone: data.relative.phone
+            });
+          }
+          setIsNew(false)
+          setOriginalEmail(data.relative.email) 
+          setOriginalIdCard(data.relative.id_card)
+        } catch (err) {
+          console.error('Error al traer familiares:', err);
+        }
+      }
     }
-    fetchPatients();
-  }, []);
+    fetchData();
+  }, [idRelative]);
+
+  const [originalEmail, setOriginalEmail] = useState({});
+  const [originalIdCard, setOriginalIdCard] = useState({});
+  const [isNew, setIsNew] = useState(true);
 
   //Al cambiar el select de paciente, sincronizamos id y dirección
   const onPatientChange = e => {
@@ -58,7 +89,6 @@ export default function RelativeForm() {
     if (name === 'confirm' && value.length > 20) return;
     if (name === 'address' && value.length > 100) return;
     if (name === 'occupation' && value.length > 50) return;
-    if (name === 'phone' && value.length > 15) return;
     setForm(f => ({ ...f, [name]: value }));
   };
 
@@ -70,18 +100,20 @@ export default function RelativeForm() {
     if (!id_card || id_card.length < 6) errs.id_card = 'Cédula mínimo 6 dígitos';
     if (!name) errs.name = 'Nombre requerido';
     if (!email || !validator.isEmail(email)) errs.email = 'Email inválido';
-    if (!password || password.length < 5) errs.password = 'Mínimo 5 caracteres';
+    if ((isNew && !password) || (password && password.length < 5))  errs.password = 'Mínimo 5 caracteres';
     if (confirm !== password) errs.confirm = 'No coincide';
     if (!id_patient) errs.id_patient = 'Debe asignar un paciente';
     if (!phone || phone.length < 6) errs.phone = 'Teléfono mínimo 6 dígitos';
 
     //Unicidad email
     if (email && validator.isEmail(email)) {
+      if (isNew || email !== originalEmail) {
       const { data } = await usersApi.get(`/check-email?email=${email}`);
       if (data.exists) errs.email = 'Email ya registrado';
+      }
     }
     //Unicidad cédula
-    if (id_card && id_card.length >= 6) {
+    if (originalIdCard !== id_card) {
       const { data } = await usersApi.get(`/check-cedula?id_card=${id_card}`);
       if (data.exists) errs.id_card = 'Cédula ya registrada';
     }
@@ -120,6 +152,35 @@ export default function RelativeForm() {
     }
   };
 
+  const handleEdit = async e => {
+    e.preventDefault();
+    if (!(await validate())) return;
+
+    let hashed = form.password
+    //Si el usuario cambio la contraseña hay que Hashshearla
+    if (hashed) { 
+      hashed = await bcrypt.hash(form.password, 10);
+    }
+    try {
+      await superadminApi.put('/relative', {
+        id_relative: form.id_relative,
+        id_card: form.id_card,
+        name: form.name,
+        email: form.email,
+        password: hashed,
+        address: form.address,
+        phone: form.phone,
+        id_patient: form.id_patient,
+        original_id_card: originalIdCard,
+      });
+      alert('Familiar Editado correctamente');
+      navigate('/superadmin')
+    } catch (err) {
+      console.error('Error editando familiar:', err);
+      alert(err.response?.data?.msg || 'Error al editar familiar');
+    }
+  };
+
   //Filtrado en base a search :o
   const filtered = patients.filter(p =>
     p.name.toLowerCase().includes(search.toLowerCase()) ||
@@ -127,7 +188,7 @@ export default function RelativeForm() {
   );
 
   return (
-    <form className="rf-form" onSubmit={handleSubmit}>
+    <form className="rf-form" onSubmit={isNew ? handleSubmit: handleEdit}>
       <div className="rf-row">
         <label>Cédula:</label>
         <input name="id_card" value={form.id_card} onChange={handleChange} />
@@ -167,7 +228,10 @@ export default function RelativeForm() {
       {/* Desplegable filtrado */}
       <div className="rf-row">
         <label>Asignar Paciente:</label>
-        <select value={form.id_patient} onChange={onPatientChange}>
+        {!isNew ? (
+          <input value={"Este usuario ya tiene un paciente asignado"} readOnly />
+        ) : (
+          <select value={form.id_patient} onChange={onPatientChange}>
           <option value="">--</option>
           {filtered.length > 0 ? (
             filtered.map(p => (
@@ -179,6 +243,8 @@ export default function RelativeForm() {
             <option disabled>No hay pacientes disponibles</option>
           )}
         </select>
+        )}
+        
         {errors.id_patient && <small>{errors.id_patient}</small>}
       </div>
 
@@ -191,7 +257,9 @@ export default function RelativeForm() {
         <input name="phone" value={form.phone} onChange={handleChange} />
         {errors.phone && <small>{errors.phone}</small>}
       </div>
-      <button type="submit">Crear Familiar</button>
+      <button type="submit">{isNew ? "Crear Familiar" : "Editar Familiar"}</button>
+
+      <button type="button"  onClick={() => navigate("/superadmin")}>Cancelar</button>
     </form>
   );
 }

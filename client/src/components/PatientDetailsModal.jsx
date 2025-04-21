@@ -83,7 +83,7 @@ export default function PatientDetailsModal({ patientId, onClose }) {
               {/* BLOQUE 1: Familiares (col 2) */}
               {data.relatives.length > 0 && (
                 <section className="pd-section relatives-section">
-                  <h3>Paciente a cargo del familiar</h3>
+                  <h3>Familiar Encargado</h3>
                   <ul className="pd-list">
                     {data.relatives.map(r => (
                       <li key={r.id} className="rel-item">
@@ -98,7 +98,7 @@ export default function PatientDetailsModal({ patientId, onClose }) {
               {/* BLOQUE 2: Doctor (ancho completo) */}
               {data.doctor && (
                 <section className="pd-section doctor-section">
-                  <h3>Paciente a cargo del doctor</h3>
+                  <h3>Doctor Asignado</h3>
                   <img
                     src="/doctor.png"
                     alt="Doctor"

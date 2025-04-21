@@ -84,7 +84,7 @@ export default function DeleteUserModal({ userId, rolUser, onClose, fetchUsers})
         alert('Paciente borrado correctamente ✅');
         fetchUsers();
       } catch(err) {
-        console.error('Error al eliminar paciente:', err);
+        console.error('Error al borrar paciente:', err);
       }
           
     }

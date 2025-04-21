@@ -1,5 +1,5 @@
 // client/src/pages/SuperAdminPanel.jsx
-import React, { use, useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import usersApi from "../services/usersApi";
 import superadminApi from "../services/superadminApi";

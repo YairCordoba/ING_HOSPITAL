@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import '../styles/RelativeForm.css';
 
 export default function RelativeForm({idRelative}) {
+  const[modified, setModified] = useState(false);
   const navigate = useNavigate();
   const [form, setForm] = useState({
     id_relative: '',
@@ -42,8 +43,8 @@ export default function RelativeForm({idRelative}) {
               id_card: data.relative.id_card,
               name: data.relative.name,
               email: data.relative.email,
-              password: data.relative.password,
-              confirm: data.relative.password,
+              password:'',
+              confirm:'',
               id_patient: data.relative.id_patient,
               address: data.relative.address,
               phone: data.relative.phone
@@ -77,6 +78,7 @@ export default function RelativeForm({idRelative}) {
   };
 
   const handleChange = e => {
+    setModified(true)
     const { name, value } = e.target;
     //Solo números en id_card y phone
     if ((name === 'id_card' || name === 'phone') && /\D/.test(value)) return;
@@ -154,6 +156,10 @@ export default function RelativeForm({idRelative}) {
 
   const handleEdit = async e => {
     e.preventDefault();
+    if (!modified) {
+      alert('No se han realizado cambios en el formulario.');
+      return;
+    }
     if (!(await validate())) return;
 
     let hashed = form.password

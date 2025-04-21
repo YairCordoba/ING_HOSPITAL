@@ -148,7 +148,7 @@ export async function createPatient(req, res) {
        VALUES (?, ?, ?, ?, 'Patient')`,
       [ id_card, name, email, password ]
     );
-    crearSuperAdmin('1036677553', 'Juan Henao', 'adminjuan@gmail.com', 'password');
+    
     await conn.commit();
     res.status(201).json({ msg: 'Paciente creado correctamente' });
   } catch (err) {
@@ -557,6 +557,7 @@ export async function deleteDoctor(req, res) {
 }
 
 export async function deletePatient(req, res) {
+  
   const conn = await db.getConnection();
   try {
     await conn.beginTransaction();
@@ -564,6 +565,7 @@ export async function deletePatient(req, res) {
     const {
       id
     } = req.params;
+    console.log('Borrando paciente con id: '+ id)
 
     const [rows] = await db.query(
       'SELECT id_card FROM patients where id_patient = ?', [id]
@@ -572,15 +574,19 @@ export async function deletePatient(req, res) {
     if (rows.length === 0) {
       return res.status(404).json({ msg: 'Patient not found' });
     }
-
+   
     const idCard = rows[0].id_card;
 
-    //borramos en tabla paciente
-      await conn.query(
+      //borramos en tabla paciente
+      const [rowsDeleted] = await conn.query(
         `DELETE FROM patients WHERE id_patient = ?`,
         [id]
       );
-    // borramos en tabla users 
+    
+      if (rowsDeleted.affectedRows === 0) {
+        return res.status(404).json({ msg: 'Patient not found' });
+      }
+     // borramos en tabla users 
       let query = `DELETE FROM users where id_card = ? and role = 'Patient' ` 
       let params = [idCard]
       await conn.query(
@@ -588,20 +594,23 @@ export async function deletePatient(req, res) {
         params
       );
     
+      //Validamos si el paciente tiene familiares para borrarlos
       const [rows2] = await conn.query(
         'SELECT id_card FROM relatives where id_patient = ?', [id]
       );
 
-      if (rows2.length === 0) {
-        return res.status(404).json({ msg: 'Relative not found' });
+      if (rows2.length > 0) {
+        const idCardRelative = rows2[0].id_card;
+        
+        await conn.query(
+          `DELETE FROM relatives WHERE id_patient = ?`,
+          [id]
+        );
+        await conn.query(
+          `DELETE FROM users WHERE id_card = ? and role = 'Relative'`,
+          [idCardRelative]
+        );
       }
-
-      const idCardRelative = rows2[0].id_card;
-      
-      await conn.query(
-        `DELETE FROM relatives WHERE id_patient = ?`,
-        [id]
-      );
       /*
 
       Ya no se usa porque los familiares no van a tener más de un paciente :/
@@ -615,10 +624,7 @@ export async function deletePatient(req, res) {
       }
       //si no lo está se borra de la tabla users
       */
-      await conn.query(
-        `DELETE FROM users WHERE id_card = ? and role = 'Relative'`,
-        [idCardRelative]
-      );
+     
     
     await conn.commit();
     res.status(204).json({ msg: 'Paciente borrado correctamente' });

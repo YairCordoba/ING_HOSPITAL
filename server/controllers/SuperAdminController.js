@@ -168,23 +168,24 @@ export async function createAdmin(req, res) {
   const conn = await db.getConnection();
   try {
     await conn.beginTransaction();
+    console.log('Creando nuevo superadmin');
     const {
       id_card,
       name,
       email,
       password
     } = req.body;
-  const sql = 
-    'INSERT INTO users (id_card, name, email, password, role) VALUES (?, ?, ?, ?, "Admin")';
-  await db.execute(sql, [id_card, name, email, password]);
-  const sql2 = 
-  `INSERT INTO admins (id_card, name, email, password)
-    VALUES (?, ?, ?, ?)`
-  await db.execute(sql2, [id_card, name, email, password]);
-  
+    await conn.query(
+    'INSERT INTO users (id_card, name, email, password, role) VALUES (?, ?, ?, ?, "Admin")',
+    [id_card, name, email, password]);
 
-  
+  await conn.query(
+  `INSERT INTO admins (id_card, name, email, password)
+    VALUES (?, ?, ?, ?)`, [id_card, name, email, password]);
+
   console.log("✅ SuperAdmin creado correctamente");
+  await conn.commit();
+  res.status(201).json({ msg: 'Administrador creado correctamente' });
   }catch (err) {
     await conn.rollback();
     console.error('Error en createNewAdmin:', err);
@@ -558,8 +559,6 @@ export async function updateAdmin (req, res) {
     } = req.body;
 
     //Actualizar en tabla users
-    console.log('original_id_card:' + original_id_card)
-    console.log('id_cnaard:' + id_card)
     let pass = password ? ', password = ? ' : ''; // si el password viene es porque lo estan actualizando
     let query = `UPDATE users SET name = ?, email = ? ` + pass +  `, id_card = ? WHERE id_card = ? and role = 'Admin'`;
     let params = password ? [name, email, password, id_card, original_id_card] : [name, email, id_card, original_id_card];

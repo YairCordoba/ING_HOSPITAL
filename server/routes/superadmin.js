@@ -1,6 +1,6 @@
 //server/routes/superadmin.js
 import { Router } from 'express';
-import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative, getDoctorDetails, getPatientDetails, getRelativeDetails, getAdminDetails, updateDoctor, deleteDoctor, reassignPatients, deletePatient, updatePatient, updateRelative } from '../controllers/superadminController.js';
+import { Login, createDoctor, listDoctors, createPatient, createRelative, listPatientsWithoutRelative, getDoctorDetails, getPatientDetails, getRelativeDetails, getAdminDetails, updateDoctor, deleteDoctor, reassignPatients, deletePatient, updatePatient, updateRelative, updateAdmin, createAdmin } from '../controllers/SuperAdminController.js';
 import auth from '../middlewares/auth.js';
 import { backupDatabase } from '../controllers/backupController.js';
 
@@ -22,12 +22,14 @@ router.post('/patients', auth, createPatient);
 router.post('/relatives', auth, createRelative);
 router.post('/login', Login);
 router.post('/doctors', auth, createDoctor);
+router.post('/admins', auth, createAdmin); 
 
 //Puts
 router.put('/doctor', auth, updateDoctor);
 router.put('/patients/reassign', auth, reassignPatients);
 router.put('/patient', auth, updatePatient);
 router.put('/relative', auth, updateRelative);
+router.put('/admin', auth, updateAdmin); 
 
 //Deletes
 router.delete('/doctor/:id', auth, deleteDoctor);

@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import DoctorForm from '../components/DoctorForm';
 import PatientForm from '../components/PatientForm';
 import RelativeForm from '../components/RelativeForm';
+import AdminForm from '../components/AdminForm';
 import '../styles/CreateNewUser.css';
 
 export default function EditUser() {
@@ -30,6 +31,7 @@ export default function EditUser() {
           {role === 'Doctor' && <DoctorForm idDoctor={idUser}/>}
           {role === 'Patient' && <PatientForm idPatient={idUser}/>}
           {role === 'Relative' && <RelativeForm idRelative={idUser}/>}
+          {role === 'Admin' && <AdminForm idAdmin={idUser}/>}
           
         </section>
       </main>

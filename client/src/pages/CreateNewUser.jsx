@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import DoctorForm from '../components/DoctorForm';
 import PatientForm from '../components/PatientForm';
 import RelativeForm from '../components/RelativeForm';
+import AdminForm from '../components/AdminForm';
 import '../styles/CreateNewUser.css';
 
 export default function CreateNewUser() {
@@ -27,6 +28,7 @@ export default function CreateNewUser() {
             <button onClick={() => setSelection('patient')}>+ Crear Paciente</button>
             <button onClick={() => setSelection('doctor')}>+ Crear Doctor</button>
             <button onClick={() => setSelection('relative')}>+ Crear Familiar</button>
+            <button onClick={() => setSelection('admin')}>+ Crear Administrador</button>
           </div>
         </header>
 
@@ -42,6 +44,7 @@ export default function CreateNewUser() {
           {selection === 'doctor' && <DoctorForm />}
           {selection === 'patient' && <PatientForm />}
           {selection === 'relative' && <RelativeForm />}
+          {selection === 'admin' && <AdminForm />}
         </section>
       </main>
     </div>

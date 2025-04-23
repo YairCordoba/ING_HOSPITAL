@@ -52,8 +52,8 @@ export default function DoctorForm({ idDoctor }) {
   });
   const [errors, setErrors] = useState({});
   const [isNew, setIsNew] = React.useState(true); 
-  const [originalEmail, setOriginalEmail] = useState({});
-  const [originalIdCard, setOriginalIdCard] = useState({});
+  const [originalEmail, setOriginalEmail] = useState("");
+  const [originalIdCard, setOriginalIdCard] = useState("");
 
   //Lista de especialidades
   const specialties = [

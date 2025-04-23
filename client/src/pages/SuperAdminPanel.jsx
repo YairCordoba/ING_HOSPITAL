@@ -196,14 +196,16 @@ export default function SuperAdminPanel() {
                     </div>
                     <div className="flip-box-back">
                       <div className="vu-back-buttons">
-                         <img
-                          src="/eliminar.png"
-                          alt="Eliminar"
-                          title="Eliminar"
-                          onClick={() => { setModalDeleteUserId(u.role_specific_id);
-                            setModalDeleteRolId(u.role);
-                            setShowDeleteModal(true);}}
-                        />
+                        { u.role !== 'Admin' && (
+                          <img
+                            src="/eliminar.png"
+                            alt="Eliminar"
+                            title="Eliminar"
+                            onClick={() => { setModalDeleteUserId(u.role_specific_id);
+                              setModalDeleteRolId(u.role);
+                              setShowDeleteModal(true);}}
+                          />
+                        )}
                         <img
                           src="/boton-editar.png"
                           alt="Editar"

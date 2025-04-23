@@ -9,6 +9,7 @@ export default function DeleteUserModal({ userId, rolUser, onClose, fetchUsers})
 
   useEffect(() => {
     if (!userId || !rolUser) return;
+    if (rolUser === "Admin") return
     openDeleteModal();
     
   }, [userId, rolUser]);

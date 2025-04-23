@@ -4,7 +4,6 @@ import { db } from '../index.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import validator from 'validator'; 
-import crearSuperAdmin from '../create_admin.js';
 
 export async function Login(req, res) {
   try {
@@ -163,6 +162,41 @@ export async function createPatient(req, res) {
   } finally {
     conn.release();
   }
+}
+
+export async function createAdmin(req, res) {
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+    console.log('Creando nuevo superadmin');
+    const {
+      id_card,
+      name,
+      email,
+      password
+    } = req.body;
+    await conn.query(
+    'INSERT INTO users (id_card, name, email, password, role) VALUES (?, ?, ?, ?, "Admin")',
+    [id_card, name, email, password]);
+
+  await conn.query(
+  `INSERT INTO admins (id_card, name, email, password)
+    VALUES (?, ?, ?, ?)`, [id_card, name, email, password]);
+
+  console.log("✅ SuperAdmin creado correctamente");
+  await conn.commit();
+  res.status(201).json({ msg: 'Administrador creado correctamente' });
+  }catch (err) {
+    await conn.rollback();
+    console.error('Error en createNewAdmin:', err);
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ msg: 'Cédula o email ya registrados' });
+    }
+    res.status(500).json({ msg: 'Error interno al crear administrador' });
+  }
+  finally {
+    conn.release();
+  } 
 }
 
 export async function createRelative(req, res) {
@@ -437,7 +471,6 @@ export async function updatePatient(req, res) {
       );
 
       // 2) Actualizar en users 
-      let pass2 =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
       let query2 = `UPDATE users set name = ?, email = ?, id_card = ? ` + pass +  ` where id_card = ? and role = 'Patient' ` 
       let params2 = password ? [name, email,id_card, password, original_id_card] : [name, email,id_card, original_id_card]
       await conn.query(
@@ -489,7 +522,6 @@ export async function updateRelative(req, res) {
     );
 
     // se actualiza en tabla users
-    let pass2 =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
     let query2 = `UPDATE users set name = ?, email = ?, id_card = ? ` + pass +  ` where id_card = ? and role = 'Relative' ` 
     let params2 = password ? [name, email,id_card, password, original_id_card] : [name, email,id_card, original_id_card]
     await conn.query(
@@ -511,6 +543,49 @@ export async function updateRelative(req, res) {
     conn.release();
   }
 }
+
+export async function updateAdmin (req, res) {
+  const conn = await db.getConnection();
+  try {
+    await conn.beginTransaction();
+
+    const {
+      id_admin,
+      id_card,
+      name,
+      email,
+      password,
+      original_id_card
+    } = req.body;
+
+    //Actualizar en tabla users
+    let pass = password ? ', password = ? ' : ''; // si el password viene es porque lo estan actualizando
+    let query = `UPDATE users SET name = ?, email = ? ` + pass +  `, id_card = ? WHERE id_card = ? and role = 'Admin'`;
+    let params = password ? [name, email, password, id_card, original_id_card] : [name, email, id_card, original_id_card];
+    await conn.query(
+      query, params
+    );
+    // Actualizar en tabla admins}
+    
+    let query2 = `UPDATE admins SET name = ?, email = ? ` + pass +  `, id_card = ? WHERE id_admin = ?`;
+    let params2 = password ? [name, email, password, id_card, id_admin] : [name, email, id_card, id_admin];
+    await conn.query(
+      query2, params2
+    );
+
+    await conn.commit();
+    res.status(204).json({ msg: 'Administrador actualizado correctamente' });
+  } catch (err) {
+    await conn.rollback();
+    console.error('Error en updateSuperAdmin:', err);
+    if (err.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ msg: 'Email ya registrado' });
+    }
+    res.status(500).json({ msg: 'Error interno al actualizar administrador' });
+  } finally {
+    conn.release();
+  }
+};
 
 
 export async function deleteDoctor(req, res) {

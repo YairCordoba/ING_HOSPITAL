@@ -21,7 +21,7 @@ async function initializeDatabase() {
     //Verificar la conexion a la base de datos
     const [rows] = await db.query('SELECT 1');
     if (rows) {
-      console.log('✅ ¡Mera chimba, la conexion se estableció Pah!');
+      //console.log('✅ ¡Mera chimba, la conexion se estableció Pah!');
     }
   } catch (err) {
     console.error('❌ ¡Uy so! no se pudo conectar, solucione, pille el error: ', err.message);
@@ -40,18 +40,19 @@ async function startServer() {
   
   //Consultas de ejemplo: [NO BORRAR SE USA PARA REALIZAR PRUEBAS]
   
+  /*
   try {
     const [results] = await db.query('SELECT * FROM relatives');
     console.log('Ejemplo de consulta: ', results);
   } catch (err) {
     console.error('❌ Error en la consulta:', err.message);
   }
-
+*/
 
   //Prender el servidor :)
   const PORT = 8888;
   app.listen(PORT, () => {
-    console.log(`🚀 Backend en puerto ${PORT}`);
+    //console.log(`🚀 Backend en puerto ${PORT}`);
   });
 }
 

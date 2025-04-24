@@ -107,6 +107,19 @@ export async function listDoctors(req, res) {
     res.status(500).json({ msg: 'Error interno al obtener doctores' });
   }
 }
+
+export async function listAdmins(req, res) {
+  try {
+    const [rows] = await db.query(
+      'SELECT count(id_admin) as admins FROM admins'
+    );
+    console.log(rows[0].admins)
+    res.json(rows[0]);
+  } catch (err) {
+    console.error('Error al obtener admins:', err);
+    res.status(500).json({ msg: 'Error interno al obtener admins' });
+  }
+}
 export async function createPatient(req, res) {
   const conn = await db.getConnection();
   try {
@@ -403,7 +416,7 @@ export async function updateDoctor(req, res) {
       original_id_card
     } = req.body;
   //MANDAR IGUALMENTE EL ID CARD PARA UPDATE
-      // 1) Actualizar el doctor
+      // actualizar en tabla doctors
       let pass =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
       let query =  `UPDATE doctors set id_card = ?, name = ?, specialization  = ?, phone = ?, email = ? ` + pass +  ` WHERE id_doctor = ?`
       let params = password ? [ id_card, name, specialization, phone, email, password, id_doctor] : [ id_card, name, specialization, phone, email, id_doctor]
@@ -411,7 +424,7 @@ export async function updateDoctor(req, res) {
         query,
         params
       );
-      // 2) Actualizar en users 
+      // actualizar en tabla users
       let pass2 =  password ? ' , password = ? ': '' // si el password viene es porque lo estan actualizando
       let query2 = `UPDATE users set name = ?, email = ?, id_card = ? ` + pass +  ` where id_card = ? and role = 'Doctor' ` 
       let params2 = password ? [name, email,id_card, password, original_id_card] : [name, email,id_card, original_id_card]

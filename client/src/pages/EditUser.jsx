@@ -19,7 +19,7 @@ export default function EditUser() {
       <aside className="sap-sidebar">
         
         <ul>
-          <li onClick={() => navigate('/superadmin')}><img src="/VER.png" alt="Ver" /><span>Ver</span></li>
+          <li onClick={() => navigate('/superadmin')}><img src="/Inicio.png" alt="Inicio" /><span>Inicio</span></li>
           
         </ul>
       </aside>

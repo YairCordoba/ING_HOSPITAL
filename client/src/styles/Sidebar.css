@@ -18,6 +18,7 @@
   width: 200px; /* el ancho que quieras */
 }
 
+
 /* Los enlaces dentro */
 .sidenav a {
   padding: 10px 20px;
@@ -39,7 +40,7 @@
   background-color: #ddd;
 }
 
-/* Botón de cerrar */
+/* Botón de cerrar 
 .sidenav .closebtn {
   position: absolute;
   top: 8px;
@@ -48,8 +49,9 @@
   text-decoration: none;
   color: #333;
 }
+  */
 
-/* Botón “hamburger” para abrir */
+/* Botón “hamburger” para abrir 
 .open-nav-btn {
   font-size: 24px;
   cursor: pointer;
@@ -61,3 +63,4 @@
   padding: 4px 8px;
   border-radius: 4px;
 }
+  */

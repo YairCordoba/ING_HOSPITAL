@@ -15,7 +15,7 @@ export default function CreateNewUser() {
       <aside className="sap-sidebar">
         
         <ul>
-          <li onClick={() => navigate('/superadmin')}><img src="/VER.png" alt="Ver" /><span>Ver</span></li>
+        <li onClick={() => navigate('/superadmin')}><img src="/Inicio.png" alt="Inicio" /><span>Inicio</span></li>
           <li><img src="/crear.png" alt="Crear" /><span>Crear</span></li>
           
         </ul>

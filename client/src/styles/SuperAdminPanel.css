@@ -3,6 +3,7 @@
     display: flex;
     height: 100vh;
     font-family: Arial, sans-serif;
+    margin-left: 200px;
   }
   
   /* Sidebar */
@@ -43,6 +44,7 @@
   }
   .sap-search {
     position: relative;
+    letter-spacing: 200px;
     width: 100%;
   }
   .sap-search input {
@@ -67,6 +69,7 @@
   
   /* Sección de tabla */
   .sap-table-section h2 {
+    
     margin-bottom: 10px;
   }
   .sap-table-placeholder {
@@ -96,5 +99,4 @@
     color: red;
     margin-top: 10px;
   }
-  
   

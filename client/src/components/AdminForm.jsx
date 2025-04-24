@@ -156,6 +156,8 @@ export default function SuperAdminForm({ idAdmin }) {
           console.error('Error creando administrador:', err);
           alert(err.response?.data?.msg || 'Error al crear administrador');
         }
+
+        navigate('/superadmin');
       };
 
       return (

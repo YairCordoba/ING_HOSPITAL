@@ -4,15 +4,14 @@ import superadminApi from '../services/superadminApi';
 import '../styles/Sidebar.css';
 
 export default function Sidebar({ onVer }) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   const navigate = useNavigate();
 
-  const openNav = () => setOpen(true);
+  //const openNav = () => setOpen(true);
   const closeNav = () => setOpen(false);
 
   const handleVer = () => {
     onVer();
-    closeNav();
   };
 
   const handleCrear = () => {
@@ -46,13 +45,13 @@ export default function Sidebar({ onVer }) {
   return (
     <>
       {/* Botón para abrir el sidenav */}
-      <span className="open-nav-btn" onClick={openNav}>&#9776;</span>
+      
 
       {/* El overlay sidenav */}
       <div id="mySidenav" className={`sidenav ${open ? 'sidenav-open' : ''}`}>
-        <a href="#!" className="closebtn" onClick={closeNav}>&times;</a>
+        
         <a href="#!" onClick={handleVer}>
-          <img src="/VER.png" alt="Ver" /> Ver
+          <img src="/inicio.png" alt="Inicio" /> Inicio
         </a>
         <a href="#!" onClick={handleCrear}>
           <img src="/crear.png" alt="Crear" /> Crear

@@ -4,18 +4,43 @@ import DoctorForm from '../components/DoctorForm';
 import PatientForm from '../components/PatientForm';
 import RelativeForm from '../components/RelativeForm';
 import AdminForm from '../components/AdminForm';
+import superadminApi from '../services/superadminApi';
 import '../styles/CreateNewUser.css';
 
 export default function CreateNewUser() {
   const navigate = useNavigate();
   const [selection, setSelection] = useState('');
+  const [allowCreateAdmin, setAllowCreateAdmin] = useState(false);
+
+  const validateAdminCreation = async () => {
+    setAllowCreateAdmin(false);
+    try {
+      const response = await superadminApi.get('/admins');
+     
+      if (response.data) {
+        if (response.data.admins < 5) {
+          setAllowCreateAdmin(true);
+          setSelection('admin');
+        } else {
+          alert('Se ha alcanzado el número máximo permitido de administradores.');
+          setSelection('');
+        }
+        
+      } else {
+        alert('Error al consultar la cantidad de administradores.');
+        setSelection('');
+      }
+    } catch (error) {
+      console.error('Error fetching admins:', error);
+    }
+  }
 
   return (
     <div className="cnu-container">
       <aside className="sap-sidebar">
         
         <ul>
-          <li onClick={() => navigate('/superadmin')}><img src="/VER.png" alt="Ver" /><span>Ver</span></li>
+        <li onClick={() => navigate('/superadmin')}><img src="/Inicio.png" alt="Inicio" /><span>Inicio</span></li>
           <li><img src="/crear.png" alt="Crear" /><span>Crear</span></li>
           
         </ul>
@@ -28,7 +53,7 @@ export default function CreateNewUser() {
             <button onClick={() => setSelection('patient')}>+ Crear Paciente</button>
             <button onClick={() => setSelection('doctor')}>+ Crear Doctor</button>
             <button onClick={() => setSelection('relative')}>+ Crear Familiar</button>
-            <button onClick={() => setSelection('admin')}>+ Crear Administrador</button>
+            <button onClick={() => validateAdminCreation()}>+ Crear Administrador</button>
           </div>
         </header>
 
@@ -44,7 +69,7 @@ export default function CreateNewUser() {
           {selection === 'doctor' && <DoctorForm />}
           {selection === 'patient' && <PatientForm />}
           {selection === 'relative' && <RelativeForm />}
-          {selection === 'admin' && <AdminForm />}
+          {selection === 'admin' && allowCreateAdmin && <AdminForm />}
         </section>
       </main>
     </div>

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Recuperar Contraseña</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      display: flex;
+      height: 100vh;
+      justify-content: center;
+      align-items: center;
+      background-color: #f3f4f6;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+      text-align: center;
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background-color: #4f46e5;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+    .hidden {
+      display: none;
+    }
+    .message {
+      margin-top: 10px;
+      color: green;
+    }
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Recuperar Contraseña</h2>
+
+  <div id="step1">
+    <p>Ingresa tu número de documento:</p>
+    <input type="text" id="cedula" placeholder="Número de documento">
+    <button onclick="enviarCodigo()">Enviar Código</button>
+  </div>
+
+  <div id="step2" class="hidden">
+    <p>Revisa tu correo y escribe el código recibido:</p>
+    <input type="text" id="codigo" placeholder="Código de verificación">
+    <button onclick="verificarCodigo()">Verificar Código</button>
+  </div>
+
+  <div id="step3" class="hidden">
+    <p>Ingresa tu nueva contraseña:</p>
+    <input type="password" id="nuevaClave" placeholder="Nueva contraseña">
+    <button onclick="actualizarContrasena()">Actualizar Contraseña</button>
+  </div>
+
+  <p class="message" id="message"></p>
+  <p class="error" id="error"></p>
+</div>
+
+<script src="recuperar.js"></script>
+</body>
+</html>

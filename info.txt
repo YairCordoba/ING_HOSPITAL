@@ -1,0 +1,61 @@
+npm install -g pm2
+PM2 es un **administrador de procesos para aplicaciones Node.js** que permite ejecutarlas, monitorearlas y mantenerlas siempre activas. Es especialmente útil para entornos de producción.
+
+---
+
+### 🔧 ¿Cómo funciona PM2?
+
+PM2 actúa como una **capa entre tu aplicación y el sistema operativo**. Administra el ciclo de vida de tus aplicaciones (start, stop, restart, monitoreo) y puede reiniciarlas automáticamente si se caen por errores.
+
+---
+
+### 🧪 Instalación
+
+```bash
+npm install -g pm2
+```
+
+---
+
+### 📦 Comandos básicos
+
+| Acción              | Comando              |
+| ------------------- | -------------------- |
+| Iniciar app         | `pm2 start app.js`   |
+| Ver procesos        | `pm2 list`           |
+| Reiniciar app       | `pm2 restart app.js` |
+| Detener app         | `pm2 stop app.js`    |
+| Eliminar app        | `pm2 delete app.js`  |
+| Logs en tiempo real | `pm2 logs`           |
+
+---
+
+### 💾 Guardar configuración para reinicio automático
+
+1. Guardar procesos:
+
+   ```bash
+   pm2 save
+   ```
+
+2. Hacer que se inicien con el sistema (Linux/macOS):
+
+   ```bash
+   pm2 startup
+   ```
+
+Esto genera un comando que debes copiar/pegar para activar el autoinicio.
+
+---
+
+### 🧠 Beneficios de PM2
+
+* Reinicio automático en caso de error.
+* Monitoreo de CPU y memoria.
+* Logs en tiempo real.
+* Clustering para rendimiento (multi-core).
+
+---
+
+¿Quieres que te muestre cómo hacer clustering con PM2 o cómo configurarlo para producción?
+nodemon app.js

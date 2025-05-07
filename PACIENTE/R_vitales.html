@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+  
+<!-- Mirrored from silicon.createx.studio/contacts-v2.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 04 Aug 2022 19:42:08 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=utf-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="utf-8">
+    <title>Signos Vitales</title>
+
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Silicon - Multipurpose Technology Bootstrap Template">
+    <meta name="keywords" content="bootstrap, business, creative agency, mobile app showcase, saas, fintech, finance, online courses, software, medical, conference landing, services, e-commerce, shopping cart, multipurpose, shop, ui kit, marketing, seo, landing, blog, portfolio, html5, css3, javascript, gallery, slider, touch, creative">
+    <meta name="author" content="Createx Studio">
+
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets/favicon/safari-pinned-tab.svg" color="#6366f1">
+    <link rel="shortcut icon" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link href="https://cdn.jsdelivr.net/npm/boxicons@2.0.7/css/boxicons.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="assets/css/theme.min.css">
+
+    <!-- Page loading styles -->
+    <style>
+      .page-loading {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        -webkit-transition: all .4s .2s ease-in-out;
+        transition: all .4s .2s ease-in-out;
+        background-color: #fff;
+        opacity: 0;
+        visibility: hidden;
+        z-index: 9999;
+      }
+      .dark-mode .page-loading {
+        background-color: #0b0f19;
+      }
+      .page-loading.active {
+        opacity: 1;
+        visibility: visible;
+      }
+      .page-loading-inner {
+        position: absolute;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        text-align: center;
+        -webkit-transform: translateY(-50%);
+        transform: translateY(-50%);
+        -webkit-transition: opacity .2s ease-in-out;
+        transition: opacity .2s ease-in-out;
+        opacity: 0;
+      }
+      .page-loading.active > .page-loading-inner {
+        opacity: 1;
+      }
+      .page-loading-inner > span {
+        display: block;
+        font-size: 1rem;
+        font-weight: normal;
+        color: #9397ad;
+      }
+      .dark-mode .page-loading-inner > span {
+        color: #fff;
+        opacity: .6;
+      }
+      .page-spinner {
+        display: inline-block;
+        width: 2.75rem;
+        height: 2.75rem;
+        margin-bottom: .75rem;
+        vertical-align: text-bottom;
+        border: .15em solid #b4b7c9;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner .75s linear infinite;
+        animation: spinner .75s linear infinite;
+      }
+      .dark-mode .page-spinner {
+        border-color: rgba(255,255,255,.4);
+        border-right-color: transparent;
+      }
+      @-webkit-keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spinner {
+        100% {
+          -webkit-transform: rotate(360deg);
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <!-- Theme mode -->
+    <script>
+      let mode = window.localStorage.getItem('mode'),
+          root = document.getElementsByTagName('html')[0];
+      if (mode !== null && mode === 'dark') {
+        root.classList.add('dark-mode');
+      } else {
+        root.classList.remove('dark-mode');
+      }
+    </script>
+
+    <!-- Page loading scripts -->
+    <script>
+      (function () {
+        window.onload = function () {
+          const preloader = document.querySelector('.page-loading');
+          preloader.classList.remove('active');
+          setTimeout(function () {
+            preloader.remove();
+          }, 1000);
+        };
+      })();
+    </script>
+
+    <!-- Google Tag Manager -->
+    <script>
+      (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      '../www.googletagmanager.com/gtm5445.html?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-WKV3GT5');
+    </script>
+  </head>
+
+
+  <!-- Body -->
+  <body>
+    
+    <!-- Google Tag Manager (noscript)-->
+    <noscript>
+      <iframe src="http://www.googletagmanager.com/ns.html?id=GTM-WKV3GT5" height="0" width="0" style="display: none; visibility: hidden;"></iframe>
+    </noscript>
+
+    <!-- Page loading spinner -->
+    <div class="page-loading active">
+      <div class="page-loading-inner">
+        <div class="page-spinner"></div><span>Loading...</span>
+      </div>
+    </div>
+
+
+    <!-- Page wrapper for sticky footer -->
+    <!-- Wraps everything except footer to push footer to the bottom of the page if there is little content -->
+    <main class="page-wrapper">
+
+
+      <!-- Navbar -->
+      <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page -->
+      <header class="header navbar navbar-expand-lg position-absolute navbar-sticky">
+        <div class="container px-3">
+          <a href="index.html" class="navbar-brand pe-3">
+            <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
+            R_Vitales
+          </a>
+          <div id="navbarNav" class="offcanvas offcanvas-end">
+            <div class="offcanvas-header border-bottom">
+              <h5 class="offcanvas-title">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a href="R_vitales.html" class="nav-link">Registrar Signos Vitales</a>
+                </li>
+                <li class="nav-item">
+                  <a href="agendar_cita.html" class="nav-link">Agendar Citas</a>
+                </li>
+                <li class="nav-item">
+                  <a href="ver_citas.html" class="nav-link">Ver Citas</a>
+                </li>
+                <li class="nav-item">
+                  <a href="vital-signs.html" class="nav-link">Historicos</a>
+                </li>
+              </ul>
+            </div>
+            <div class="offcanvas-header border-top">
+              <a href="#" class="btn btn-primary w-100" target="_blank" rel="noopener">
+                <i class="bx bx-cart fs-4 lh-1 me-1"></i>
+                &nbsp;Mi perfil
+              </a>
+            </div>      
+          </div>
+          <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
+            <input type="checkbox" class="form-check-input" id="theme-mode">
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
+          </div>
+
+          <a href="#" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
+            <i class=""></i>
+            &nbsp;Mi perfil
+          </a>
+        </div>
+      </header>
+
+
+      <!-- Links + Contact form -->
+      <section class="position-relative bg-secondary pt-5">
+        <div class="container position-relative zindex-2 pt-5">
+
+          <!-- Breadcrumb -->
+          <nav class="pt-lg-4 pb-3 mb-2 mb-sm-3" aria-label="breadcrumb">
+            <ol class="breadcrumb mb-0">
+              <li class="breadcrumb-item">
+                <a href="I_Paciente.html"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page">Signos Vitales</li>
+            </ol>
+          </nav>
+
+          <div class="row">
+
+            <!-- Contact links -->
+            <div class="col-xl-4 col-lg-5 pb-4 pb-sm-5 mb-2 mb-sm-0">
+              <div class="pe-lg-4 pe-xl-0">
+                <h1 class="pb-3 pb-md-4 mb-lg-5">Signos Vitales</h1>
+                
+                <!-- Frecuencia Cardíaca -->
+                <div class="d-flex align-items-start pb-3 mb-sm-1 mb-md-3">
+                  <div class="bg-light text-primary rounded-circle flex-shrink-0 fs-3 lh-1 p-3">
+                    <i class="bx bx-heart"></i>
+                  </div>
+                  <div class="ps-3 ps-sm-4">
+                    <h2 class="h4 pb-1 mb-2">Frecuencia Cardíaca</h2>
+                    <p class="mb-2">Es el número de latidos del corazón por minuto. Un valor normal en reposo es generalmente entre 60 y 100 latidos por minuto.</p>
+                  </div>
+                </div>
+            
+                <!-- Temperatura -->
+                <div class="d-flex align-items-start pb-3 mb-sm-1 mb-md-3">
+                  <div class="bg-light text-primary rounded-circle flex-shrink-0 fs-3 lh-1 p-3">
+                    <i class="bx bx-heart"></i>
+                  </div>
+                  <div class="ps-3 ps-sm-4">
+                    <h2 class="h4 pb-1 mb-2">Temperatura Corporal</h2>
+                    <p class="mb-2">Es la medida de la cantidad de calor en el cuerpo. La temperatura normal ronda los 36°C a 37°C.</p>
+                  </div>
+                </div>
+            
+                <!-- Presión Arterial -->
+                <div class="d-flex align-items-start pb-3 mb-sm-1 mb-md-3">
+                  <div class="bg-light text-primary rounded-circle flex-shrink-0 fs-3 lh-1 p-3">
+                    <i class="bx bx-line-chart"></i>
+                  </div>
+                  <div class="ps-3 ps-sm-4">
+                    <h2 class="h4 pb-1 mb-2">Presión Arterial</h2>
+                    <p class="mb-2">Es la fuerza que la sangre ejerce sobre las paredes de las arterias. Los valores normales son 120/80 mmHg.</p>
+                  </div>
+                </div>
+            
+                <!-- Frecuencia Respiratoria -->
+                <div class="d-flex align-items-start pb-3 mb-sm-1 mb-md-3">
+                  <div class="bg-light text-primary rounded-circle flex-shrink-0 fs-3 lh-1 p-3">
+                    <i class="bx bx-line-chart"></i>
+                  </div>
+                  <div class="ps-3 ps-sm-4">
+                    <h2 class="h4 pb-1 mb-2">Frecuencia Respiratoria</h2>
+                    <p class="mb-2">Es el número de respiraciones por minuto. Un rango normal en reposo es entre 12 y 20 respiraciones por minuto.</p>
+                  </div>
+                </div>
+            
+                <!-- Peso Corporal -->
+                <div class="d-flex align-items-start pb-3 mb-sm-1 mb-md-3">
+                  <div class="bg-light text-primary rounded-circle flex-shrink-0 fs-3 lh-1 p-3">
+                    <i class="fa-solid fa-weight-scale"></i>
+                  </div>
+                  <div class="ps-3 ps-sm-4">
+                    <h2 class="h4 pb-1 mb-2">Peso Corporal</h2>
+                    <p class="mb-2">El peso corporal es la cantidad total de masa en el cuerpo. Se mide en kilogramos y es un indicador importante de la salud general.</p>
+                  </div>
+                </div>
+            
+                <!-- Observaciones -->
+                <div class="d-flex align-items-start pb-3 mb-sm-1 mb-md-3">
+                  <div class="bg-light text-primary rounded-circle flex-shrink-0 fs-3 lh-1 p-3">
+                    <i class="bx bx-comment"></i>
+                  </div>
+                  <div class="ps-3 ps-sm-4">
+                    <h2 class="h4 pb-1 mb-2">Observaciones</h2>
+                    <p class="mb-2">Las observaciones son notas adicionales que el personal médico puede hacer en relación al estado del paciente o cualquier aspecto importante durante la medición.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+
+            <!-- Contact form -->
+            <div class="col-xl-6 col-lg-7 offset-xl-2">
+              <div class="card border-light shadow-lg py-3 p-sm-4 p-md-5">
+                  <div class="bg-dark position-absolute top-0 start-0 w-100 h-100 rounded-3 d-none d-dark-mode-block"></div>
+                  <div class="card-body position-relative zindex-2">
+                      <h2 class="card-title pb-3 mb-4">Signos Vitales</h2>
+                      <form id="vitalForm" class="row g-4 needs-validation" novalidate>
+                        <div class="col-12">
+                          <label for="id_patient" class="form-label fs-base">ID del Paciente</label>
+                          <input type="number" id="id_patient" class="form-control" required readonly>
+                          <div class="invalid-feedback">Por favor ingresa el ID del paciente.</div>
+                        </div>
+                        
+                          <!-- Fecha -->
+                          <div class="col-12">
+                            <label for="measurement_date" class="form-label fs-base">Fecha de Medición</label>
+                            <input type="date" id="measurement_date" class="form-control form-control-lg" required>
+                            <div class="invalid-feedback">Por favor ingresa la fecha de medición.</div>
+                          </div>
+                        
+                          <!-- Hora -->
+                          <div class="col-12">
+                            <label for="measurement_time" class="form-label fs-base">Hora de Medición</label>
+                            <input type="time" id="measurement_time" class="form-control form-control-lg" required>
+                            <div class="invalid-feedback">Por favor ingresa la hora de medición.</div>
+                          </div>
+                        
+                            <!-- Frecuencia Cardíaca -->
+                          <div class="col-12">
+                            <label for="heart_rate" class="form-label fs-base">Frecuencia Cardíaca</label>
+                            <input type="number" id="heart_rate" class="form-control form-control-lg" required min="30" max="200">
+                            <div class="invalid-feedback">Ingresa una frecuencia cardíaca válida (30–200 bpm).</div>
+                          </div>
+
+                          <!-- Temperatura -->
+                          <div class="col-12">
+                            <label for="temperature" class="form-label fs-base">Temperatura (°C)</label>
+                            <input type="number" step="0.01" id="temperature" class="form-control form-control-lg" required min="30" max="45">
+                            <div class="invalid-feedback">Ingresa una temperatura válida (30–45 °C).</div>
+                          </div>
+
+                          <!-- Presión Arterial -->
+                          <div class="col-12">
+                            <label for="blood_pressure" class="form-label fs-base">Presión Arterial</label>
+                            <input type="text" id="blood_pressure" class="form-control form-control-lg" placeholder="Ej. 120/80" required pattern="^\d{2,3}\/\d{2,3}$">
+                            <div class="invalid-feedback">Ingresa un formato válido (ej. 120/80).</div>
+                          </div>
+
+                          <!-- Frecuencia Respiratoria -->
+                          <div class="col-12">
+                            <label for="respiratory_rate" class="form-label fs-base">Frecuencia Respiratoria</label>
+                            <input type="number" id="respiratory_rate" class="form-control form-control-lg" required min="10" max="60">
+                            <div class="invalid-feedback">Ingresa una frecuencia respiratoria válida (10–60 rpm).</div>
+                          </div>
+
+                          <!-- Peso -->
+                          <div class="col-12">
+                            <label for="weight" class="form-label fs-base">Peso (kg)</label>
+                            <input type="number" step="0.01" id="weight" class="form-control form-control-lg" required min="1" max="300">
+                            <div class="invalid-feedback">Ingresa un peso válido (1–300 kg).</div>
+                          </div>
+
+                        
+                          <!-- Observaciones -->
+                          <div class="col-12">
+                            <label for="observations" class="form-label fs-base">Observaciones</label>
+                            <textarea id="observations" class="form-control form-control-lg" rows="3" required></textarea>
+                            <div class="invalid-feedback">Por favor ingresa alguna observación.</div>
+                          </div>
+                        
+                          <!-- Botón de Envío -->
+                          <div class="col-12 pt-2 pt-sm-3">
+                            <button type="submit" class="btn btn-lg btn-primary w-100 w-sm-auto">Registrar Signos Vitales</button>
+                          </div>
+                        </form>                       
+                  </div>
+              </div>
+          </div>
+          
+            
+          </div>
+        </div>
+        <div class="position-absolute bottom-0 start-0 w-100 bg-light" style="height: 8rem;"></div>
+      </section>
+
+
+      
+    </main>
+
+
+    
+
+    <!-- Back to top button -->
+    <a href="#top" class="btn-scroll-top" data-scroll>
+      <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+      <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+    </a>
+
+
+    <!-- Vendor Scripts -->
+    <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+    <script src="assets/vendor/cleave.js/dist/cleave.min.js"></script>
+    <script>
+      function formatDate(date) {
+    const d = new Date(date);
+    const year = d.getFullYear();
+    const month = ("0" + (d.getMonth() + 1)).slice(-2);  // Mes con dos dígitos
+    const day = ("0" + d.getDate()).slice(-2);  // Día con dos dígitos
+    return `${year}-${month}-${day}`;  // Formato 'YYYY-MM-DD'
+}
+
+ // Obtener los datos del usuario desde localStorage
+ const user = JSON.parse(localStorage.getItem('user'));
+ if (!user || user.role !== 'Patient') {
+        alert('Acceso no autorizado.');
+        window.location.href = '/login.html'; // o donde tengas tu login
+    }
+// Comprobar si los datos existen
+if (user) {
+    // Asignamos los valores a los campos de entrada (input) para el usuario
+    document.getElementById('id_patient').value = user.additional_info.id_patient;
+    const birthDate = formatDate(user.additional_info.birth_date);
+        
+
+    // Mostrar campos específicos dependiendo del rol
+    if (user.role === 'Patient') {
+        
+    } else if (user.role === 'Doctor') {
+      
+    }
+} else {
+    // Si no hay datos de usuario en localStorage, redirigir al login
+    window.location.href = 'login.html';
+} 
+  </script>
+  <script>
+    document.getElementById('vitalForm').addEventListener('submit', async function (e) {
+      e.preventDefault();
+  
+      // Validar el formulario con HTML5
+      if (!this.checkValidity()) {
+        this.classList.add('was-validated');
+        return;
+      }
+  
+      const data = {
+        id_patient: document.getElementById('id_patient').value,
+        measurement_date: document.getElementById('measurement_date').value,
+        measurement_time: document.getElementById('measurement_time').value,
+        heart_rate: document.getElementById('heart_rate').value,
+        temperature: document.getElementById('temperature').value,
+        blood_pressure: document.getElementById('blood_pressure').value,
+        respiratory_rate: document.getElementById('respiratory_rate').value,
+        weight: document.getElementById('weight').value,
+        observations: document.getElementById('observations').value,
+      };
+  
+      try {
+        const res = await fetch('http://localhost:7000/vital-signs', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+  
+        const result = await res.json();
+        alert(result.message || "Registro completado");
+  
+        this.reset();
+        this.classList.remove('was-validated');
+      } catch (error) {
+        alert("Error al registrar los signos vitales.");
+        console.error(error);
+      }
+    });
+  </script>
+  
+    <!-- Main Theme Script -->
+    <script src="assets/js/theme.min.js"></script>
+    
+  </body>
+  
+</html>

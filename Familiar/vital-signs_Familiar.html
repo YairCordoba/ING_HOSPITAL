@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>HOSPITAL EN CASA</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Silicon - Multipurpose Technology Bootstrap Template">
+    <meta name="keywords" content="bootstrap, business, creative agency, mobile app showcase, saas, fintech, finance, online courses, software, medical, conference landing, services, e-commerce, shopping cart, multipurpose, shop, ui kit, marketing, seo, landing, blog, portfolio, html5, css3, javascript, gallery, slider, touch, creative">
+    <meta name="author" content="Createx Studio">
+    <!-- Viewport -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Favicon and Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="assets\imagen\v987-18a-removebg-preview.png">
+    <link rel="manifest" href="assets/favicon/site.webmanifest">
+    <link rel="mask-icon" href="assets\imagen\v987-18a-removebg-preview.png" color="#6366f1">
+    <link rel="shortcut icon" href="assets\imagen\v987-18a-removebg-preview.png">
+    <meta name="msapplication-TileColor" content="#080032">
+    <meta name="msapplication-config" content="assets/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff">
+
+    <!-- Vendor Styles -->
+    <link rel="stylesheet" media="screen" href="assets/vendor/boxicons/css/boxicons.min.css"/>
+
+    <!-- Main Theme Styles + Bootstrap -->
+    <link rel="stylesheet" media="screen" href="assets/css/theme.min.css">
+  <style>
+    .page-loading {
+      position: fixed;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      -webkit-transition: all .4s .2s ease-in-out;
+      transition: all .4s .2s ease-in-out;
+      background-color: #fff;
+      opacity: 0;
+      visibility: hidden;
+      z-index: 9999;
+    }
+    .dark-mode .page-loading {
+      background-color: #0b0f19;
+    }
+    .page-loading.active {
+      opacity: 1;
+      visibility: visible;
+    }
+    .page-loading-inner {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      text-align: center;
+      -webkit-transform: translateY(-50%);
+      transform: translateY(-50%);
+      -webkit-transition: opacity .2s ease-in-out;
+      transition: opacity .2s ease-in-out;
+      opacity: 0;
+    }
+    .page-loading.active > .page-loading-inner {
+      opacity: 1;
+    }
+    .page-loading-inner > span {
+      display: block;
+      font-size: 1rem;
+      font-weight: normal;
+      color: #9397ad;
+    }
+    .dark-mode .page-loading-inner > span {
+      color: #fff;
+      opacity: .6;
+    }
+    .page-spinner {
+      display: inline-block;
+      width: 2.75rem;
+      height: 2.75rem;
+      margin-bottom: .75rem;
+      vertical-align: text-bottom;
+      border: .15em solid #b4b7c9;
+      border-right-color: transparent;
+      border-radius: 50%;
+      -webkit-animation: spinner .75s linear infinite;
+      animation: spinner .75s linear infinite;
+    }
+    .dark-mode .page-spinner {
+      border-color: rgba(255,255,255,.4);
+      border-right-color: transparent;
+    }
+    @-webkit-keyframes spinner {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+    @keyframes spinner {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+     
+  </style>
+
+  <script>
+    let mode = window.localStorage.getItem('mode'),
+        root = document.getElementsByTagName('html')[0];
+    if (mode !== null && mode === 'dark') {
+      root.classList.add('dark-mode');
+    } else {
+      root.classList.remove('dark-mode');
+    }
+  </script>
+
+  <script>
+    (function () {
+      window.onload = function () {
+        const preloader = document.querySelector('.page-loading');
+        preloader.classList.remove('active');
+        setTimeout(function () {
+          preloader.remove();
+        }, 1000);
+      };
+    })();
+  </script>
+
+</head>
+<body class="light-mode">
+
+
+  <div class="page-loading active">
+    <div class="page-loading-inner">
+      <div class="page-spinner"></div><span>Loading...</span>
+    </div>
+  </div>
+
+  <main class="page-wrapper">
+      <!-- Navbar -->
+      <!-- Remove "fixed-top" class to make navigation bar scrollable with the page -->
+      <header class="header navbar navbar-expand-lg bg-light border-bottom border-light shadow-sm fixed-top">
+        <div class="container px-3">
+          <a href="index.html" class="navbar-brand pe-3">
+            <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
+            Hospital en Casa
+          </a>
+          <div id="navbarNav" class="offcanvas offcanvas-end">
+            <div class="offcanvas-header border-bottom">
+              <h5 class="offcanvas-title">Menu</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+            </div>
+            <div class="offcanvas-body">
+              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                  <a href="R_vitales_Familiar.html" class="nav-link">Registrar Signos Vitales</a>
+                </li>
+                <li class="nav-item">
+                  <a href="" class="nav-link">Agendar Citas</a>
+                </li>
+                <li class="nav-item">
+                  <a href="Ver_Citas_Familiar.html" class="nav-link">Ver Citas</a>
+                </li>
+                <li class="nav-item">
+                  <a href="vital-signs_Familiar.html" class="nav-link">Historicos</a>
+                </li>
+              </ul>
+            </div>
+            <div class="offcanvas-header border-top">
+              <a href="https://themes.getbootstrap.com/product/silicon-business-technology-template-ui-kit/" class="btn btn-primary w-100" target="_blank" rel="noopener">
+                <i class="bx bx-cart fs-4 lh-1 me-1"></i>
+                &nbsp;Mi perfil
+              </a>
+            </div>      
+          </div>
+          <div class="form-check form-switch mode-switch pe-lg-1 ms-auto me-4" data-bs-toggle="mode">
+            <input type="checkbox" class="form-check-input" id="theme-mode">
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Light</label>
+            <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
+          </div>
+          <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <a href="#" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
+            <i class="bx bx-cart fs-5 lh-1 me-1"></i>
+            &nbsp;Mi perfil
+          </a>
+        </div>
+      </header>
+      <!-- Page content -->
+      <section class="container pt-5">
+        <div class="row">
+
+  
+          <!-- Sidebar (User info + Account menu) -->
+          <aside class="col-lg-3 col-md-4 border-end pb-5 mt-n5">
+            <div class="position-sticky top-0">
+              <div class="text-center pt-5">
+                <div class="d-table position-relative mx-auto mt-2 mt-lg-4 pt-5 mb-3">
+                  <img src="assets\imagen\v987-18a-removebg-preview.png" class="d-block rounded-circle" width="120" alt="John Doe">
+                  <button type="button" class="btn btn-icon btn-light bg-white btn-sm border rounded-circle shadow-sm position-absolute bottom-0 end-0 mt-4" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Change picture">
+                    <i class=""></i>
+                  </button>
+                </div>
+
+                <h2 class="h5 mb-1">Hola, <span id="user-name"></span></h2>
+                <button type="button" class="btn btn-secondary w-100 d-md-none mt-n2 mb-3" data-bs-toggle="collapse" data-bs-target="#account-menu">
+                  <i class="bx bxs-user-detail fs-xl me-2"></i>
+                  Account menu
+                  <i class="bx bx-chevron-down fs-lg ms-1"></i>
+                </button>
+                <div id="account-menu" class="list-group list-group-flush collapse d-md-block">
+                  <a href="I_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
+                    Inicio
+                  </a>
+                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
+                    Emergencia
+                  </a>
+                  <a href="Inf_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
+                    Mi perfil
+                  </a>
+                  <a href="#" id="logout-btn" class="list-group-item list-group-item-action d-flex align-items-center">
+                    <i class="bx bx-log-out fs-xl opacity-60 me-2"></i>
+                    Cerrar sesión
+                </a>                
+                </div>
+              </div>
+            </div>
+          </aside>
+
+
+          <!-- Account security -->
+          <div class="col-md-8 offset-lg-1 pb-5 mb-lg-2 mb-lg-4 pt-md-5 mt-n3 mt-md-0">
+            <div class="ps-md-3 ps-lg-0 mt-md-2 pt-md-4 pb-md-2">
+              
+              <div class="d-flex justify-content-center">
+                <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.5">S</div>
+                <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1">I</div>
+                <div class="rellax display-1 text-warning px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.75">G</div>
+                <div class="rellax display-1 text-info px-1" data-rellax-percentage="0.5" data-rellax-speed="0.75">N</div>
+                <div class="rellax display-1 text-danger px-1" data-rellax-percentage="0.5" data-rellax-speed="-1.5">O</div>
+                <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1.25">S</div>
+                <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-1">_</div>
+                <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1.25">V</div>
+                <div class="rellax display-1 text-danger px-1" data-rellax-percentage="0.5" data-rellax-speed="-1.5">I</div>
+                <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.5">T</div>
+                <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1">A</div>
+                <div class="rellax display-1 text-warning px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.75">L</div>
+                <div class="rellax display-1 text-info px-1" data-rellax-percentage="0.5" data-rellax-speed="0.75">E</div>
+                <div class="rellax display-1 text-danger px-1" data-rellax-percentage="0.5" data-rellax-speed="-1.5">S</div>
+              </div>
+              <!-- Password -->
+              <div class="table-responsive">
+                <div class="mb-4">
+                  <p><strong>ID Paciente:</strong> <span id="idPaciente"></span></p>
+                
+                  <div class="row g-2">
+                    <div class="col-md-3">
+                      <label for="filtroDesde" class="form-label">Desde</label>
+                      <input type="date" id="filtroDesde" class="form-control">
+                    </div>
+                    <div class="col-md-3">
+                      <label for="filtroHasta" class="form-label">Hasta</label>
+                      <input type="date" id="filtroHasta" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                      <label for="buscar" class="form-label">Buscar</label>
+                      <input type="text" id="buscar" class="form-control" placeholder="Buscar en los registros...">
+                    </div>
+                    <div class="col-md-2 d-flex align-items-end">
+                      <button class="btn btn-primary w-100" onclick="aplicarFiltros()">Filtrar</button>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Tabla de Signos Vitales -->
+                <div class="table-responsive">
+                <table class="table table-dark" id="tablaSignos">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Fecha</th>
+                      <th>Hora</th>
+                      <th>FC</th>
+                      <th>Temp</th>
+                      <th>PA</th>
+                      <th>FR</th>
+                      <th>Peso</th>
+                      <th>Observaciones</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  <!-- Back to top button -->
+  <a href="#top" class="btn-scroll-top" data-scroll>
+    <span class="btn-scroll-top-tooltip text-muted fs-sm me-2">Top</span>
+    <i class="btn-scroll-top-icon bx bx-chevron-up"></i>
+  </a>
+  <!-- Vendor Scripts -->
+  <script src="assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js"></script>
+  <!-- Main Theme Script -->
+  <script src="assets/js/theme.min.js"></script>
+  <script src="FUNCIONES\Cerrar_sesion.js"></script>
+  <script>
+    const user = JSON.parse(localStorage.getItem('user'));
+    if (!user || user.role !== 'Relative') {
+      alert('Acceso no autorizado.');
+      window.location.href = '/login.html';
+    }
+  
+    const id_patient = user?.additional_info?.id_patient;
+    document.getElementById('idPaciente').textContent = id_patient;
+  
+    let registros = [];
+  
+    function formatTime(t) {
+      return t?.slice(0, 5) || '';
+    }
+  
+    async function cargarSignosVitales(id) {
+      try {
+        const res = await fetch(`http://localhost:7000/vital-signs/patient/${id}`);
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        registros = await res.json();
+        mostrarRegistros(registros);
+      } catch (err) {
+        console.error('Error al cargar signos:', err);
+        alert('Error al obtener los registros.');
+      }
+    }
+  
+    function mostrarRegistros(data) {
+      const tbody = document.querySelector('#tablaSignos tbody');
+      tbody.innerHTML = '';
+  
+      if (!data.length) {
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center">No hay registros</td></tr>';
+        return;
+      }
+  
+      data.forEach(reg => {
+        const row = `
+          <tr>
+            <td>${reg.measurement_date}</td>
+            <td>${formatTime(reg.measurement_time)}</td>
+            <td>${reg.heart_rate ?? '-'}</td>
+            <td>${reg.temperature ?? '-'}</td>
+            <td>${reg.blood_pressure ?? '-'}</td>
+            <td>${reg.respiratory_rate ?? '-'}</td>
+            <td>${reg.weight ?? '-'}</td>
+            <td>${reg.observations ?? '-'}</td>
+          </tr>`;
+        tbody.innerHTML += row;
+      });
+    }
+  
+    function aplicarFiltros() {
+      const desde = document.getElementById('filtroDesde').value;
+      const hasta = document.getElementById('filtroHasta').value;
+      const buscar = document.getElementById('buscar').value.toLowerCase();
+  
+      let filtrados = registros;
+  
+      if (desde) {
+        filtrados = filtrados.filter(r => r.measurement_date >= desde);
+      }
+      if (hasta) {
+        filtrados = filtrados.filter(r => r.measurement_date <= hasta);
+      }
+  
+      if (buscar) {
+        filtrados = filtrados.filter(r =>
+          Object.values(r).some(val =>
+            (val + '').toLowerCase().includes(buscar)
+          )
+        );
+      }
+  
+      mostrarRegistros(filtrados);
+    }
+    cargarSignosVitales(id_patient);
+  </script>  
+</body>
+</html>

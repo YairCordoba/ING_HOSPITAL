@@ -20,7 +20,7 @@ export default function Sidebar({ onVer }) {
   };
 
   const handleBackup = async () => {
-    closeNav();
+    //closeNav();
     try {
       const response = await superadminApi.get('/backup', { responseType: 'blob' });
       const url = window.URL.createObjectURL(new Blob([response.data]));

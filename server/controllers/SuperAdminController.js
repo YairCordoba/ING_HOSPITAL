@@ -490,6 +490,16 @@ export async function updatePatient(req, res) {
         query2,
         params2
       );
+
+      //3) actualizar en relatives la direccion (si la cambia)
+      if (address) {
+        let query3 = `UPDATE relatives set address = ? where id_patient = ?`
+        let params3 = [address, id_patient]
+        await conn.query(
+          query3,
+          params3
+        );
+      }
     
     await conn.commit();
     res.status(204).json({ msg: 'Paciente actualizado correctamente' });

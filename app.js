@@ -314,7 +314,30 @@ app.get('/api/relatives/:id_patient', (req, res) => {
 app.use(express.json()); // Asegúrate de tener esto para parsear JSON
 
 
+app.post('/api/patient/update', (req, res) => {
+  const { id_patient, phone, address, marital_status, occupation } = req.body;
 
+  if (!id_patient) {
+    return res.status(400).json({ success: false, message: 'ID requerido' });
+  }
+
+  const sql = `
+    UPDATE patients SET 
+      phone = ?, 
+      address = ?, 
+      marital_status = ?, 
+      occupation = ? 
+    WHERE id_patient = ?
+  `;
+
+  connection.query(sql, [phone, address, marital_status, occupation, id_patient], (err, result) => {
+    if (err) {
+      console.error('Error en la base de datos:', err);
+      return res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
+    res.json({ success: true });
+  });
+});
 
 // Iniciar servidor
 const PORT = process.env.PORT || 7000;

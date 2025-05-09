@@ -23,7 +23,7 @@ loginForm.addEventListener('submit', async (event) => {
 
             switch (data.user.role) {
                 case 'Doctor': window.location.href = 'MEDICO/I_Medico.html'; break;
-                case 'Patient': window.location.href = 'PACIENTE/I_Paciente.htmll'; break;
+                case 'Patient': window.location.href = 'PACIENTE/I_Paciente.html'; break;
                 case 'Relative': window.location.href = 'Familiar/I_Familiar.html'; break;
                 default:
                     errorMessage.textContent = 'Rol de usuario no reconocido o sin acceso.';

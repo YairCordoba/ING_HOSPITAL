@@ -326,12 +326,56 @@
   </div>
 
   <!-- Cambio de Contraseña -->
-  <div class="d-flex justify-content-end gap-2 mb-3">
-    <button type="button" class="btn btn-outline-primary" onclick="habilitarEdicion()">Editar</button>
-    <button type="button" class="btn btn-primary" onclick="guardarDatos()" id="btnGuardar" style="display:none;">Guardar</button>
+</form>     
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarPaciente">
+  Editar Información
+</button>
+<div class="modal fade" id="modalActualizarPaciente" tabindex="-1" 
+data-bs-backdrop="static" data-bs-keyboard="false" role="dialog">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Información del Paciente</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formActualizarPaciente">
+          <div class="mb-3">
+            <label for="patient_id" class="form-label">ID del Paciente</label>
+            <input type="text" class="form-control" id="patient_id" name="telefono" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="Telefono1" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="Telefono1" name="telefono">
+          </div>
+          <div class="mb-3">
+            <label for="direccion" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccion" name="direccion">
+          </div>
+          <div class="mb-3">
+            <label for="estado_civil" class="form-label">Estado Civil</label>
+            <select class="form-select" id="estado_civil" name="estado_civil">
+              <option value="">Seleccione</option>
+              <option value="Soltero/a">Soltero/a</option>
+              <option value="Casado/a">Casado/a</option>
+              <option value="Divorciado/a">Divorciado/a</option>
+              <option value="Viudo/a">Viudo/a</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label for="ocupacion" class="form-label">Ocupación</label>
+            <input type="text" class="form-control" id="ocupacion" name="ocupacion">
+          </div>
+          <input type="hidden" id="id_paciente" name="id_paciente">
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="formActualizarPaciente" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </div>
   </div>
-  
-</form>       
+</div>  
             </div>
           </div>
         </div>
@@ -367,14 +411,18 @@ if (user) {
     // Asignamos los valores a los campos de entrada (input) para el usuario
     document.getElementById('name').value = user.name;
     document.getElementById('id_patient').value = user.additional_info.id_patient;
+    document.getElementById('patient_id').value = user.additional_info.id_patient;
     document.getElementById('name1').textContent = user.name;
     document.getElementById('email').value = user.email;
     document.getElementById('user').value = user.role;
     document.getElementById('ID').value = user.id_card;
     document.getElementById('occupation').value = user.additional_info.occupation;
+    document.getElementById('ocupacion').value = user.additional_info.occupation;
     document.getElementById('marital_status').value = user.additional_info.marital_status;
     document.getElementById('address').value = user.additional_info.address;
+    document.getElementById('direccion').value = user.additional_info.address;
     document.getElementById('phone').value = user.additional_info.phone;
+    document.getElementById('Telefono1').value = user.additional_info.phone;
     document.getElementById('blood_type').value = user.additional_info.blood_type;
     const birthDate = formatDate(user.additional_info.birth_date);
         document.getElementById('birth').value = birthDate;  // Asignamos la fecha en formato 'YYYY-MM-DD'
@@ -417,7 +465,82 @@ if (user) {
         console.error('Error al obtener familiares:', error);
       });
   </script>
-  
+  <script src="backend.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const form = document.getElementById("formActualizarPaciente");
+    
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+    
+        const id = document.getElementById("patient_id").value;
+        const telefono = document.getElementById("Telefono1").value;
+        const direccion = document.getElementById("direccion").value;
+        const estadoCivil = document.getElementById("estado_civil").value;
+        const ocupacion = document.getElementById("ocupacion").value;
+        
+        // Validación simple (opcional)
+        if (!id || !telefono || !direccion || !estadoCivil) {
+          alert("Por favor complete todos los campos obligatorios.");
+          return;
+        }
+    
+    
+        fetch("http://localhost:7000/api/patient/update", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            id_patient: id,
+            phone: telefono,
+            address: direccion,
+            marital_status: estadoCivil,
+            occupation: ocupacion,
+          }),
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              alert("Información actualizada correctamente");
+
+              if (data.success) {
+  alert("Información actualizada correctamente");
+
+  // Obtener el objeto user actual del localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  // Actualizar la información modificada
+  user.additional_info.phone = telefono;
+  user.additional_info.address = direccion;
+  user.additional_info.marital_status = estadoCivil;
+  user.additional_info.occupation = ocupacion;
+
+  // Guardar de nuevo en localStorage
+  localStorage.setItem("user", JSON.stringify(user));
+
+  // Cerrar el modal
+  const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarPaciente"));
+  modal.hide();
+}
+
+              // Opcional: cerrar el modal
+              const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarPaciente"));
+              modal.hide();
+              location.reload();
+
+            } else {
+              alert("Error al actualizar: " + (data.message || "intente más tarde"));
+            }
+          })
+          .catch((err) => {
+            console.error("Error:", err);
+            alert("Error de conexión con el servidor.");
+          });
+      });
+    });
+    </script>
+    
     <!-- Main Theme Script -->
     <script src="assets/js/theme.min.js"></script>
     <script src="FUNCIONES\Cerrar_sesion.js"></script>

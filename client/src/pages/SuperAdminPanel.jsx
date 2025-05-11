@@ -64,6 +64,7 @@ export default function SuperAdminPanel() {
     fetchUsers();
   }, [navigate]);
 
+
   const handleVer = () => fetchUsers();
   const handleCrear = () => navigate("/superadmin/createnew");
   const handleLogout = () => {

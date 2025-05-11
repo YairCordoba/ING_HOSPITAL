@@ -6,6 +6,7 @@ import SuperAdmin from './pages/SuperAdminPanel';
 import CreateNewUser from './pages/CreateNewUser';
 import EditUser from './pages/EditUser';
 
+
 function App() {
   return (
     <BrowserRouter>
@@ -14,10 +15,16 @@ function App() {
         <Route path="/" element={<Login />} />
 
         {/*Login exclusivo de SuperAdmin*/}
-        <Route path="/superadmin/login" element={<SuperAdminLogin />} />
+        <Route path="/superadmin/login" element={<SuperAdminLogin /> } />
 
         {/*Panel de SuperAdmin*/}
-        <Route path="/superadmin" element={<SuperAdmin />} />
+        <Route path="/superadmin" element={
+         
+          <SuperAdmin />
+         
+          
+          } />
+
 
 
 

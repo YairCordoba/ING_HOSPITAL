@@ -1,5 +1,4 @@
 // server/controllers/superadminController.js
-
 import { db } from '../index.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
@@ -620,6 +619,11 @@ export async function deleteDoctor(req, res) {
       id
     } = req.params;
 
+    //ID del doctor generico es 12 (Sin Asignar)
+    if (id == 12) {
+      return res.status(400).json({ msg: 'No se puede borrar el doctor generico' });
+    }
+
     const [rows] = await db.query(
       'SELECT id_card FROM doctors where id_doctor = ?', [id]
     );
@@ -735,9 +739,6 @@ export async function deletePatient(req, res) {
   }
 }
 
-/*export async function deleteSuperAdmin (req, res) {
-  
-}*/
 
 export async function reassignPatients(req, res) {
   const conn = await db.getConnection();

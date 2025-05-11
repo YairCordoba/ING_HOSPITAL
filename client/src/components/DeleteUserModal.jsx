@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import superadminApi from "../services/superadminApi";
-import '../styles/DeleteUserModal.css'; // Import CSS for styling
+import '../styles/DeleteUserModal.css'; 
 
 export default function DeleteUserModal({ userId, rolUser, onClose, fetchUsers}) {
   
@@ -30,7 +30,7 @@ export default function DeleteUserModal({ userId, rolUser, onClose, fetchUsers})
       setShowConfirmButton(true)
       if (rolUser === "Doctor") {
         
-        if (userId && userId === 13) {
+        if (userId && userId === 12) {
           setMessageDeleteModal('❌ No se puede eliminar el doctor por defecto - SIN ASIGNAR');
           setShowConfirmButton(false)
           return

@@ -176,40 +176,6 @@ export async function createPatient(req, res) {
   }
 }
 
-export async function createAdmin(req, res) {
-  const conn = await db.getConnection();
-  try {
-    await conn.beginTransaction();
-    console.log('Creando nuevo superadmin');
-    const {
-      id_card,
-      name,
-      email,
-      password
-    } = req.body;
-    await conn.query(
-    'INSERT INTO users (id_card, name, email, password, role) VALUES (?, ?, ?, ?, "Admin")',
-    [id_card, name, email, password]);
-
-  await conn.query(
-  `INSERT INTO admins (id_card, name, email, password)
-    VALUES (?, ?, ?, ?)`, [id_card, name, email, password]);
-
-  console.log("✅ SuperAdmin creado correctamente");
-  await conn.commit();
-  res.status(201).json({ msg: 'Administrador creado correctamente' });
-  }catch (err) {
-    await conn.rollback();
-    console.error('Error en createNewAdmin:', err);
-    if (err.code === 'ER_DUP_ENTRY') {
-      return res.status(409).json({ msg: 'Cédula o email ya registrados' });
-    }
-    res.status(500).json({ msg: 'Error interno al crear administrador' });
-  }
-  finally {
-    conn.release();
-  } 
-}
 
 export async function createRelative(req, res) {
   const conn = await db.getConnection();

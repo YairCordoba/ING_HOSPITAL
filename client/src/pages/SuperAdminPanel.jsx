@@ -96,7 +96,7 @@ export default function SuperAdminPanel() {
   };
 
   const handleEditUser = (id, roleId) => {
-    if (roleId === "Doctor" && id === 13) {
+    if (roleId === "Doctor" && id === 12) {
       alert("❌ No se puede editar el doctor por defecto - SIN ASIGNAR");
       return;
     }

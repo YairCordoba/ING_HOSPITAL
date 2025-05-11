@@ -339,6 +339,33 @@ app.post('/api/patient/update', (req, res) => {
   });
 });
 
+
+app.post('/api/relative/update', (req, res) => {
+  const { id_relative, phone, address } = req.body;
+
+  if (!id_relative) {
+    return res.status(400).json({ success: false, message: 'ID requerido' });
+  }
+
+  const sql = `
+    UPDATE relatives SET 
+      phone = ?, 
+      address = ? 
+    WHERE id_relative = ?
+  `;
+
+  connection.query(sql, [phone, address, id_relative], (err, result) => {
+    if (err) {
+      console.error('Error en la base de datos:', err);
+      return res.status(500).json({ success: false, message: 'Error del servidor' });
+    }
+    res.json({ success: true });
+  });
+});
+
+
+
+
 // Iniciar servidor
 const PORT = process.env.PORT || 7000;
 app.listen(PORT, () => {

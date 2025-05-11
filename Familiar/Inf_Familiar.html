@@ -283,7 +283,7 @@
 
   <div class="row">
     <div class="col-sm-6 mb-4">
-      <label for="occupation" class="form-label fs-base">Ocupación</label>
+      <label for="occupation1" class="form-label fs-base">Ocupación</label>
       <input type="text" id="occupation" class="form-control form-control-lg" value="" disabled>
     </div>
     <div class="col-sm-6 mb-4">
@@ -318,7 +318,43 @@
       <input type="varchar" id="ID_P" class="form-control form-control-lg" value="" disabled>
     </div>
   </div>
-</form>       
+</form>   
+
+<button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarFamiliar">
+  Editar Información del Familiar
+</button>
+
+<div class="modal fade" id="modalActualizarFamiliar" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Actualizar Información del Familiar</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+      </div>
+      <div class="modal-body">
+        <form id="formActualizarFamiliar">
+          <div class="mb-3">
+            <label for="relative_id" class="form-label">ID del Familiar</label>
+            <input type="text" class="form-control" id="relative_id" disabled>
+          </div>
+          <div class="mb-3">
+            <label for="telefonoRelative" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="telefonoRelative">
+          </div>
+          <div class="mb-3">
+            <label for="direccionRelative" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="direccionRelative">
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" form="formActualizarFamiliar" class="btn btn-primary">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+</div>
+
             </div>
           </div>
         </div>
@@ -358,16 +394,21 @@ if (user) {
     // Asignamos los valores a los campos de entrada (input) para el usuario
     document.getElementById('name').value = user.name;
     document.getElementById('id_patient').value = user.additional_info.id_patient;
+    document.getElementById('relative_id').value = user.additional_info.id_patient;
     document.getElementById('name1').textContent = user.name;
     document.getElementById('email').value = user.email;
     document.getElementById('user').value = user.role;
     document.getElementById('ID').value = user.id_card;
+    document.getElementById('address').value = user.address;
+    document.getElementById('phone').value = user.phone;
     document.getElementById('occupation').value = user.additional_info.occupation;
     document.getElementById('marital_status').value = user.additional_info.marital_status;
-    document.getElementById('address').value = user.additional_info.address;
-    document.getElementById('phone').value = user.additional_info.phone;
+    document.getElementById('address1').value = user.additional_info.address;
+    document.getElementById('direccionFamiliar').value = user.additional_info.address;
+    document.getElementById('phone1').value = user.additional_info.phone;
+    document.getElementById('TelefonoFamiliar').value = user.additional_info.phone;
     document.getElementById('blood_type').value = user.additional_info.blood_type;
-    document.getElementById('ID_P').value = user.additional_info.id_patient;
+    document.getElementById('ID_P').value = user.id_patient;
     const birthDate = formatDate(user.additional_info.birth_date);
         document.getElementById('birth').value = birthDate;  // Asignamos la fecha en formato 'YYYY-MM-DD'
         document.getElementById('user1').textContent = user.role;
@@ -386,6 +427,64 @@ if (user) {
     window.location.href = 'login.html';
 } 
   </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const formRelative = document.getElementById("formActualizarFamiliar");
+
+  formRelative.addEventListener("submit", function (e) {
+    e.preventDefault();
+
+    const id = document.getElementById("relative_id").value.trim();
+    const telefono = document.getElementById("telefonoRelative").value.trim();
+    const direccion = document.getElementById("direccionRelative").value.trim();
+
+    if (!id || !telefono || !direccion) {
+      alert("Por favor complete todos los campos.");
+      return;
+    }
+
+    fetch("http://localhost:7000/api/relative/update", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id_relative: id,
+        phone: telefono,
+        address: direccion,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          alert("Información actualizada correctamente");
+
+          // ✅ Solo aquí actualizamos el localStorage
+          const user = JSON.parse(localStorage.getItem("user"));
+          if (user && user.role === "Relative") {
+            user.phone = telefono;
+            user.address = direccion;
+            localStorage.setItem("user", JSON.stringify(user));
+          }
+
+          const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarFamiliar"));
+          if (modal) modal.hide();
+
+          location.reload();
+        } else {
+          alert("Error al actualizar: " + (data.message || "intente más tarde"));
+        }
+      })
+      .catch((err) => {
+        console.error("Error:", err);
+        alert("Error de conexión con el servidor.");
+      });
+  });
+});
+
+</script>
+
+
   </body>
 <!-- Mirrored from silicon.createx.studio/account-security.html by HTTrack Website Copier/3.x [XR&CO'2014], Thu, 04 Aug 2022 19:42:25 GMT -->
 </html>

@@ -467,79 +467,86 @@ if (user) {
   </script>
   <script src="backend.js"></script>
   <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const form = document.getElementById("formActualizarPaciente");
-    
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-    
-        const id = document.getElementById("patient_id").value;
-        const telefono = document.getElementById("Telefono1").value;
-        const direccion = document.getElementById("direccion").value;
-        const estadoCivil = document.getElementById("estado_civil").value;
-        const ocupacion = document.getElementById("ocupacion").value;
-        
-        // Validación simple (opcional)
-        if (!id || !telefono || !direccion || !estadoCivil) {
-          alert("Por favor complete todos los campos obligatorios.");
-          return;
-        }
-    
-    
-        fetch("http://localhost:7000/api/patient/update", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            id_patient: id,
-            phone: telefono,
-            address: direccion,
-            marital_status: estadoCivil,
-            occupation: ocupacion,
-          }),
-        })
-          .then((res) => res.json())
-          .then((data) => {
-            if (data.success) {
-              alert("Información actualizada correctamente");
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("formActualizarPaciente");
 
-              if (data.success) {
-  alert("Información actualizada correctamente");
+    form.addEventListener("submit", function (e) {
+      e.preventDefault();
 
-  // Obtener el objeto user actual del localStorage
-  const user = JSON.parse(localStorage.getItem("user"));
+      const id = document.getElementById("patient_id").value.trim();
+      const telefono = document.getElementById("Telefono1").value.trim();
+      const direccion = document.getElementById("direccion").value.trim();
+      const estadoCivil = document.getElementById("estado_civil").value.trim();
+      const ocupacion = document.getElementById("ocupacion").value.trim();
 
-  // Actualizar la información modificada
-  user.additional_info.phone = telefono;
-  user.additional_info.address = direccion;
-  user.additional_info.marital_status = estadoCivil;
-  user.additional_info.occupation = ocupacion;
+      // Validación básica
+      if (!id || !telefono || !direccion || !estadoCivil) {
+        alert("Por favor complete todos los campos obligatorios.");
+        return;
+      }
 
-  // Guardar de nuevo en localStorage
-  localStorage.setItem("user", JSON.stringify(user));
+      // Validar formato del teléfono (ejemplo: 7 a 15 dígitos)
+      if (!/^\d{7,15}$/.test(telefono)) {
+        alert("Por favor ingrese un número de teléfono válido.");
+        return;
+      }
 
-  // Cerrar el modal
-  const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarPaciente"));
-  modal.hide();
-}
+      // Deshabilitar botón de enviar para evitar múltiples envíos
+      const submitBtn = form.querySelector("button[type='submit']");
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Actualizando...";
 
-              // Opcional: cerrar el modal
-              const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarPaciente"));
-              modal.hide();
-              location.reload();
+      fetch("http://localhost:7000/api/patient/update", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id_patient: id,
+          phone: telefono,
+          address: direccion,
+          marital_status: estadoCivil,
+          occupation: ocupacion,
+        }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            alert("Información actualizada correctamente");
 
-            } else {
-              alert("Error al actualizar: " + (data.message || "intente más tarde"));
+            // Actualizar información en localStorage
+            let user = JSON.parse(localStorage.getItem("user"));
+            if (user && user.additional_info) {
+              user.additional_info.phone = telefono;
+              user.additional_info.address = direccion;
+              user.additional_info.marital_status = estadoCivil;
+              user.additional_info.occupation = ocupacion;
+              localStorage.setItem("user", JSON.stringify(user));
             }
-          })
-          .catch((err) => {
-            console.error("Error:", err);
-            alert("Error de conexión con el servidor.");
-          });
-      });
+
+            // Cerrar el modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarPaciente"));
+            modal.hide();
+
+            // Opcional: recargar página para reflejar cambios
+            location.reload();
+          } else {
+            alert("Error al actualizar: " + (data.message || "Intente más tarde"));
+          }
+        })
+        .catch((err) => {
+          console.error("Error:", err);
+          alert("Error de conexión con el servidor.");
+        })
+        .finally(() => {
+          // Restaurar botón
+          submitBtn.disabled = false;
+          submitBtn.textContent = "Actualizar";
+        });
     });
-    </script>
+  });
+</script>
+
     
     <!-- Main Theme Script -->
     <script src="assets/js/theme.min.js"></script>

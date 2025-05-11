@@ -111,21 +111,60 @@ app.post("/verificar-codigo", (req, res) => {
   res.json({ success: true, message: "Código verificado" });
 });
 
-app.post("/actualizar-contrasena", (req, res) => {
+app.post("/actualizar-contrasena", async (req, res) => {
   const { cedula, nuevaClave } = req.body;
-  const sql = "UPDATE users SET password = ? WHERE id_card = ?";
 
-  connection.query(sql, [nuevaClave, cedula], (err, result) => {
-    if (err) return res.json({ success: false, message: "Error al actualizar" });
+  try {
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(nuevaClave, saltRounds);
 
-    if (result.affectedRows === 0) {
-      return res.json({ success: false, message: "Usuario no encontrado" });
-    }
+    //Verificar si el usuario existe y obtener su rol
+    const sqlGetUser = "SELECT role FROM users WHERE id_card = ?";
+    connection.query(sqlGetUser, [cedula], (err, results) => {
+      if (err) {
+        return res.json({ success: false, message: "Error al verificar usuario" });
+      }
 
-    delete recoveryCodes[cedula];
+      if (results.length === 0) {
+        return res.json({ success: false, message: "Usuario no encontrado" });
+      }
 
-    res.json({ success: true });
-  });
+      const role = results[0].role;
+
+      //Actualizar la contraseña en la tabla users
+      const sqlUpdateUsers = "UPDATE users SET password = ? WHERE id_card = ?";
+      connection.query(sqlUpdateUsers, [hashedPassword, cedula], (err, resultUsers) => {
+        if (err) {
+          return res.json({ success: false, message: "Error al actualizar en users" });
+        }
+
+        const tablaPorRol = {
+          Patient: "patients",
+          Doctor: "doctors",
+          Admin: "admins",
+          Relative: "relatives"
+        };
+
+        const tabla = tablaPorRol[role];
+        if (!tabla) {
+          return res.json({ success: false, message: "Rol no reconocido" });
+        }
+
+        const sqlUpdateRol = `UPDATE ${tabla} SET password = ? WHERE id_card = ?`;
+        connection.query(sqlUpdateRol, [hashedPassword, cedula], (err, resultRol) => {
+          if (err) {
+            return res.json({ success: false, message: `Error al actualizar en ${tabla}` });
+          }
+
+          delete recoveryCodes[cedula]; // Eliminar código de recuperación usado
+          res.json({ success: true, message: "Contraseña actualizada correctamente en todas las tablas" });
+        });
+      });
+    });
+
+  } catch (error) {
+    res.json({ success: false, message: "Error al hashear la contraseña" });
+  }
 });
 
 // Ruta API para obtener pacientes por cédula

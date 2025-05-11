@@ -114,6 +114,7 @@ async function actualizarContrasena() {
       },
       body: JSON.stringify({
         cedula: usuarioCedula,
+        
         nuevaClave
       })
     });
@@ -122,8 +123,10 @@ async function actualizarContrasena() {
 
     if (data.success) {
       mostrarMensaje("Contraseña actualizada con éxito.");
-      mostrarPaso("step1");
-      codigoVerificado = false;
+      // Espera 2 segundos y redirige al login
+      setTimeout(() => {
+        window.location.href = "../login.html";
+      }, 2000);
     } else {
       mostrarMensaje(data.message, true);
     }

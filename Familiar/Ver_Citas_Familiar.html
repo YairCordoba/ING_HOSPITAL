@@ -190,7 +190,7 @@
               </ul>
             </div>
             <div class="offcanvas-header border-top">
-              <a href="Informacion.html" class="btn btn-primary w-100" target="_blank" rel="noopener">
+              <a href="Inf_Familiar.html" class="btn btn-primary w-100" target="_blank" rel="noopener">
                 <i class="bx bx-cart fs-4 lh-1 me-1"></i>
                 &nbsp;Mi perfil
               </a>
@@ -202,7 +202,7 @@
             <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
           </div>
 
-          <a href="Informacion.html" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
+          <a href="Inf_Familiar.html" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
             <i class=""></i>
             &nbsp;Mi perfil
           </a>
@@ -239,9 +239,9 @@
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="Ver_Reportes_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
-                    Emergencia
+                    Ver Reportes
                   </a>
                   <a href="Inf_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
@@ -317,7 +317,7 @@ return `${year}-${month}-${day}`;  // Formato 'YYYY-MM-DD'
 const user = JSON.parse(localStorage.getItem('user'));
 if (!user || user.role !== 'Relative') {
     alert('Acceso no autorizado.');
-    window.location.href = '/login.html'; // o donde tengas tu login
+    window.location.href = '../login.html'; // o donde tengas tu login
 }
 // Comprobar si los datos existen
 if (user) {
@@ -349,7 +349,7 @@ if (user.role === 'Patient') {
 }
 } else {
 // Si no hay datos de usuario en localStorage, redirigir al login
-window.location.href = 'login.html';
+window.location.href = '../login.html';
 } 
 </script>
 <script>

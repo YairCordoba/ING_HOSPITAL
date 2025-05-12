@@ -184,7 +184,7 @@
     <main class="page-wrapper">
       <header class="header navbar navbar-expand-lg bg-light border-bottom border-light shadow-sm fixed-top">
         <div class="container px-3">
-          <a href="index.html" class="navbar-brand pe-3">
+          <a href="Informacion.html" class="navbar-brand pe-3">
             <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
             Hospital en Casa
           </a>
@@ -205,7 +205,7 @@
                   <a href="ver_citas.html" class="nav-link">Ver Citas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="vital-signs.html" class="nav-link">Historicos</a>
+                  <a href="vital-signs.html" class="nav-link">Ver Signos Vitales</a>
                 </li>
               </ul>
             </div>
@@ -259,9 +259,9 @@
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="Ver_Reportes.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
-                    Emergencia
+                    Ver Reportes
                   </a>
                   <a href="Informacion.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
@@ -375,7 +375,7 @@
       // Verificar si el usuario es válido y paciente
       if (!user || user.role !== 'Patient') {
         alert('Acceso no autorizado.');
-        window.location.href = '/login.html';
+        window.location.href = '../login.html';
         
       } else {
         // Mostrar información del usuario en el DOM

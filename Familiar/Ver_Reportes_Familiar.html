@@ -178,18 +178,18 @@
                   <a href="R_vitales_Familiar.html" class="nav-link">Registrar Signos Vitales</a>
                 </li>
                 <li class="nav-item">
-                  <a href="" class="nav-link">Agendar Citas</a>
+                  <a href="agendar_cita_Familiar.html" class="nav-link">Agendar Citas</a>
                 </li>
                 <li class="nav-item">
                   <a href="Ver_Citas_Familiar.html" class="nav-link">Ver Citas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="vital-signs_Familiar.html" class="nav-link">Historicos</a>
+                  <a href="vital-signs_Familiar.html" class="nav-link">Ver Signos Vitales</a>
                 </li>
               </ul>
             </div>
             <div class="offcanvas-header border-top">
-              <a href="Informacion.html" class="btn btn-primary w-100" target="_blank" rel="noopener">
+              <a href="Inf_Familiar.html" class="btn btn-primary w-100" target="_blank" rel="noopener">
                 <i class="bx bx-cart fs-4 lh-1 me-1"></i>
                 &nbsp;Mi perfil
               </a>
@@ -201,7 +201,7 @@
             <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
           </div>
 
-          <a href="Informacion.html" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
+          <a href="Inf_Familiar.html" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
             <i class=""></i>
             &nbsp;Mi perfil
           </a>
@@ -237,9 +237,9 @@
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="Ver_Reportes_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
-                    Emergencia
+                    Ver Reportes
                   </a>
                   <a href="Inf_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
@@ -315,7 +315,7 @@
   const user = JSON.parse(localStorage.getItem('user'));
   if (!user || user.role !== 'Relative') {
     alert('Acceso no autorizado.');
-    window.location.href = '/login.html';
+    window.location.href = '../login.html';
   }
 
   const id_patient = user?.additional_info?.id_patient;

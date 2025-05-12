@@ -159,7 +159,7 @@
       <!-- Remove "fixed-top" class to make navigation bar scrollable with the page -->
       <header class="header navbar navbar-expand-lg bg-light border-bottom border-light shadow-sm fixed-top">
         <div class="container px-3">
-          <a href="index.html" class="navbar-brand pe-3">
+          <a href="Informacion.html" class="navbar-brand pe-3">
             <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
             Hospital en Casa
           </a>
@@ -180,7 +180,7 @@
                   <a href="ver_citas.html" class="nav-link">Ver Citas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="vital-signs.html" class="nav-link">Historicos</a>
+                  <a href="vital-signs.html" class="nav-link">Ver Signos Vitales</a>
                 </li>
               </ul>
             </div>
@@ -233,9 +233,9 @@
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="Ver_Reportes.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
-                    Emergencia
+                    Ver Reportes
                   </a>
                   <a href="Informacion.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
@@ -404,7 +404,7 @@ data-bs-backdrop="static" data-bs-keyboard="false" role="dialog">
  const user = JSON.parse(localStorage.getItem('user'));
  if (!user || user.role !== 'Patient') {
         alert('Acceso no autorizado.');
-        window.location.href = '/login.html'; // o donde tengas tu login
+        window.location.href = '../login.html'; // o donde tengas tu login
     }
 // Comprobar si los datos existen
 if (user) {
@@ -439,7 +439,7 @@ if (user) {
     }
 } else {
     // Si no hay datos de usuario en localStorage, redirigir al login
-    window.location.href = 'login.html';
+    window.location.href = '../login.html';
 } 
   </script>
   <script>
@@ -465,7 +465,6 @@ if (user) {
         console.error('Error al obtener familiares:', error);
       });
   </script>
-  <script src="backend.js"></script>
   <script>
   document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("formActualizarPaciente");
@@ -491,10 +490,6 @@ if (user) {
         return;
       }
 
-      // Deshabilitar botón de enviar para evitar múltiples envíos
-      const submitBtn = form.querySelector("button[type='submit']");
-      submitBtn.disabled = true;
-      submitBtn.textContent = "Actualizando...";
 
       fetch("http://localhost:7000/api/patient/update", {
         method: "POST",

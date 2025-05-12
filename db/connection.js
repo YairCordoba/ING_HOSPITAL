@@ -2,9 +2,9 @@ const mysql = require('mysql2');
 
 const connect = mysql.createConnection({
     database: 'ing_soft',
-    user: 'e5gsrd2396l9vmh70lxc',
+    user: 'e9c58j86272ai2bfw2rw',
     host: 'aws.connect.psdb.cloud',
-    password: 'pscale_pw_2fGemXJk4uJtUXBiwjRcxFD6U8GoDu6KIKl12fKgq97',
+    password: 'pscale_pw_rLQzyFfV9Dwadg7ydmcwKrmKP31m7GRHT6UlUWDUF3M',
     ssl: { rejectUnauthorized: false }
 });
 

@@ -174,7 +174,7 @@
       <!-- Remove "navbar-sticky" class to make navigation bar scrollable with the page -->
       <header class="header navbar navbar-expand-lg position-absolute navbar-sticky">
         <div class="container px-3">
-          <a href="index.html" class="navbar-brand pe-3">
+          <a href="Informacion.html" class="navbar-brand pe-3">
             <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
             R_Vitales
           </a>
@@ -195,7 +195,7 @@
                   <a href="ver_citas.html" class="nav-link">Ver Citas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="vital-signs.html" class="nav-link">Historicos</a>
+                  <a href="vital-signs.html" class="nav-link">Ver Signos Vitales</a>
                 </li>
               </ul>
             </div>
@@ -212,7 +212,7 @@
             <label class="form-check-label d-none d-sm-block" for="theme-mode">Dark</label>
           </div>
 
-          <a href="#" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
+          <a href="Informacion.html" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
             <i class=""></i>
             &nbsp;Mi perfil
           </a>
@@ -229,6 +229,9 @@
             <ol class="breadcrumb mb-0">
               <li class="breadcrumb-item">
                 <a href="I_Paciente.html"><i class="bx bx-home-alt fs-lg me-1"></i>Home</a>
+              </li>
+              <li class="breadcrumb-item">
+                <a href="Ver_Reportes.html"><i class="bx bx-home-alt fs-lg me-1"></i>Ver Reportes</a>
               </li>
               <li class="breadcrumb-item active" aria-current="page">Signos Vitales</li>
             </ol>
@@ -333,7 +336,7 @@
                           <!-- Hora -->
                           <div class="col-12">
                             <label for="measurement_time" class="form-label fs-base">Hora de Medición</label>
-                            <input type="time" id="measurement_time" class="form-control form-control-lg" required>
+                            <input type="time" id="measurement_time" class="form-control form-control-lg" required readonly>
                             <div class="invalid-feedback">Por favor ingresa la hora de medición.</div>
                           </div>
                         
@@ -426,7 +429,7 @@
  const user = JSON.parse(localStorage.getItem('user'));
  if (!user || user.role !== 'Patient') {
         alert('Acceso no autorizado.');
-        window.location.href = '/login.html'; // o donde tengas tu login
+        window.location.href = '../login.html'; // o donde tengas tu login
     }
 // Comprobar si los datos existen
 if (user) {
@@ -443,23 +446,46 @@ if (user) {
     }
 } else {
     // Si no hay datos de usuario en localStorage, redirigir al login
-    window.location.href = 'login.html';
+    window.location.href = '../login.html';
 } 
   </script>
   <script>
-    document.getElementById('vitalForm').addEventListener('submit', async function (e) {
+  document.addEventListener('DOMContentLoaded', () => {
+    const vitalForm = document.getElementById('vitalForm');
+    const dateInput = document.getElementById('measurement_date');
+    const timeInput = document.getElementById('measurement_time');
+
+    // Establece la fecha mínima como hoy
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    const currentTimeStr = now.toTimeString().slice(0, 5);
+
+    dateInput.setAttribute('min', todayStr);
+    dateInput.value = todayStr;
+    timeInput.value = currentTimeStr;
+
+    vitalForm.addEventListener('submit', async function (e) {
       e.preventDefault();
-  
-      // Validar el formulario con HTML5
+
+      // Validar el formulario HTML5
       if (!this.checkValidity()) {
         this.classList.add('was-validated');
         return;
       }
-  
+
+      const selectedDate = dateInput.value;
+      const selectedTime = timeInput.value;
+
+      // Validar que no sea una hora pasada si es hoy
+      if (selectedDate === todayStr && selectedTime < currentTimeStr) {
+        alert("No puedes registrar una hora anterior a la actual.");
+        return;
+      }
+
       const data = {
         id_patient: document.getElementById('id_patient').value,
-        measurement_date: document.getElementById('measurement_date').value,
-        measurement_time: document.getElementById('measurement_time').value,
+        measurement_date: selectedDate,
+        measurement_time: selectedTime,
         heart_rate: document.getElementById('heart_rate').value,
         temperature: document.getElementById('temperature').value,
         blood_pressure: document.getElementById('blood_pressure').value,
@@ -467,25 +493,31 @@ if (user) {
         weight: document.getElementById('weight').value,
         observations: document.getElementById('observations').value,
       };
-  
+
       try {
         const res = await fetch('http://localhost:7000/vital-signs', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(data)
         });
-  
+
         const result = await res.json();
         alert(result.message || "Registro completado");
-  
         this.reset();
         this.classList.remove('was-validated');
+
+        // Reiniciar fecha/hora actual tras limpiar
+        dateInput.value = todayStr;
+        timeInput.value = new Date().toTimeString().slice(0, 5);
+
       } catch (error) {
         alert("Error al registrar los signos vitales.");
         console.error(error);
       }
     });
-  </script>
+  });
+</script>
+
   
     <!-- Main Theme Script -->
     <script src="assets/js/theme.min.js"></script>

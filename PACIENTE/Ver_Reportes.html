@@ -179,13 +179,13 @@
                   <a href="R_vitales_Familiar.html" class="nav-link">Registrar Signos Vitales</a>
                 </li>
                 <li class="nav-item">
-                  <a href="" class="nav-link">Agendar Citas</a>
+                  <a href="agendar_cita.html" class="nav-link">Agendar Citas</a>
                 </li>
                 <li class="nav-item">
                   <a href="Ver_Citas_Familiar.html" class="nav-link">Ver Citas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="vital-signs_Familiar.html" class="nav-link">Historicos</a>
+                  <a href="vital-signs_Familiar.html" class="nav-link">Ver Signos vitales</a>
                 </li>
               </ul>
             </div>
@@ -238,9 +238,9 @@
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="Ver_Reportes.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
-                    Emergencia
+                    Ver Reportes
                   </a>
                   <a href="Inf_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
@@ -316,7 +316,7 @@
   const user = JSON.parse(localStorage.getItem('user'));
   if (!user || user.role !== 'Patient') {
     alert('Acceso no autorizado.');
-    window.location.href = '/login.html';
+    window.location.href = '../login.html';
   }
 
   const id_patient = user?.additional_info?.id_patient;

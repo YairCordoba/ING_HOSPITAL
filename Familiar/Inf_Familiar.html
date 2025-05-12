@@ -174,18 +174,18 @@
                   <a href="R_vitales_Familiar.html" class="nav-link">Registrar Signos Vitales</a>
                 </li>
                 <li class="nav-item">
-                  <a href="" class="nav-link">Agendar Citas</a>
+                  <a href="agendar_cita_Familiar.html" class="nav-link">Agendar Citas</a>
                 </li>
                 <li class="nav-item">
                   <a href="Ver_Citas_Familiar.html" class="nav-link">Ver Citas</a>
                 </li>
                 <li class="nav-item">
-                  <a href="vital-signs_Familiar.html" class="nav-link">Historicos</a>
+                  <a href="vital-signs_Familiar.html" class="nav-link">Ver Signos Vitales</a>
                 </li>
               </ul>
             </div>
             <div class="offcanvas-header border-top">
-              <a href="https://themes.getbootstrap.com/product/silicon-business-technology-template-ui-kit/" class="btn btn-primary w-100" target="_blank" rel="noopener">
+              <a href="Inf_Familiar.html" class="btn btn-primary w-100" target="_blank" rel="noopener">
                 <i class="bx bx-cart fs-4 lh-1 me-1"></i>
                 &nbsp;Mi perfil
               </a>
@@ -199,8 +199,8 @@
           <button type="button" class="navbar-toggler" data-bs-toggle="offcanvas" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
-          <a href="#" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
-            <i class="bx bx-cart fs-5 lh-1 me-1"></i>
+          <a href="Inf_Familiar.html" class="btn btn-primary btn-sm fs-sm rounded d-none d-lg-inline-flex" target="_blank" rel="noopener">
+            <i class=""></i>
             &nbsp;Mi perfil
           </a>
         </div>
@@ -233,9 +233,9 @@
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
-                  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="Ver_Reportes_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-lock-alt fs-xl opacity-60 me-2"></i>
-                    Emergencia
+                    Ver Reportes
                   </a>
                   <a href="Inf_Familiar.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-bell fs-xl opacity-60 me-2"></i>
@@ -265,59 +265,43 @@
       <input type="text" id="name" class="form-control form-control-lg" value="" disabled>
     </div>
     <div class="col-sm-6 mb-4">
-      <label for="email" class="form-label fs-base">Correo electrónico</label>
-      <input type="email" id="email" class="form-control form-control-lg" value="" disabled>
-    </div>
+    <label class="form-label fs-base">Correo electrónico</label>
+    <div class="form-control form-control-lg bg-light" style="height:auto;" id="email"></div>
   </div>
-  <div class="row">
-    <div class="col-sm-6 mb-4">
-      <label for="blood_type" class="form-label fs-base">Tipo de sangre</label>
-      <input type="blood_type" id="blood_type" class="form-control form-control-lg" value="" disabled>
-    </div>
-    <div class="col-sm-6 mb-4">
-      <label for="birth" class="form-label fs-base">Fecha de Nacimiento</label>
-      <input type="date" id="birth" class="form-control form-control-lg" disabled>
-  </div>
-  
   </div>
 
   <div class="row">
     <div class="col-sm-6 mb-4">
-      <label for="occupation1" class="form-label fs-base">Ocupación</label>
-      <input type="text" id="occupation" class="form-control form-control-lg" value="" disabled>
-    </div>
+    <label class="form-label fs-base">Rol</label>
+    <div class="form-control form-control-lg bg-light" style="height:auto;" id="user"></div>
+  </div>
     <div class="col-sm-6 mb-4">
-      <label for="marital_status" class="form-label fs-base">Estado civil</label>
-      <input type="text" id="marital_status" class="form-control form-control-lg" value="" disabled>
-    </div>
-    <div class="col-sm-6 mb-4">
-      <label for="user" class="form-label fs-base">Rol</label>
-      <input type="user" id="user" class="form-control form-control-lg" value="" disabled>
-    </div>
-    <div class="col-sm-6 mb-4">
-      <label for="ID" class="form-label fs-base">Cedula</label>
-      <input type="ID" id="ID" class="form-control form-control-lg" value="" disabled>
-    </div>
+    <label class="form-label fs-base">Cédula</label>
+    <div class="form-control form-control-lg bg-light" style="height:auto;" id="ID"></div>
+  </div>
   </div>
 
   <div class="row">
     <div class="col-sm-6 mb-4">
-      <label for="patient-name" class="form-label fs-base">Dirección</label>
-      <input type="text" id="address" class="form-control form-control-lg" value="" disabled>
-    </div>
+  <label class="form-label fs-base">Dirección</label>
+  <div class="form-control form-control-lg bg-light" style="height:auto;" id="address2"></div>
+</div>
+
     <div class="col-sm-6 mb-4">
-      <label for="phone" class="form-label fs-base">Teléfono</label>
-      <input type="tel" id="phone" class="form-control form-control-lg" value="" disabled>
-    </div>
-    <div class="col-sm-6 mb-4">
-      <label for="id_patient" class="form-label fs-base">ID_Familiar</label>
-      <input type="varchar" id="id_patient" class="form-control form-control-lg" value="" disabled>
-    </div>
-    <div class="col-sm-6 mb-4">
-      <label for="ID_P" class="form-label fs-base">ID_Paciente a cargo</label>
-      <input type="varchar" id="ID_P" class="form-control form-control-lg" value="" disabled>
-    </div>
+    <label class="form-label fs-base">Teléfono</label>
+    <div class="form-control form-control-lg bg-light" style="height:auto;" id="phone"></div>
   </div>
+    </div>
+  <div class="row">
+  <div class="col-sm-6 mb-4">
+    <label class="form-label fs-base">ID Familiar</label>
+    <div class="form-control form-control-lg bg-light" style="height:auto;" id="ID_P"></div>
+  </div>
+  <div class="col-sm-6 mb-4">
+    <label class="form-label fs-base">ID Paciente a cargo</label>
+    <div class="form-control form-control-lg bg-light" style="height:auto;" id="id_patient"></div>
+  </div>
+</div>
 </form>   
 
 <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalActualizarFamiliar">
@@ -334,18 +318,19 @@
       <div class="modal-body">
         <form id="formActualizarFamiliar">
           <div class="mb-3">
-            <label for="relative_id" class="form-label">ID del Familiar</label>
-            <input type="text" class="form-control" id="relative_id" disabled>
+            <label for="modal_relative_id" class="form-label">ID del Familiar</label>
+            <input type="text" class="form-control" id="modal_relative_id" disabled>
           </div>
           <div class="mb-3">
-            <label for="telefonoRelative" class="form-label">Teléfono</label>
-            <input type="text" class="form-control" id="telefonoRelative">
+            <label for="modal_phone" class="form-label">Teléfono</label>
+            <input type="text" class="form-control" id="modal_phone">
           </div>
           <div class="mb-3">
-            <label for="direccionRelative" class="form-label">Dirección</label>
-            <input type="text" class="form-control" id="direccionRelative">
+            <label for="modal_address" class="form-label">Dirección</label>
+            <input type="text" class="form-control" id="modal_address">
           </div>
         </form>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
@@ -387,31 +372,35 @@
  const user = JSON.parse(localStorage.getItem('user'));
  if (!user || user.role !== 'Relative') {
         alert('Acceso no autorizado.');
-        window.location.href = '/login.html'; // o donde tengas tu login
+        window.location.href = '../login.html'; // o donde tengas tu login
     }
 // Comprobar si los datos existen
 if (user) {
+  
     // Asignamos los valores a los campos de entrada (input) para el usuario
+    document.getElementById('address2').textContent = user.additional_info.address;
+    document.getElementById('email').textContent = user.email;
+    document.getElementById('user').textContent = user.role;
+    document.getElementById('ID').textContent = user.id_card;
+    document.getElementById('address2').textContent = user.additional_info.address;
+    document.getElementById('phone').textContent = user.additional_info.phone;
+    document.getElementById('id_patient').textContent = user.additional_info.id_patient;
+    document.getElementById('ID_P').textContent = user.additional_info.id_relative;
     document.getElementById('name').value = user.name;
-    document.getElementById('id_patient').value = user.additional_info.id_patient;
-    document.getElementById('relative_id').value = user.additional_info.id_patient;
-    document.getElementById('name1').textContent = user.name;
+    document.getElementById('name').value = user.name;
     document.getElementById('email').value = user.email;
     document.getElementById('user').value = user.role;
     document.getElementById('ID').value = user.id_card;
-    document.getElementById('address').value = user.address;
     document.getElementById('phone').value = user.phone;
     document.getElementById('occupation').value = user.additional_info.occupation;
     document.getElementById('marital_status').value = user.additional_info.marital_status;
-    document.getElementById('address1').value = user.additional_info.address;
+    document.getElementById('relative_id').value = user.additional_info.id_patient;
     document.getElementById('direccionFamiliar').value = user.additional_info.address;
     document.getElementById('phone1').value = user.additional_info.phone;
     document.getElementById('TelefonoFamiliar').value = user.additional_info.phone;
     document.getElementById('blood_type').value = user.additional_info.blood_type;
-    document.getElementById('ID_P').value = user.id_patient;
-    const birthDate = formatDate(user.additional_info.birth_date);
-        document.getElementById('birth').value = birthDate;  // Asignamos la fecha en formato 'YYYY-MM-DD'
-        document.getElementById('user1').textContent = user.role;
+    document.getElementById('id_patient').value = user.additional_info.id_patient;
+    document.getElementById('ID_P').value = user.additional_info.id_relative;  
 
     // Mostrar campos específicos dependiendo del rol
     if (user.role === 'Patient') {
@@ -424,62 +413,76 @@ if (user) {
     }
 } else {
     // Si no hay datos de usuario en localStorage, redirigir al login
-    window.location.href = 'login.html';
+    window.location.href = '../login.html';
 } 
+
+
   </script>
 <script>
+const modal = document.getElementById('modalActualizarFamiliar');
+modal.addEventListener('show.bs.modal', () => {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user && user.role === 'Relative') {
+    document.getElementById('modal_relative_id').value = user.additional_info.id_relative;
+    document.getElementById('modal_phone').value = user.additional_info.phone;
+    document.getElementById('modal_address').value = user.additional_info.address;
+  }
+});
+
 document.addEventListener("DOMContentLoaded", function () {
   const formRelative = document.getElementById("formActualizarFamiliar");
 
   formRelative.addEventListener("submit", function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const id = document.getElementById("relative_id").value.trim();
-    const telefono = document.getElementById("telefonoRelative").value.trim();
-    const direccion = document.getElementById("direccionRelative").value.trim();
+  const id = document.getElementById("modal_relative_id").value.trim();
+  const telefono = document.getElementById("modal_phone").value.trim();
+  const direccion = document.getElementById("modal_address").value.trim();
 
-    if (!id || !telefono || !direccion) {
-      alert("Por favor complete todos los campos.");
-      return;
-    }
+  if (!id || !telefono || !direccion) {
+    alert("Por favor complete todos los campos.");
+    return;
+  }
 
-    fetch("http://localhost:7000/api/relative/update", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id_relative: id,
-        phone: telefono,
-        address: direccion,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success) {
-          alert("Información actualizada correctamente");
+  fetch("http://localhost:7000/api/relative/update", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      id_relative: id,
+      phone: telefono,
+      address: direccion,
+    }),
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.success) {
+        alert("Información actualizada correctamente");
 
-          // ✅ Solo aquí actualizamos el localStorage
-          const user = JSON.parse(localStorage.getItem("user"));
-          if (user && user.role === "Relative") {
-            user.phone = telefono;
-            user.address = direccion;
-            localStorage.setItem("user", JSON.stringify(user));
-          }
-
-          const modal = bootstrap.Modal.getInstance(document.getElementById("modalActualizarFamiliar"));
-          if (modal) modal.hide();
-
-          location.reload();
-        } else {
-          alert("Error al actualizar: " + (data.message || "intente más tarde"));
+        // ✅ Actualizar localStorage si aplica
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user && user.role === "Relative") {
+          user.additional_info.phone = telefono;
+          user.additional_info.address = direccion;
+          localStorage.setItem("user", JSON.stringify(user));
         }
-      })
-      .catch((err) => {
-        console.error("Error:", err);
-        alert("Error de conexión con el servidor.");
-      });
-  });
+
+        const modalEl = document.getElementById("modalActualizarFamiliar");
+        const modalInstance = bootstrap.Modal.getInstance(modalEl);
+        if (modalInstance) modalInstance.hide();
+
+        location.reload();
+      } else {
+        alert("Error al actualizar: " + (data.message || "intente más tarde"));
+      }
+    })
+    .catch((err) => {
+      console.error("Error:", err);
+      alert("Error de conexión con el servidor.");
+    });
+});
+
 });
 
 </script>

@@ -28,6 +28,17 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="stylesheet" media="screen" href="assets\vendor\boxicons\css\boxicons.min.css"/>
     <link rel="stylesheet" media="screen" href="assets\css\theme.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <style>
+      #mapaPaciente {
+        height: 300px;
+        margin-top: 20px;
+      }
+    </style>
     <!---------------------------- CSS ---------------------------------------------->
     <!---------------------------- CSS ---------------------------------------------->
     <!---------------------------- CSS ---------------------------------------------->
@@ -264,7 +275,7 @@
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
                 </div>
                 <div class="modal-body p-0" style="height: 80vh;">
-                  <iframe src="" width="100%" height="100%" frameborder="0" id="iframeModal"></iframe>
+                  <iframe src="index.html" width="100%" height="100%" frameborder="0" id="iframeModal"></iframe>
                 </div>
                 <div class="modal-footer">
                   <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
@@ -287,7 +298,7 @@
       <div class="modal-header">
         <ul class="nav nav-tabs mb-0" role="tablist">
           <li class="nav-item fs-sm mb-0">
-            <a class="nav-link active" href="#signin" data-bs-toggle="tab" role="tab" aria-selected="true">
+            <a class="nav-link active" href="#reportForm" data-bs-toggle="tab" role="tab" aria-selected="true">
               <i class="bx bx-lock-open fs-base me-2"></i>
               Crear Reportes
             </a>
@@ -346,8 +357,8 @@
             <h1>Buscar Signos Vitales de Paciente</h1>
             <form id="formBuscar" class="mb-4">
               <div class="mb-3">
-                <label for="id_patient" class="form-label">ID del Paciente (Cédula)</label>
-                <input type="text" class="form-control" id="id_patient" placeholder="Ingrese ID del paciente" readonly required>
+                <label for="id_paciente" class="form-label">ID del Paciente (Cédula)</label>
+                <input type="text" class="form-control" id="id_paciente" placeholder="Ingrese ID del paciente" readonly required>
               </div>
               <button type="button" class="btn btn-primary" id="btnBuscar">Buscar</button>
             </form>
@@ -393,7 +404,7 @@
                 <p class="card-text"><strong>Cedula:</strong> <span id="Cedula"></span></p>
                 <p class="card-text"><strong>ID:</strong> <span id="ID"></span></p>
                 <p class="card-text"><strong>Fecha de nacimiento:</strong> <span id="fechaPaciente"></span></p>
-                <p class="card-text"><strong>Dirección:</strong> <span id="direccionPaciente"></span></p>
+                <p class="card-text"><strong>Dirección:</strong> <span id="direccionPaciente"></span><button class="btn btn-sm btn-info ms-2" onclick="abrirMapa()">Mirar ubicación</button></p>
                 <button class="btn btn-secondary" onclick="cerrarDetalle()">Cerrar</button>
                 <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#authModal">
                   Crear Reporte
@@ -407,6 +418,19 @@
           </div>
         </div>
       </section>
+      <div class="modal fade" id="modalMapa" tabindex="-1" aria-labelledby="modalMapaLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="modalMapaLabel">Ubicación del Paciente</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+              <div id="mapaPaciente" style="height: 400px; width: 100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>  
     </main>
    
     <!-- Back to top button -->
@@ -434,7 +458,7 @@
     
       if (!user || user.role !== 'Doctor') {
           alert('Acceso no autorizado.');
-          window.location.href = '/login.html';
+          window.location.href = '../login.html';
       }
     
       document.addEventListener('DOMContentLoaded', async () => {
@@ -530,7 +554,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const btnBuscar = document.getElementById('btnBuscar');
   const btnCerrar = document.getElementById('btnCerrarSignos');
   const accordion = document.getElementById('accordionAlt');
-  const idInput = document.getElementById('id_patient');
+  const idInput = document.getElementById('id_paciente');
   const modal = document.getElementById('miModal'); // Reemplaza con el ID real de tu modal
 
   // Buscar signos vitales
@@ -646,6 +670,118 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
       </script>
+
+
+<script>
+  function verPaciente(p) {
+    document.getElementById('detallePaciente').classList.remove('d-none');
+    document.getElementById('nombrePaciente').textContent = p.name;
+    document.getElementById('emailPaciente').textContent = p.email || 'No registrado';
+    document.getElementById('telefonoPaciente').textContent = p.phone || 'No registrado';
+    document.getElementById('Cedula').textContent = p.id_card || 'No registrado';
+    document.getElementById('ID').textContent = p.id_patient || 'No registrado';
+    document.getElementById('fechaPaciente').textContent = p.birth_date ? formatDate(p.birth_date) : 'No registrada';
+    document.getElementById('direccionPaciente').textContent = p.address || 'No registrada';
+
+    // Para el formulario de actualización
+    document.getElementById('idPaciente').value = p.id_patient || '';
+    document.getElementById('id_paciente').value = p.id_patient || '';
+    document.getElementById('patient_id').value = p.id_patient || '';
+    document.getElementById('Telefono1').value = p.phone || '';
+    document.getElementById('direccion').value = p.address || '';
+    document.getElementById('estado_civil').value = p.marital_status || '';
+    document.getElementById('ocupacion').value = p.occupation || '';
+    iframe.src = `index.html?patient_id=${p.id_patient}`;
+
+    obtenerGeolocalizacion(p.address);
+  }
+
+  function cerrarDetalle() {
+    document.getElementById('detallePaciente').classList.add('d-none');
+    document.getElementById('mapaPaciente').innerHTML = ''; // limpia el mapa
+  }
+
+  function obtenerGeolocalizacion(direccion) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data && data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lon = parseFloat(data[0].lon);
+
+          const map = L.map('mapaPaciente').setView([lat, lon], 16);
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(map);
+
+          L.marker([lat, lon]).addTo(map)
+            .bindPopup(`<b>Dirección:</b><br>${direccion}`)
+            .openPopup();
+        } else {
+          document.getElementById('mapaPaciente').innerText = 'Ubicación no encontrada.';
+        }
+      })
+      .catch(error => {
+        console.error('Error al obtener geolocalización:', error);
+        document.getElementById('mapaPaciente').innerText = 'Error al obtener la ubicación.';
+      });
+  }
+
+  function formatDate(dateStr) {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString('es-VE'); // o cambia según tu país
+  }
+</script>
+<script>
+  function abrirMapa() {
+    const direccion = document.getElementById('direccionPaciente').textContent;
+    if (!direccion || direccion === 'No registrada') {
+      alert('Dirección no disponible para mostrar en el mapa.');
+      return;
+    }
+
+    // Abrir modal
+    const mapaModal = new bootstrap.Modal(document.getElementById('modalMapa'));
+    mapaModal.show();
+
+    // Evitar duplicación de mapa si ya existe
+    if (window.mapaInstancia) {
+      window.mapaInstancia.remove();
+    }
+
+    // Geolocalizar dirección
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        if (data.length > 0) {
+          const lat = parseFloat(data[0].lat);
+          const lon = parseFloat(data[0].lon);
+
+          // Inicializar mapa
+          window.mapaInstancia = L.map('mapaPaciente').setView([lat, lon], 16);
+
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+          }).addTo(window.mapaInstancia);
+
+          L.marker([lat, lon]).addTo(window.mapaInstancia)
+            .bindPopup(`Dirección: ${direccion}`)
+            .openPopup();
+        } else {
+          document.getElementById('mapaPaciente').innerHTML = '<p>No se encontró la ubicación.</p>';
+        }
+      })
+      .catch(err => {
+        console.error(err);
+        document.getElementById('mapaPaciente').innerHTML = '<p>Error al cargar el mapa.</p>';
+      });
+  }
+</script>
+
   <script src="FUNCIONES\1.js"></script>
   <script src="FUNCIONES\Cerrar_sesion.js"></script>
   </body>

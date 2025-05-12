@@ -403,7 +403,38 @@ app.post('/api/relative/update', (req, res) => {
   });
 });
 
+// Ruta para obtener reportes del paciente
+// Endpoint para obtener los reportes de un paciente
+app.get('/api/reports', async (req, res) => {
+  const { patient_id } = req.query;
 
+  if (!patient_id) {
+    return res.status(400).json({ error: 'Parámetro "patient_id" es requerido.' });
+  }
+
+  try {
+    // Aquí debes utilizar connection.query() y no pool.query()
+    connection.query(
+      `SELECT report_id, report_date, care_suggestions, follow_up_reason 
+       FROM create_report 
+       WHERE patient_id = ? 
+       ORDER BY report_date DESC`, 
+      [patient_id],
+      (err, rows) => {
+        if (err) {
+          console.error('Error al obtener reportes:', err);
+          return res.status(500).json({ error: 'Error al obtener los reportes.' });
+        }
+
+        // Devolver los resultados de los reportes
+        res.json(rows);
+      }
+    );
+  } catch (err) {
+    console.error('Error en /api/reports:', err);
+    res.status(500).json({ error: 'Error al obtener los reportes.' });
+  }
+});
 
 
 // Iniciar servidor

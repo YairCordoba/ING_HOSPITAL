@@ -163,7 +163,7 @@
       <!-- Remove "fixed-top" class to make navigation bar scrollable with the page -->
       <header class="header navbar navbar-expand-lg position-absolute navbar-sticky">
         <div class="container px-3">
-          <a href="index.html" class="navbar-brand pe-3">
+          <a href="login.html" class="navbar-brand pe-3">
             <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
             Hospital en Casa
           </a>
@@ -210,7 +210,13 @@
                         <label for="terms" class="form-check-label fs-base"><a href="Recuperar_contraseña.html">Recuperar Contraseña</a></label>
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary shadow-primary btn-lg w-100">Iniciar sesión</button>
+                <button 
+                  type="submit" 
+                  class="btn btn-primary shadow-primary btn-lg w-100"
+                  onclick="this.style.transform='scale(0.95)'; setTimeout(() => this.style.transform='scale(1)', 150);"
+                >
+                  Iniciar sesión
+                </button>
             </form>
             <p id="error-message" style="color: red;"></p>
             <div id="welcomeMessage" class="mt-4"></div>

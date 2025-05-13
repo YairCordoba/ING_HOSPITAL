@@ -9,7 +9,7 @@ logoutButton.addEventListener('click', (event) => {
     localStorage.removeItem('token');
     localStorage.removeItem('user'); // Si también estás almacenando el objeto del usuario
     // Redirigir al usuario a la página de login (puedes cambiar la URL a la que redirige)
-    window.location.href = 'login.html'; // O la URL de tu página de inicio de sesión
+    window.location.href = '../login.html'; // O la URL de tu página de inicio de sesión
 });
 
 // Obtener los datos del usuario desde localStorage
@@ -21,7 +21,7 @@ if (userInfo) {
 } else {
   // Si no hay sesión, cerrar y redirigir
   localStorage.clear();
-  window.location.replace('login.html');
+  window.location.replace('../login.html');
 }
 
 // Evento para el botón de cerrar sesión
@@ -29,7 +29,7 @@ if (logoutButton) {
   logoutButton.addEventListener('click', (event) => {
     event.preventDefault();
     localStorage.clear();
-    window.location.replace('login.html'); // replace evita volver con "Atrás"
+    window.location.replace('../login.html'); // replace evita volver con "Atrás"
   });
 }
 
@@ -37,5 +37,5 @@ if (logoutButton) {
 history.pushState(null, null, location.href);
 window.onpopstate = function () {
   localStorage.clear(); // Cerrar sesión si intenta volver
-  window.location.replace('login.html'); // Cambiar la URL a la página de inicio de sesión
+  window.location.replace('../login.html'); // Cambiar la URL a la página de inicio de sesión
 };

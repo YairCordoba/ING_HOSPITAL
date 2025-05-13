@@ -222,6 +222,7 @@
             <div id="welcomeMessage" class="mt-4"></div>
         </div>
     </div>
+    <div class="position-absolute top-0 end-0 w-50 h-100 bg-position-center bg-repeat-0 bg-size-cover d-none d-xl-block" style="background-image: url(assets/img/account/signin-bg.jpg);"></div>
 </section>
 <script>
   // Paso 1: Insertar un estado inicial al cargar
@@ -233,7 +234,7 @@
     if (confirmar) {
       localStorage.removeItem('token');
       localStorage.removeItem('user');
-      window.location.href = 'login.html';
+      window.location.href = '../login.html';
     } else {
       history.pushState(null, "", window.location.href);
     }

@@ -172,7 +172,7 @@
     <main class="page-wrapper">
       <header class="header navbar navbar-expand-lg bg-light border-bottom border-light shadow-sm fixed-top">
         <div class="container px-3">
-          <a href="I_Medico2.html" class="navbar-brand pe-3">
+          <a href="I_Medico.html" class="navbar-brand pe-3">
             <img src="assets\imagen\v987-18a-removebg-preview.png" width="47" alt="Silicon">
             Hospital en Casa
           </a>
@@ -240,7 +240,7 @@
                   <i class="bx bx-chevron-down fs-lg ms-1"></i>
                 </button>
                 <div id="account-menu" class="list-group list-group-flush collapse d-md-block">
-                  <a href="I_Medico2.html" class="list-group-item list-group-item-action d-flex align-items-center">
+                  <a href="I_Medico.html" class="list-group-item list-group-item-action d-flex align-items-center">
                     <i class="bx bx-cog fs-xl opacity-60 me-2"></i>
                     Inicio
                   </a>
@@ -281,7 +281,7 @@
   </div>
 </div>
 
- <div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true" data-bs-backdrop="static" data-bs-keyboard="false">
   <div class="modal-dialog">
     <div class="modal-content">
       <!---------------------------- MODAL REPORTES---------------------------------------------->
@@ -298,13 +298,13 @@
           <li class="nav-item fs-sm mb-0">
             <a class="nav-link" href="#signup" data-bs-toggle="tab" role="tab" aria-selected="false">
               <i class="bx bx-user fs-base me-2"></i>
-              Signos vitales
+              Ver Signos vitales
             </a>
           </li>
           <li class="nav-item fs-sm mb-0">
-            <a class="nav-link" href="#modalPagina" data-bs-toggle="tab" role="tab" aria-selected="false">
+            <a class="nav-link" href="#verReportes" data-bs-toggle="tab" role="tab" aria-selected="false">
               <i class="bx bx-user fs-base me-2"></i>
-              Reportes
+              Ver Reportes
             </a>
           </li>
         </ul>
@@ -315,61 +315,80 @@
       <div class="modal-body tab-content py-4">
 
         <form class="tab-pane fade show active needs-validation" id="reportForm" novalidate>
-            <div class="mb-3">
-              <label class="form-label" for="idPaciente">ID Paciente</label>
-              <input class="form-control" type="text" id="idPaciente" readonly required>
-              <div class="invalid-feedback">Por favor ingresa el ID del paciente.</div>
-            </div>
-            <div class="mb-3">
-              <label class="form-label" for="fecha">Fecha</label>
-              <input class="form-control" type="date" id="fecha" required>
-              <div class="invalid-feedback">Por favor ingresa una fecha válida.</div>
-            </div>
-        
-            <div class="mb-3">
-              <label class="form-label" for="sugerencias">Sugerencias de Cuidado</label>
-              <textarea class="form-control" id="sugerencias" rows="3" required></textarea>
-              <div class="invalid-feedback">Por favor ingresa sugerencias de cuidado.</div>
-            </div>
-        
-            <div class="mb-3">
-              <label class="form-label" for="motivo">Motivo de Seguimiento</label>
-              <textarea class="form-control" id="motivo" rows="3" required></textarea>
-              <div class="invalid-feedback">Por favor ingresa el motivo de seguimiento.</div>
-            </div>
-        
-            <div class="mb-3">
-              <label class="form-label" for="idMedico">ID Médico</label>
-              <input class="form-control" type="text" id="idMedico" readonly required>
-              <div class="invalid-feedback">Por favor ingresa el ID del médico.</div>
-            </div>
-            
-            <button class="btn btn-primary d-block w-100" type="submit">Guardar Reporte</button>
-          </form>
+          <div class="mb-3">
+            <label class="form-label" for="idPaciente">ID Paciente</label>
+            <input class="form-control" type="text" id="idPaciente" readonly required>
+            <div class="invalid-feedback">Por favor ingresa el ID del paciente.</div>
+          </div>
+      
+          <div class="mb-3">
+            <label class="form-label" for="fecha">Fecha</label>
+            <input class="form-control" type="date" id="fecha" required>
+            <div class="invalid-feedback">Por favor ingresa una fecha válida.</div>
+          </div>
+      
+          <div class="mb-3">
+            <label class="form-label" for="sugerencias">Sugerencias de Cuidado</label>
+            <textarea class="form-control" id="sugerencias" rows="3" required></textarea>
+            <div class="invalid-feedback">Por favor ingresa sugerencias de cuidado.</div>
+          </div>
+      
+          <div class="mb-3">
+            <label class="form-label" for="motivo">Motivo de Seguimiento</label>
+            <textarea class="form-control" id="motivo" rows="3" required></textarea>
+            <div class="invalid-feedback">Por favor ingresa el motivo de seguimiento.</div>
+          </div>
+      
+          <div class="mb-3">
+            <label class="form-label" for="idMedico">ID Médico</label>
+            <input class="form-control" type="text" id="idMedico" readonly required>
+            <div class="invalid-feedback">Por favor ingresa el ID del médico.</div>
+          </div>
+          
+          <button class="btn btn-primary d-block w-100" type="submit">Guardar Reporte</button>
         </form>
+        
 
         <!-- Sign up form -->
         <form class="tab-pane fade needs-validation" id="signup" novalidate>
           <div class="container mt-5">
-            <h1>Buscar Signos Vitales</h1>
+            <h1>Buscar Signos Vitales de Paciente</h1>
             <form id="formBuscar" class="mb-4">
               <div class="mb-3">
-                <p class="mb-1 pb-2">Cedula: <span id="id_patient1"></span></span></p>
-                <label for="id_patient" class="form-label">ID del Paciente (Cédula)</label>
-                <input type="text" class="form-control" id="id_patient" placeholder="Ingrese ID del paciente" readonly required>
+                <label for="id_paciente" class="form-label">ID del Paciente (Cédula)</label>
+                <input type="text" class="form-control" id="id_paciente" placeholder="Ingrese ID del paciente" required>
               </div>
               <button type="button" class="btn btn-primary" id="btnBuscar">Buscar</button>
             </form>
     
-            <div class="accordion" id="accordionAlt">
+            <div class="accordion" id="accordionSignos">
               <!-- Resultados dinámicos aquí -->
             </div>
             <div class="mt-4 text-end">
               <button type="button" class="btn btn-secondary" id="btnCerrarSignos">Cerrar</button>
             </div>
         </div>
-        </form> 
-      </form>    
+        </form>
+
+        <form class="tab-pane fade needs-validation" id="verReportes" novalidate>
+          <div class="container mt-5">
+            <h1>Buscar Reportes del Paciente</h1>
+            <div class="mb-3">
+              <label for="patient_id" class="form-label">ID del Paciente</label>
+              <input type="number" class="form-control" id="patient_id" placeholder="ID del paciente" readonly required>
+            </div>
+            <button type="button" class="btn btn-primary" id="btnBuscarReportes">Buscar</button>
+
+            <div class="accordion mt-4" id="accordionReportes">
+              <!-- Reportes cargados dinámicamente aquí -->
+            </div>
+
+            <div class="mt-4 text-end">
+            </div>
+          </div>
+        </form>
+
+
       </div>
     </div>
   </div>
@@ -377,19 +396,24 @@
  <!---------------------------- Pacientes asignados---------------------------------------------->
  <!---------------------------- Pacientes asignados---------------------------------------------->
  <!---------------------------- Pacientes asignados---------------------------------------------->
-<div class="d-flex justify-content-center">
-  <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.5">H</div>
-  <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1">O</div>
-  <div class="rellax display-1 text-warning px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.75">S</div>
-  <div class="rellax display-1 text-info px-1" data-rellax-percentage="0.5" data-rellax-speed="0.75">P</div>
-  <div class="rellax display-1 text-danger px-1" data-rellax-percentage="0.5" data-rellax-speed="-1.5">I</div>
-  <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1.25">T</div>
-  <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-1">A</div>
-  <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1.25">L</div>
-</div>
+            <div class="d-flex justify-content-center">
+              <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.5">H</div>
+              <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1">O</div>
+              <div class="rellax display-1 text-warning px-1" data-rellax-percentage="0.5" data-rellax-speed="-0.75">S</div>
+              <div class="rellax display-1 text-info px-1" data-rellax-percentage="0.5" data-rellax-speed="0.75">P</div>
+              <div class="rellax display-1 text-danger px-1" data-rellax-percentage="0.5" data-rellax-speed="-1.5">I</div>
+              <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1.25">T</div>
+              <div class="rellax display-1 text-primary px-1" data-rellax-percentage="0.5" data-rellax-speed="-1">A</div>
+              <div class="rellax display-1 text-success px-1" data-rellax-percentage="0.5" data-rellax-speed="1.25">L</div>
+            </div>
 
               <h1 class="h1 text-primary pt-1 pt-lg-3 mt-4 ">Pacientes asignados</h1>
               <p class="pb-3 mb-3">Esta es una lista de tus próximas citas médicas. Si necesitas cancelarlas, puedes hacerlo en cualquier momento.</p>
+              <div class="mb-3">
+                <label for="filtroPaciente" class="form-label">Filtrar Pacientes:</label>
+                <input type="text" class="form-control" id="filtroPaciente" placeholder="Buscar por nombre, cédula o ID...">
+              </div>
+              
               <div id="resultado"></div>
               <ul class="list-unstyled mb-0" id="listaPacientes"></ul>
             <div id="detallePaciente" class="card mt-4 d-none">
@@ -443,369 +467,45 @@
 
     <!-- Main Theme Script -->
     <script src="assets\js\theme.min.js"></script>
-    <script>
-      function formatDate(date) {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = ("0" + (d.getMonth() + 1)).slice(-2);  // Mes con dos dígitos
-    const day = ("0" + d.getDate()).slice(-2);  // Día con dos dígitos
-    return `${year}-${month}-${day}`;  // Formato 'YYYY-MM-DD'
-      }
-      const user = JSON.parse(localStorage.getItem('user'));
-    
-      if (!user || user.role !== 'Doctor') {
-          alert('Acceso no autorizado.');
-          window.location.href = '../login.html';
-      }
-    
-      document.addEventListener('DOMContentLoaded', async () => {
-          // Mostrar datos del usuario en la interfaz
-          document.getElementById('user-name').textContent = user.name;
-          document.getElementById('user-email').textContent = user.email;
-          document.getElementById('user-role').textContent = user.role;
-          document.getElementById('user-card').textContent = user.id_card;
-          document.getElementById('idMedico').value = user.additional_info.id_user;
-          // Verificar si user.additional_info y user.additional_info.id_user existen
-          if (user.additional_info && user.additional_info.id_doctor) {
-              document.getElementById('idMedico').value = user.additional_info.id_doctor;
-          } else {
-              console.warn('ID de médico no disponible');
-              document.getElementById('idMedico').value = 'No disponible';
-          }
-          
-                // Buscar pacientes automáticamente
-                await buscarPacientes(user.id_card);
-            });
-    
-      async function buscarPacientes(cedula) {
-        const respuesta = await fetch('http://localhost:7000/api/pacientes?cedula=' + encodeURIComponent(cedula));
-        let data;
-        try {
-          data = await respuesta.json();
-        } catch (e) {
-          document.getElementById('listaPacientes').innerHTML = '<li class="text-danger">Error del servidor</li>';
-          return;
+    <script src="FUNCIONES2/auth.js"></script>
+    <script src="FUNCIONES2/signosVitales.js"></script>
+    <script src="FUNCIONES2/detallePaciente.js"></script>
+    <script src="FUNCIONES2/modalSignos.js"></script>
+    <script src="FUNCIONES2/pacientes.js"></script>
+    <script src="FUNCIONES2/mapaPaciente.js"></script>
+    <script src="FUNCIONES2/reports.js"></script>
+    <script src="FUNCIONES2/fechaAuto.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <Script>
+      document.getElementById('filtroPaciente').addEventListener('input', function () {
+      const filtro = this.value.trim().toLowerCase();
+      const pacientes = document.querySelectorAll('#listaPacientes li');
+      let algunoVisible = false;
+
+      pacientes.forEach(paciente => {
+        const texto = paciente.textContent.toLowerCase();
+        if (texto.includes(filtro)) {
+          paciente.style.display = '';
+          algunoVisible = true;
+        } else {
+          paciente.style.display = 'none';
         }
-    
-        const lista = document.getElementById('listaPacientes');
-        lista.innerHTML = '';
-    
-        if (data.error || !data.pacientes.length) {
-          lista.innerHTML = '<li class="text-danger">No se encontraron pacientes asignados</li>';
-          return;
-        }
-    
-        data.pacientes.forEach((p) => {
-          const li = document.createElement('li');
-          li.className = 'd-flex align-items-center justify-content-between mb-4';
-          li.innerHTML = `
-            <div class="d-flex align-items-start me-3">
-              <div class="bg-secondary rounded-1 p-2">
-                <i class="bx bx-user fs-xl text-primary d-block"></i>
-              </div>
-              <div class="ps-3">
-                <div class="fw-medium text-nav mb-1">${p.name}</div>
-                <span class="d-inline-block fs-sm text-muted border-end pe-2 me-2">${data.doctor}</span>
-                <span class="badge bg-success shadow-success">Asignado</span>
-              </div>
-            </div>
-            <button type="button" class="btn btn-outline-primary px-3 px-sm-4" onclick='verPaciente(${JSON.stringify(p)})'>
-              <i class="bx bx-show fs-xl ms-sm-n1 me-sm-1"></i>
-              <span class="d-none d-sm-inline">Ver</span>
-            </button>
-          `;
-          lista.appendChild(li);
-        });
-      }
-    
-      function verPaciente(p) {
-        document.getElementById('detallePaciente').classList.remove('d-none');
-        document.getElementById('nombrePaciente').textContent = p.name;
-        document.getElementById('emailPaciente').textContent = p.email || 'No registrado';
-        document.getElementById('telefonoPaciente').textContent = p.phone || 'No registrado';
-        document.getElementById('Cedula').textContent = p.id_card || 'No registrado';
-        document.getElementById('ID').textContent = p.id_patient || 'No registrado';
-        document.getElementById('fechaPaciente').textContent = p.birth_date ? formatDate(p.birth_date) : 'No registrada';
-        document.getElementById('direccionPaciente').textContent = p.address || 'No registrada';
-        document.getElementById('idPaciente').value = p.id_patient || 'No registrado';
-        document.getElementById('id_patient').value = p.id_patient || 'No registrado';
-        document.getElementById('id_patient1').textContent = p.id_patient || 'No registrado';
-        const iframe = document.getElementById('iframeModal');
-iframe.src = `index.html?patient_id=${p.id_patient}`;
-
-      }
-      function cerrarDetalle() {
-        document.getElementById('detallePaciente').classList.add('d-none');
-      }
-    </script> 
-    
-    
-    <script>
-      function formatDate(date) {
-    const d = new Date(date);
-    const year = d.getFullYear();
-    const month = ("0" + (d.getMonth() + 1)).slice(-2);
-    const day = ("0" + d.getDate()).slice(-2);
-    return `${year}-${month}-${day}`;
-}
-function verPaciente(p) {
-    // Mostrar el modal
-    document.getElementById('detallePaciente').classList.remove('d-none');
-
-    // Asignar la información al modal
-    document.getElementById('nombrePaciente').textContent = p.name;
-    document.getElementById('emailPaciente').textContent = p.email || 'No registrado';
-    document.getElementById('telefonoPaciente').textContent = p.phone || 'No registrado';
-    document.getElementById('Cedula').textContent = p.id_card || 'No registrado';
-    document.getElementById('ID').textContent = p.id_patient || 'No registrado';
-    document.getElementById('fechaPaciente').textContent = p.birth_date ? formatDate(p.birth_date) : 'No registrada';
-    document.getElementById('direccionPaciente').textContent = p.address || 'No registrada';
-    document.getElementById('idPaciente').value = p.id_patient || 'No registrado';
-    document.getElementById('id_patient').value = p.id_patient || 'No registrado';
-    document.getElementById('id_patient1').textContent = p.id_patient || 'No registrado';
-
-    // Set the id_patient in the modal input field
-    const idPatientInput = document.getElementById('id_patient');  // Suponiendo que este es el input del modal
-    idPatientInput.value = p.id_patient;
-
-    // Configura el iframe con la URL que contiene el id_patient
-    const iframe = document.getElementById('iframeModal');
-    iframe.src = `index.html?patient_id=${p.id_patient}`;
-}
-
-// Ahora cuando abras el modal, el id_patient debería estar automáticamente configurado.
-
-document.addEventListener('DOMContentLoaded', () => {
-  const btnBuscar = document.getElementById('btnBuscar');
-  const btnCerrar = document.getElementById('btnCerrarSignos');
-  const accordion = document.getElementById('accordionAlt');
-  const idInput = document.getElementById('id_patient');
-  const modal = document.getElementById('miModal'); // Reemplaza con el ID real de tu modal
-
-  // Buscar signos vitales
-  btnBuscar.addEventListener('click', function () {
-    const idPaciente = idInput.value.trim();
-
-    if (!idPaciente) {
-      alert('Por favor ingrese un ID del paciente');
-      return;
-    }
-
-    fetch(`http://localhost:7000/api/signos-vitales?id_patient=${idPaciente}`)
-      .then(response => response.json())
-      .then(data => {
-        if (!data.success) {
-          alert(data.error || 'No se encontraron signos vitales');
-          return;
-        }
-
-        accordion.innerHTML = '';
-
-        data.vitalSigns.forEach((vital, index) => {
-          const item = document.createElement('div');
-          item.className = 'accordion-item border-0 rounded-3 shadow-sm mb-3';
-          item.innerHTML = `
-            <h3 class="accordion-header" id="heading${index}">
-              <button class="accordion-button shadow-none rounded-3 ${index === 0 ? '' : 'collapsed'}" type="button"
-                data-bs-toggle="collapse" data-bs-target="#collapse${index}" aria-expanded="${index === 0 ? 'true' : 'false'}"
-                aria-controls="collapse${index}">
-                Signos Vitales - ${formatDate(vital.measurement_date)} ${vital.measurement_time}
-              </button>
-            </h3>
-            <div id="collapse${index}" class="accordion-collapse collapse ${index === 0 ? 'show' : ''}"
-              aria-labelledby="heading${index}" data-bs-parent="#accordionAlt">
-              <div class="accordion-body pt-0">
-                <p><strong>Frecuencia Cardíaca:</strong> ${vital.heart_rate} bpm</p>
-                <p><strong>Temperatura:</strong> ${vital.temperature} °C</p>
-                <p><strong>Presión Arterial:</strong> ${vital.blood_pressure}</p>
-                <p><strong>Frecuencia Respiratoria:</strong> ${vital.respiratory_rate}</p>
-                <p><strong>Peso:</strong> ${vital.weight} kg</p>
-                <p><strong>Observaciones:</strong> ${vital.observations}</p>
-              </div>
-            </div>
-          `;
-          accordion.appendChild(item);
-        });
-      })
-      .catch(error => {
-        console.error('Error al obtener signos vitales:', error);
-        alert('Hubo un error al obtener los datos');
       });
-  });
 
-  // Limpiar contenido y cambiar a la pestaña principal al presionar "Cerrar"
-  btnCerrar.addEventListener('click', () => {
-    limpiarSignosVitales();
-    const tabTrigger = new bootstrap.Tab(document.querySelector('a[href="#signin"]'));
-    tabTrigger.show();
-  });
-
-  // Limpiar también al cambiar de pestaña (si se sale de #signup)
-  document.querySelectorAll('a[data-bs-toggle="tab"]').forEach(tab => {
-    tab.addEventListener('shown.bs.tab', function (event) {
-      const previousTab = event.relatedTarget?.getAttribute('href');
-      if (previousTab === '#signup') {
-        limpiarSignosVitales();
+      // Mostrar mensaje si no hay coincidencias
+      const resultado = document.getElementById('resultado');
+      if (!algunoVisible && filtro.length > 0) {
+        resultado.innerHTML = `<div class="alert alert-warning mt-2">No se encontraron pacientes con ese criterio.</div>`;
+      } else {
+        resultado.innerHTML = '';
       }
     });
-  });
+</Script>
 
-  // Limpiar también al cerrar el modal
-  modal.addEventListener('hidden.bs.modal', () => {
-    limpiarSignosVitales();
-  });
-
-  // Función para limpiar los datos de signos vitales
-  function limpiarSignosVitales() {
-    accordion.innerHTML = '';
-  }
-
-  // Función auxiliar para fechas
-  function formatDate(dateString) {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
-  }
-});
-      </script>
-      <script>
-
-document.addEventListener('DOMContentLoaded', () => {
-  const modalElement = document.getElementById('authModal');
-  const modalInstance = new bootstrap.Modal(modalElement); // Para cerrar manualmente
-  const btnCerrar = document.getElementById('btnCerrarSignos');
-  const accordion = document.getElementById('accordionAlt');
-
-  // Cerrar el modal solo con el botón "Cerrar"
-  btnCerrar.addEventListener('click', () => {
-    limpiarSignosVitales();
-    modalInstance.hide(); // Cierra el modal manualmente
-  });
-
-  // Limpiar también si se cierra con la X
-  modalElement.addEventListener('hidden.bs.modal', () => {
-    limpiarSignosVitales();
-  });
-
-  function limpiarSignosVitales() {
-    accordion.innerHTML = '';
-  }
-  // Resto del código (btnBuscar, fetch, etc...) aquí
-});
-      </script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-<!-- Tu JS -->
-<script>
-  function verPaciente(p) {
-    document.getElementById('detallePaciente').classList.remove('d-none');
-    document.getElementById('nombrePaciente').textContent = p.name;
-    document.getElementById('emailPaciente').textContent = p.email || 'No registrado';
-    document.getElementById('telefonoPaciente').textContent = p.phone || 'No registrado';
-    document.getElementById('Cedula').textContent = p.id_card || 'No registrado';
-    document.getElementById('ID').textContent = p.id_patient || 'No registrado';
-    document.getElementById('fechaPaciente').textContent = p.birth_date ? formatDate(p.birth_date) : 'No registrada';
-    document.getElementById('direccionPaciente').textContent = p.address || 'No registrada';
-
-    // Para el formulario de actualización
-    document.getElementById('idPaciente').value = p.id_patient || '';
-    document.getElementById('id_paciente').value = p.id_patient || '';
-    document.getElementById('patient_id').value = p.id_patient || '';
-    document.getElementById('Telefono1').value = p.phone || '';
-    document.getElementById('direccion').value = p.address || '';
-    document.getElementById('estado_civil').value = p.marital_status || '';
-    document.getElementById('ocupacion').value = p.occupation || '';
-
-    obtenerGeolocalizacion(p.address);
-  }
-
-  function cerrarDetalle() {
-    document.getElementById('detallePaciente').classList.add('d-none');
-    document.getElementById('mapaPaciente').innerHTML = ''; // limpia el mapa
-  }
-
-  function obtenerGeolocalizacion(direccion) {
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
-
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data && data.length > 0) {
-          const lat = parseFloat(data[0].lat);
-          const lon = parseFloat(data[0].lon);
-
-          const map = L.map('mapaPaciente').setView([lat, lon], 16);
-
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-          }).addTo(map);
-
-          L.marker([lat, lon]).addTo(map)
-            .bindPopup(`<b>Dirección:</b><br>${direccion}`)
-            .openPopup();
-        } else {
-          document.getElementById('mapaPaciente').innerText = 'Ubicación no encontrada.';
-        }
-      })
-      .catch(error => {
-        console.error('Error al obtener geolocalización:', error);
-        document.getElementById('mapaPaciente').innerText = 'Error al obtener la ubicación.';
-      });
-  }
-
-  function formatDate(dateStr) {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString('es-VE'); // o cambia según tu país
-  }
-</script>
-<script>
-  function abrirMapa() {
-    const direccion = document.getElementById('direccionPaciente').textContent;
-    if (!direccion || direccion === 'No registrada') {
-      alert('Dirección no disponible para mostrar en el mapa.');
-      return;
-    }
-
-    // Abrir modal
-    const mapaModal = new bootstrap.Modal(document.getElementById('modalMapa'));
-    mapaModal.show();
-
-    // Evitar duplicación de mapa si ya existe
-    if (window.mapaInstancia) {
-      window.mapaInstancia.remove();
-    }
-
-    // Geolocalizar dirección
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(direccion)}`;
-    fetch(url)
-      .then(response => response.json())
-      .then(data => {
-        if (data.length > 0) {
-          const lat = parseFloat(data[0].lat);
-          const lon = parseFloat(data[0].lon);
-
-          // Inicializar mapa
-          window.mapaInstancia = L.map('mapaPaciente').setView([lat, lon], 16);
-
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-          }).addTo(window.mapaInstancia);
-
-          L.marker([lat, lon]).addTo(window.mapaInstancia)
-            .bindPopup(`Dirección: ${direccion}`)
-            .openPopup();
-        } else {
-          document.getElementById('mapaPaciente').innerHTML = '<p>No se encontró la ubicación.</p>';
-        }
-      })
-      .catch(err => {
-        console.error(err);
-        document.getElementById('mapaPaciente').innerHTML = '<p>Error al cargar el mapa.</p>';
-      });
-  }
-</script>
-
-  <script src="FUNCIONES\1.js"></script>
-  <script src="FUNCIONES\Cerrar_sesion.js"></script>
+  <script src="FUNCIONES2\1.js"></script>
+  <script src="FUNCIONES2\Cerrar_sesion.js"></script>
   </body>
 </html> 

@@ -444,6 +444,20 @@ document.addEventListener("DOMContentLoaded", function () {
     return;
   }
 
+
+  const telefonoRegex = /^[0-9]{7,15}$/;
+    if (!telefonoRegex.test(telefono)) {
+      alert("El número de teléfono debe contener solo dígitos y tener entre 7 y 15 caracteres.");
+      return;
+    }
+
+
+    const direccionRegex = /[A-Za-z].{4,}/;
+    if (!direccionRegex.test(direccion)) {
+      alert("La dirección debe tener al menos 5 caracteres y contener letras.");
+      return;
+    }
+
   fetch("http://localhost:7000/api/relative/update", {
     method: "POST",
     headers: {

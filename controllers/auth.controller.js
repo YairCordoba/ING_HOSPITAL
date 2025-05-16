@@ -33,14 +33,13 @@ const login = (req, res) => {
                 return res.status(401).json({ message: 'Credenciales incorrectas' });
             }
 
-            if (user.role === 'Admin') {
-                return res.status(403).json({ message: 'Este usuario no tiene acceso al sistema' });
-            }
+            
 
             let userInfoQuery;
             if (user.role === 'Patient') userInfoQuery = 'SELECT * FROM patients WHERE id_card = ?';
             else if (user.role === 'Doctor') userInfoQuery = 'SELECT * FROM doctors WHERE id_card = ?';
             else if (user.role === 'Relative') userInfoQuery = 'SELECT * FROM relatives WHERE id_card = ?';
+            else if (user.role === 'Admin') userInfoQuery = 'SELECT * FROM admins WHERE id_card = ?';
             else return res.status(400).json({ message: 'Rol no válido' });
 
             connect.query(userInfoQuery, [id_card], (err, infoResults) => {
@@ -77,6 +76,7 @@ const login = (req, res) => {
                         additional_info: info
                     }
                 });
+                
             });
         });
     });

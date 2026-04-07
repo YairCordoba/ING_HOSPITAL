@@ -1,0 +1,129 @@
+npm install -g pm2
+PM2 es un **administrador de procesos para aplicaciones Node.js** que permite ejecutarlas, monitorearlas y mantenerlas siempre activas. Es especialmente útil para entornos de producción.
+
+---
+
+### 🔧 ¿Cómo funciona PM2?
+
+PM2 actúa como una **capa entre tu aplicación y el sistema operativo**. Administra el ciclo de vida de tus aplicaciones (start, stop, restart, monitoreo) y puede reiniciarlas automáticamente si se caen por errores.
+
+---
+
+### 🧪 Instalación
+
+```bash
+npm install -g pm2
+```
+##Nota: para ejecutar el proyecto debes instalar esto 
+##npm install express cors dotenv jsonwebtoken mysql2 body-parser bcrypt
+
+---
+
+### 📦 Comandos básicos
+
+| Acción              | Comando              |
+| ------------------- | -------------------- |
+| Iniciar app         | `pm2 start app.js`   |
+| Ver procesos        | `pm2 list`           |
+| Reiniciar app       | `pm2 restart app.js` |
+| Detener app         | `pm2 stop app.js`    |
+| Eliminar app        | `pm2 delete app.js`  |
+| Logs en tiempo real | `pm2 logs`           |
+
+---
+
+### 💾 Guardar configuración para reinicio automático
+
+1. Guardar procesos:
+
+   ```bash
+   pm2 save
+   ```
+
+2. Hacer que se inicien con el sistema (Linux/macOS):
+
+   ```bash
+   pm2 startup
+   ```
+
+Esto genera un comando que debes copiar/pegar para activar el autoinicio.
+
+---
+
+### 🧠 Beneficios de PM2
+
+* Reinicio automático en caso de error.
+* Monitoreo de CPU y memoria.
+* Logs en tiempo real.
+* Clustering para rendimiento (multi-core).
+
+---
+
+¿Quieres que te muestre cómo hacer clustering con PM2 o cómo configurarlo para producción?
+nodemon app.js
+Claro, aquí tienes una lista de los comandos más útiles de **PM2** (Process Manager 2) para manejar aplicaciones Node.js:
+
+---
+
+### 🟢 **Inicio y Manejo de Aplicaciones**
+
+| Comando                         | Descripción                                           |
+| ------------------------------- | ----------------------------------------------------- |
+| `pm2 start app.js`              | Inicia la aplicación `app.js`.                        |
+| `pm2 start app.js --name myApp` | Inicia con un nombre personalizado.                   |
+| `pm2 start ecosystem.config.js` | Inicia apps definidas en un archivo de configuración. |
+| `pm2 restart app`               | Reinicia una app por nombre o ID.                     |
+| `pm2 reload app`                | Reinicia sin tiempo de inactividad (modo cluster).    |
+| `pm2 stop app`                  | Detiene una app sin eliminarla.                       |
+| `pm2 delete app`                | Detiene y elimina la app de PM2.                      |
+| `pm2 stop all`                  | Detiene todas las apps.                               |
+| `pm2 restart all`               | Reinicia todas las apps.                              |
+| `pm2 delete all`                | Detiene y borra todas las apps.                       |
+
+---
+
+### 📋 **Monitoreo y Estado**
+
+| Comando        | Descripción                                    |
+| -------------- | ---------------------------------------------- |
+| `pm2 list`     | Lista todas las apps gestionadas.              |
+| `pm2 status`   | Igual que `pm2 list`, muestra el estado.       |
+| `pm2 show app` | Muestra detalles específicos de una app.       |
+| `pm2 monit`    | Monitoreo en tiempo real (CPU, memoria, logs). |
+
+---
+
+### 📄 **Logs**
+
+| Comando          | Descripción                     |
+| ---------------- | ------------------------------- |
+| `pm2 logs`       | Muestra logs de todas las apps. |
+| `pm2 logs app`   | Logs de una app específica.     |
+| `pm2 flush`      | Limpia todos los logs.          |
+| `pm2 reloadLogs` | Reinicia los archivos de logs.  |
+
+---
+
+### 🧠 **Persistencia y Autoinicio**
+
+| Comando         | Descripción                                                                                        |
+| --------------- | -------------------------------------------------------------------------------------------------- |
+| `pm2 save`      | Guarda la configuración actual (para restaurar después del reinicio).                              |
+| `pm2 startup`   | Genera comando para iniciar PM2 al arrancar el sistema. Debes ejecutar el comando que te devuelve. |
+| `pm2 unstartup` | Quita el script de arranque automático.                                                            |
+| `pm2 resurrect` | Restaura procesos guardados con `pm2 save`.                                                        |
+
+---
+
+### ⚙️ **Configuración Avanzada**
+
+| Comando                                          | Descripción                                                 |
+| ------------------------------------------------ | ----------------------------------------------------------- |
+| `pm2 ecosystem`                                  | Genera un archivo de configuración (`ecosystem.config.js`). |
+| `pm2 start ecosystem.config.js --env production` | Ejecuta usando un entorno definido.                         |
+| `pm2 update`                                     | Actualiza PM2 manteniendo procesos activos.                 |
+| `pm2 reload ecosystem.config.js`                 | Recarga todas las apps del ecosistema.                      |
+
+---
+no se hicieron cambios
+¿Te gustaría que te genere un archivo de configuración `ecosystem.config.js` como ejemplo?

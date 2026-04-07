@@ -125,5 +125,5 @@ Claro, aquí tienes una lista de los comandos más útiles de **PM2** (Process M
 | `pm2 reload ecosystem.config.js`                 | Recarga todas las apps del ecosistema.                      |
 
 ---
-no se hicieron cambios
+no se hicieron cambios....
 ¿Te gustaría que te genere un archivo de configuración `ecosystem.config.js` como ejemplo?
